@@ -1,7 +1,6 @@
 # Court-Case-Management-System
-Project Title : Court Case Management System 
-Description: 
 ABSTRACT
+
 We all wonder to see the future corruption free and developed Utopia like Ethiopia, But have you ever wonder what if the non-transparent and poor file handling system in legal system is slowing us down or what if the court system is also facilitating the accelerated growth of corruption in our country. Most of us might be asking ourselves why we are using paper for registering, witness records, appealing process and other manual works while living in the twenty first century.
 
 In this project we have presented a new and reliable system that aims to facilitate and provide a way to solve this huge problem domain, by giving the best result that can combine the current technologies, the social integrity and also the court legal and work system by using the internet and soft-wares. Other than this the system can also provide the digitization of documents, easy data backup, easy data access and manipulation. 
