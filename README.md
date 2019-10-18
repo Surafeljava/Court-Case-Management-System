@@ -16,7 +16,9 @@ If the user is a Judge he/she will be able to view their notifications if there 
 If the user is plaintiff or accused he/she will be able to view their cases progress and status, to appeal on a case if it is closed and they think the decision is not satisfactory, able to view their own notifications if any and finally can change their password.
 
 Feature List
+
 The process of court case management involves the following actions
+
     • Creating or registering a case
     • Registering a judge to a case 
     • Notifying the judge about their cases 
