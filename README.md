@@ -25,3 +25,10 @@ The process of court case management involves the following actions
     •  Notifying accused and plaintiff about the progress of the case
     • Generating a report about cases in the court have
     • Plaintiff and accused can appeal on their case’s judge decission 
+
+Features:
+1. Case
+2. Notification
+3. Appeal 
+4. Statistic & Report
+5. Search
