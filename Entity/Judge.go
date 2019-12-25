@@ -4,7 +4,10 @@ import "time"
 
 //Judge struct
 type Judge struct {
-	Name string
-	ID   string
-        JudgeType int
+        gorm.Model
+	JudgeName  string
+	JudgeId    string
+	JudgePwd   string
+	JudgeType  int
+	JudgePhoto string
 }
