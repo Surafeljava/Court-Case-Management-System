@@ -1,6 +1,6 @@
-package notification
+package notificationUse
 
-import "github.com/courtSystem/notification/entity"
+import "github.com/Surafeljava/Court-Case-Management-System/entity"
 
 // NotificationRepository specifies notification related database operations
 type NotificationRepository interface {
