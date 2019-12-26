@@ -1,3 +1,10 @@
+{{ define "admin.layout" }} 
+{{ template "admin.navbar" . }} 
+{{ template "admin.content" . }} 
+{{ template "footer" . }} 
+{{ end }} 
+
+{{ define "admin.categ.content"}}
 <html lang="en">
 
 <head>
@@ -12,3 +19,4 @@
 </body>
 
 </html>
+{{ end }}
