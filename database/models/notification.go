@@ -1,9 +1,12 @@
 package models
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
 )
 
+//Notification struct
 type Notification struct {
 	gorm.Model
 	NotTitle string    `gorm:"type:varchar(200);not null"`
