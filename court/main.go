@@ -30,10 +30,13 @@ func main() {
 
 	loginHandler := handler.NewLoginHandler(tmpl, loginServ)
 
+	newcaseHandler := handler.NewCaseHandler(tmpl, loginServ)
+
 	fs := http.FileServer(http.Dir("../UI/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.UserLoginCheck)
+	http.HandleFunc("/admin/newcase", newcaseHandler.NewCase)
 
 	http.ListenAndServe(":8181", nil)
 
