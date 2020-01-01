@@ -1,10 +1,10 @@
 package entity
 
-import "time"
+import "github.com/Surafeljava/gorm"
 
 //Judge struct
 type Judge struct {
-        gorm.Model
+	gorm.Model
 	JudgeName  string
 	JudgeId    string
 	JudgePwd   string

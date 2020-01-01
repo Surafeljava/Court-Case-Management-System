@@ -7,7 +7,12 @@
 {{ end }}
 
 {{ define "login.content" }}
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+<html>
+<head> <title> Login Page </title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+</head>
+<body>
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h2>Login</h2>
   </div>
@@ -32,5 +37,6 @@
       </div>
     </form>
   </div>
-</main>
+</body>
+</html>
 {{ end }}
