@@ -14,3 +14,5 @@ type CaseSearchRepository interface {
 	Cases() ([]entity.Case, []error)
 	Case(id uint) (*entity.Case, []error)
 }
+
+//comment
