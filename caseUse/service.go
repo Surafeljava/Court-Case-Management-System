@@ -26,3 +26,9 @@ type LoginService interface {
 	CheckJudge(id string, pwd string) (*entity.Judge, []error)
 	CheckOpponent(id string, pwd string) (*entity.Opponent, []error)
 }
+
+
+type CaseSearchService interface {
+	Cases() ([]entity.Case, []error)
+	Case(id uint) (*entity.Case, []error)
+}
