@@ -8,38 +8,26 @@
 
 {{ define "login.content" }}
 <html>
-<head> 
-<title> Login Page </title>
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/dashboard.css">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login_page</title>
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/login_styles.css">
 </head>
+
 <body>
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2>Login</h2>
-  </div>
-  <div class="container">
-  <div class="col-lg-6 col-md-8">
-    <form method="POST" action="/admin/newcase" enctype="multipart/form-data" class="">
-      <div class="form-group row">
-        <label for="userid" class="col-sm-2 col-form-label">User ID</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="userid" id="userid" placeholder="id">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="userpass" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-10">
-          <input type="PassWord" class="form-control" name="userpass" id="userpass" placeholder="password">
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="col-sm-10">
-          <button type="submit" class="btn btn-warning float-right">Login</button>
-        </div>
-      </div>
-    </form>
+    <h1 class="text-center">LOGIN Page</h1>
+    <div>
+        <form method="POST" action="/login/check" enctype="multipart/form-data">
+            <input class="form-control" type="text" name="user_id" required="" placeholder="User ID" maxlength="10" minlength="3">
+            <input class="form-control" type="password" name="user_pwd" required="" placeholder="Password" maxlength="20" minlength="3">
+            <button class="btn btn-primary" type="submit">LOGIN </button>
+            <button class="btn btn-warning" type="reset">Reset </button>
+        </form>
     </div>
-  </div>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
 {{ end }}

@@ -1,0 +1,55 @@
+{{ define "admin.newjudge.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.newjudge.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.newjudge.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Create New Judge </title>
+</head>
+
+<body>
+
+    <h1> Create New Judge </h1>
+
+    <form action="/admin/judge/new" method="POST" enctype="multipart/form-data">
+        <input type="text" required name="judge_name" placeholder="Judge Name">
+        <br><br>
+        <label for="judge_gender"> Gender </label>
+        <select class="judge_gender" required name="judge_gender">
+            <optgroup label="Gender">
+                <option value="0" selected> Male </option>
+                <option value="1"> Female </option>
+            </optgroup>
+        </select>
+        <br><br>
+        <textarea name="judge_address" cols="30" rows="6" placeholder="Judge Address"></textarea>
+        <br><br>
+        <input type="text" required name="judge_phone" placeholder="Phone Number (+251)">
+        <br><br>
+        <label for="judge_type"> Judge Type </label>
+        <select class="judge_type" required name="judge_type">
+            <optgroup label="Judge Type">
+                <option value="0" selected> Criminal </option>
+                <option value="1"> Civil </option>
+            </optgroup>
+        </select>
+        <br><br>
+        <input type="file" name="judge_photo" required>
+        <br><br>
+        <button type="submit"> Create Judge </button>
+        <button type="reset"> Reset </button>
+    </form>
+
+</body>
+
+</html>
+{{ end }}

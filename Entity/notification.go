@@ -3,7 +3,7 @@ package entity
 import "time"
 
 //Notification struct
-type Notification struct {
+type NotificationTest struct {
 	NotfDescription string
 	NotfTitle       string
 	NotfLevel       string

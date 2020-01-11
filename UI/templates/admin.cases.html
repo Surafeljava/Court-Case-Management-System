@@ -1,0 +1,50 @@
+{{ define "admin.cases.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.cases.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.cases.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>View Cases</title>
+</head>
+
+<body>
+
+    <h1> Admin View Cases </h1>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Case Title</th>
+                <th scope="col">Case Description</th>
+                <th scope="col">Update Case</th>
+                <th scope="col">Add Opponent</th>
+                <th scope="col">Delete Case</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .}}
+            <tr>
+                <th scope="row"> {{ .ID }} </th>
+                <td> {{ .CaseTitle }} </td>
+                <td> {{ .CaseDesc }} </td>
+                <td> <a href="/admin/cases/update?id={{ .ID }}">Update Case</a> </td>
+                <td> <a href="/admin/cases">Add Opponent</a> </td>
+                <td> <a href="/admin/cases">Delete</a> </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+
+</body>
+
+</html>
+{{ end }}

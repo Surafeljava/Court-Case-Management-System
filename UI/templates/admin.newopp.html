@@ -1,0 +1,62 @@
+{{ define "admin.newopp.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.newopp.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.newopp.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> New Opponent </title>
+</head>
+
+<body>
+
+    <h1> Create New Opponent </h1>
+
+    <form action="/admin/opponent/new" method="POST" enctype="multipart/form-data">
+        <input type="text" name="case_num" readonly placeholder="Case Number">
+        <br><br>
+        <label for="opp_type"> Opponent Type: </label>
+        <select name="opp_type" class="opp_type" required>
+            <optgroup label="Opponent Type">
+                <option value="0" selected>Plaintiff</option>
+                <option value="1">Accused</option>
+            </optgroup>
+        </select>
+        <br><br>
+        <input type="text" name="opp_fn" required placeholder="First Name">
+        <br><br>
+        <input type="text" name="opp_ln" required placeholder="Last Name">
+        <br><br>
+        <label for="opp_gender"> Gender: </label>
+        <select name="opp_gender" class="opp_gender" required>
+            <optgroup label="Gender">
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </optgroup>
+        </select>
+        <br><br>
+        <input type="date" name="opp_bd" required>
+        <br><br>
+        <textarea name="opp_address" cols="30" rows="6" placeholder="Address"></textarea>
+        <br><br>
+        <input type="text" name="opp_phone" required placeholder="Phone Number(+251)">
+        <br><br>
+        <input type="file" name="opp_photo" required>
+        <br><br>
+        <button type="submit">Create Opponent</button>
+        <button type="reset">Reset</button>
+
+    </form>
+
+</body>
+
+</html>
+{{ end }}

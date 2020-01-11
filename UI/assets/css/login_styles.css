@@ -1,0 +1,40 @@
+h1 {
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+form {
+    padding: 10px;
+}
+
+div {
+    margin-left: 35%;
+    width: 30%;
+}
+
+input.form-control {
+    margin-bottom: 15px;
+    height: 40px;
+    font-weight: 500;
+}
+
+button.btn.btn-primary {
+    width: 48.5%;
+    height: 40px;
+    margin-right: 1%;
+    font-weight: 600;
+    border: hidden;
+}
+
+button.btn.btn-default {
+    width: 47.4%;
+    margin-left: 10px;
+}
+
+button.btn.btn-warning {
+    margin-left: 1%;
+    width: 48.5%;
+    height: 40px;
+    font-weight: 600;
+    border: hidden;
+}

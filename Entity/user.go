@@ -1,6 +1,10 @@
 package entity
 
+import "github.com/Surafeljava/gorm"
+
 type User struct {
-	UserID  string
-	UserPwd string
+	gorm.Model
+	ID      int
+	userID  string
+	userPwd string
 }
