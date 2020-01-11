@@ -10,9 +10,14 @@ type LoginRepository interface {
 	CheckLogin(user entity.User) error
 }
 
+//CaseSearchRepository ...
 type CaseSearchRepository interface {
 	Cases() ([]entity.Case, []error)
 	Case(id uint) (*entity.Case, []error)
 }
 
-//comment
+//JudgeSearchRepository ...
+type JudgeSearchRepository interface {
+	Judges() ([]entity.Judge, []error)
+	Judge(id uint) (*entity.Judge, []error)
+}
