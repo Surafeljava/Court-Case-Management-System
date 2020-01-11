@@ -16,3 +16,9 @@ type CaseSearchService interface {
 	Cases() ([]entity.Case, []error)
 	Case(id uint) (*entity.Case, []error)
 }
+
+//JudgeSearchService ...
+type JudgeSearchService interface {
+	Judges() ([]entity.Judge, []error)
+	Judge(id uint) (*entity.Judge, []error)
+}
