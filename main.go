@@ -9,7 +9,7 @@ import (
 
 func main() {
 	fmt.Println("Welcome To Court Case Management System")
-	db, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=gormdb password=123456")
+	db, err := gorm.Open("postgres", "host=localhost  user=postgres dbname=gormdb password=E456yob123 sslmode=disable")
 	defer db.Close()
 
 	if err != nil {
