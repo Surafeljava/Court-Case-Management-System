@@ -78,8 +78,26 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 
 //Delete existing cases
 func (lh *CaseHandler) DeleteCase(w http.ResponseWriter, r *http.Request) {
-	lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
-	//TODO Delete case here...
+	if r.Method == http.MethodGet {
+
+		idRaw := r.URL.Query().Get("id")
+		//idr := 30
+		id, err := strconv.Atoi(idRaw)
+
+		if err != nil {
+			fmt.Println("Can't get the id!")
+			panic(err)
+		}
+
+		errs := lh.caseSrv.DeleteCase(id)
+
+		if len(errs) > 0 {
+			http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
+		}
+
+		http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
+
+	}
 }
 
 //Update existing cases

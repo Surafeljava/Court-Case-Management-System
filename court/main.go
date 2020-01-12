@@ -40,15 +40,19 @@ func main() {
 
 	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
+	//Login repository and Service Creation
 	loginRepo := repository.NewLoginRepositoryImpl(dbc)
 	loginServ := service.NewLoginServiceImpl(loginRepo)
 
+	//Case repository and Service Creation
 	caseRepo := repository.NewCaseRepositoryImpl(dbc)
 	caseServ := service.NewCaseServiceImpl(caseRepo)
 
+	//Opponent repository and Service Creation
 	oppRepo := repository.NewOpponentRepositoryImpl(dbc)
 	oppServ := service.NewOpponentServiceImpl(oppRepo)
 
+	//Judge repository and Service Creation
 	adminJudgeRepo := repository.NewJudgeRepositoryImpl(dbc)
 	adminJudgeServ := service.NewJudgeServiceImpl(adminJudgeRepo)
 
@@ -61,12 +65,14 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
-	//http.HandleFunc("/login/check", loginHandler.AuthenticateUser)
 	http.HandleFunc("/admin/cases/new", newcaseHandler.NewCase)
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
+	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
 	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
 	http.HandleFunc("/admin/opponent/new", opponentHandler.NewOpponent)
 	http.HandleFunc("/admin/judge/new", adminJudgeHandler.NewJudge)
+
+	http.HandleFunc("/judge/cases/close", newcaseHandler.CloseCase)
 
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )

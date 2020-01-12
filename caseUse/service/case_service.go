@@ -62,6 +62,10 @@ func (csi *CaseServiceImpl) ExtendCase(casedoc *entity.Case) []error {
 
 //DeleteCase Service >> delete existing case
 func (csi *CaseServiceImpl) DeleteCase(id int) []error {
+	err := csi.caseRepo.DeleteCase(id)
+	if len(err) > 0 {
+		return err
+	}
 	return nil
 }
 

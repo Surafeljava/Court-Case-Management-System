@@ -32,10 +32,15 @@ func (cri *CaseRepositoryImpl) Case(id int) (*entity.Case, []error) {
 func (cri *CaseRepositoryImpl) CreateCase(casedoc *entity.Case) []error {
 	csd := casedoc
 	errs := cri.conn.Create(&csd).GetErrors()
+
 	if len(errs) > 0 {
 		panic(errs)
 		//return errs
 	}
+
+	relation := entity.Relation{CaseNum: csd.CaseNum, PlId: "", AcId: ""}
+	cri.conn.Create(&relation)
+
 	return errs
 }
 func (cri *CaseRepositoryImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, []error) {
@@ -66,6 +71,14 @@ func (cri *CaseRepositoryImpl) ExtendCase(casedoc *entity.Case) []error {
 	return errs
 }
 func (cri *CaseRepositoryImpl) DeleteCase(id int) []error {
+	cs, err := cri.Case(id)
+	if len(err) > 0 {
+		return err
+	}
+	errs := cri.conn.Delete(cs, id).GetErrors()
+	if len(errs) > 0 {
+		return errs
+	}
 	return nil
 }
 
