@@ -89,7 +89,6 @@ func CheckWho(id string) int {
 	check := id[0:2]
 	fmt.Println(check)
 	if check == "AD" {
-		// fmt.Println(">>>> AD-checked! and 0 returned")
 		return 0
 	} else if check == "JU" {
 		return 1

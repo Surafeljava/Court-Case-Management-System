@@ -1,4 +1,4 @@
-package notificationuse
+package notificationUse
 
 import "github.com/Surafeljava/Court-Case-Management-System/entity"
 
