@@ -1,0 +1,39 @@
+{{ define "caseSearchResult.layout" }}
+    {{ template "navbar" . }}
+    {{ template "caseSearchResult.content" . }}
+    {{ template "footer" . }}
+{{ end }}
+{{ define "caseSearchResult.content" }}
+    <div class="container">
+        <h2>ALL CASES</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID : </th>
+                <th>CaseNum : </th>
+                <th>CaseTitle : </th>
+                <th>CaseDesc :</th>
+                <th>CaseStatus : </th>
+                <th>CaseType : </th>
+                <th>CaseCreation :</th>
+                <th>CaseCourtDate : </th>
+                <th>CaseJudge :</th>
+            </thead>
+            <tbody>
+            {{ range . }}
+                <tr>
+                    <td> {{ .ID }} </td>
+                    <td> {{ .CaseNum }} </td>
+                    <td> {{ .CaseTitle }} </td>
+                    <td> {{ .CaseDesc }} </td>
+                    <td> {{ .CaseStatus }} </td>
+                    <td> {{ .CaseType  }} </td>
+                    <td> {{ .CaseCreation }} </td>
+                    <td> {{ .CaseCourtDate }} </td>
+                    <td> {{ .CaseJudge  }} </td>
+                </tr>
+            {{ end }}
+            </tbody>
+        </table>
+    </div>
+{{ end }}

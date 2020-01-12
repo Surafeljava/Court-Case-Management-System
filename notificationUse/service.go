@@ -1,6 +1,6 @@
 package notificationUse
 
-import "github.com/Surafeljava/Court-Case-Management-System/entity"
+import entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 
 //NotificationService interface
 type NotificationService interface {

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/gorm"
 )
 
