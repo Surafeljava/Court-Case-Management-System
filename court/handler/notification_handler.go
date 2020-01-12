@@ -1,14 +1,12 @@
 package handler
 
 import (
-	"encoding/json"
 	"html/template"
 	"net/http"
 	"time"
 
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/Court-Case-Management-System/notificationUse"
-	"github.com/julienschmidt/httprouter"
 )
 
 //NotificationHandler struct
@@ -51,4 +49,3 @@ func (nh *NotificationHandler) AdminPostNotification(w http.ResponseWriter, r *h
 	}
 
 }
-
