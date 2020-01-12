@@ -15,3 +15,14 @@ func NewAppealService(appealRepository appealUse.AppealRepositroy) appealUse.App
 	return &AppealService{appealRepo: appealRepository}
 
 }
+
+//Appeal ...
+func (appealService *AppealService) Appeal(oppNum string) (*entity.Case, *entity.Opponent, *entity.Witness, *entity.Decision, []error) {
+	cases, opp, wit, dec, errs := appealService.appealRepo.Appeal(oppNum)
+
+	if len(errs) > 0 {
+		return nil, nil, nil, nil, errs
+	}
+
+	return cases, opp, wit, dec, errs
+}
