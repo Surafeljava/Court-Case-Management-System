@@ -35,7 +35,7 @@ type Relation struct {
 	CaseNum string `gorm:"type:varchar(255);not null"`
 	PlId    string `gorm:"type:varchar(255);not null"`
 	AcId    string `gorm:"type:varchar(255);not null"`
-	JuId    string `gorm:"type:varchar(255);not null"`
+	//JuId    string `gorm:"type:varchar(255);not null"`
 }
 
 type Decision struct {

@@ -1,0 +1,39 @@
+{{ define "judgeSearchResult.layout" }}
+{{ template "navbar" . }}
+{{ template "judgeSearchResult.content" . }}
+{{ template "footer" . }}
+{{ end }}
+{{ define "judgeSearchResult.content" }}
+<div class="container">
+    <h2>ALL JUDGES</h2>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>JudgeId</th>
+            <th>JudgeName</th>
+            <th>JudgePwd</th>
+            <th>JudgeGender</th>
+            <th>JudgeAddress</th>
+            <th>JudgePhone</th>
+            <th>JudgeType</th>
+            <th>JudgePhoto</th>
+        </thead>
+        <tbody>
+            {{ range . }}
+          <tr>
+            <td> {{ .ID }} </td>
+            <td> {{ .JudgeId }} </td>
+            <td> {{ .JudgeName }} </td>
+            <td> {{ .JudgePwd }} </td>
+            <td> {{ .JudgeGender }} </td>
+            <td> {{ .JudgeAddress }} </td>
+            <td> {{ .JudgePhone }} </td>
+            <td> {{ .JudgeType }} </td>
+            <td> {{ .JudgePhoto }} </td>
+          </tr>
+          {{ end }}
+          </tbody>
+          </table>
+</div>
+{{ end }}

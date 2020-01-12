@@ -37,8 +37,9 @@
                 <td> {{ .CaseTitle }} </td>
                 <td> {{ .CaseDesc }} </td>
                 <td> <a href="/admin/cases/update?id={{ .ID }}">Update Case</a> </td>
-                <td> <a href="/admin/Opponent/">Add Opponent</a> </td>
-                <td> <a href="/admin/cases">Delete</a> </td>
+                <td> <a href="/admin/opponent/new?id={{ .CaseNum }}">Add Plaintiff</a> </td>
+                <td> <a href="/admin/opponent/new?id={{ .CaseNum }}">Add Accused</a> </td>
+                <td> <a href="/admin/cases/delete?id={{ .ID }}">Delete</a> </td>
             </tr>
             {{end}}
         </tbody>

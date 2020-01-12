@@ -1,13 +1,15 @@
 package handler
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"html/template"
 	"net/http"
 	"time"
 
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
 )
 
 type OpponentHandler struct {
@@ -23,8 +25,22 @@ func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodPost {
 
-		opp_id := "OP1"
-		opp_pwd := "123456"
+		allOpp, err1 := oh.oppSrv.Opponents()
+		if err1 != nil {
+			panic(err1)
+		}
+
+		op_id := len(allOpp) + 1
+		opp_id := fmt.Sprintf("OP%d", op_id)
+
+		//judge_id := "JU1"
+		//hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+		hasher := md5.New()
+		hasher.Write([]byte("1234"))
+		pwd := hex.EncodeToString(hasher.Sum(nil))
+
+		opp_pwd := pwd
+
 		opp_type := r.FormValue("opp_type")
 		opp_name := r.FormValue("opp_fn")
 		opp_gender := r.FormValue("opp_gender")

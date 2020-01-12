@@ -1,0 +1,33 @@
+{{ define "adminSearch.layout" }}
+
+    {{ template "navbar" . }}
+    {{ template "adminSearch.content" . }}
+    {{ template "footer" . }}
+
+{{ end }}
+
+{{ define "adminSearch.content" }}
+    <div class="container">
+        <h4>SEARCH JUDGE BY ID</h4>
+        <form class="form-inline" method="get" action="/v1/admin/judges/singlejudge">
+            <label for="id" class="col-sm-2 col-form-label">JUDGE ID </label>
+            <input type="text" class="col-sm-2 form-control" name="search_judgeID" id="search_judgeID" value="1" placeholder="Judge Id">
+            <button type="submit" class="btn btn-primary">Search Judge</button>
+        </form>
+        <h4>ALL Judges</h4>
+        <form class="form-inline" method="get" action="/v1/admin/judges">
+            <button type="submit" class="btn btn-primary">Get All Judgest</button>
+        </form>
+        <h4>SEARCH CASE BY ID</h4>
+        <form class="form-inline" method="get" action="/v1/admin/cases/singlecase">
+            <label for="id" class="col-sm-2 col-form-label">CASE ID </label>
+            <input type="text" class="col-sm-2 form-control" name="search_caseNum" id="search_caseNum" value="1" placeholder="Case Id">
+            <button type="submit" class="btn btn-primary">Search Case</button>
+        </form>
+        <h4>ALL CASE</h4>
+        <form class="form-inline" method="get" action="/v1/admin/cases">
+            <button type="submit" class="btn btn-primary">Get All Case</button>
+        </form>
+    </div>
+
+{{ end }}

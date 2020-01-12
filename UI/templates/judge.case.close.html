@@ -1,0 +1,44 @@
+{{ define "judge.case.close.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "judge.case.close.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "judge.case.close.content" }}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Close Case </title>
+</head>
+
+<body>
+
+    <h1> Close Case </h1>
+
+    <form action="/judge/case/close" method="POST">
+        <label for="case_num"> Choose Case </label>
+        <select class="case_num" name="case_num" required>
+            <optgroup label="Cases">
+                {{range .}}
+                    <option value="{{ .CaseNum }}"> {{ .CaseNum }} </option>
+                {{end}}
+            </optgroup>
+        </select>
+        <br>
+        <input type="text" name="final_decision" required placeholder="Case Final Decision" />
+        <br><br>
+        <textarea name="close_desc" required placeholder="Case Close Description" cols="30" rows="20"></textarea>
+        <br><br>
+
+        <button type="submit"> Close Case </button>
+        <button type="reset"> Reset </button>
+    </form>
+
+</body>
+
+</html>
+{{ end }}

@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"net/http"
 
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
 )
 
 type LoginHandler struct {
@@ -30,7 +30,7 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		who := CheckWho(user_id)
 
 		error_message := entity.SuccessMessage{Status: "Error", Message: "Wrong ID or Password Try again"}
-		success_message := entity.SuccessMessage{Status: "Success", Message: "Login Success!"}
+		//success_message := entity.SuccessMessage{Status: "Success", Message: "Login Success!"}
 
 		if who == 0 {
 			adm, err := lh.loginSrv.CheckAdmin(user_id, user_pwd)
@@ -50,28 +50,28 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		} else if who == 1 {
 			jud, err := lh.loginSrv.CheckJudge(user_id, user_pwd)
 			if jud != nil {
-				togo := struct {
-					judge entity.Judge
-					msg   entity.SuccessMessage
-				}{
-					*jud,
-					success_message,
-				}
-				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", togo)
+				// togo := struct {
+				// 	judge entity.Judge
+				// 	msg   entity.SuccessMessage
+				// }{
+				// 	*jud,
+				// 	success_message,
+				// }
+				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
 			}
 		} else if who == 2 {
 			opp, err := lh.loginSrv.CheckOpponent(user_id, user_pwd)
 			if opp != nil {
-				togo := struct {
-					opponent entity.Opponent
-					msg      entity.SuccessMessage
-				}{
-					*opp,
-					success_message,
-				}
-				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", togo)
+				// togo := struct {
+				// 	opponent entity.Opponent
+				// 	msg      entity.SuccessMessage
+				// }{
+				// 	*opp,
+				// 	success_message,
+				// }
+				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
 			}
