@@ -22,10 +22,16 @@ func main() {
 	// dbc.AutoMigrate(&entity.Opponent{})
 	// dbc.AutoMigrate(&entity.Case{})
 	// dbc.AutoMigrate(&entity.Judge{})
-	//dbc.AutoMigrate(&entity.Admin{})
-	//dbc.AutoMigrate(&entity.Notification{})
+	// dbc.AutoMigrate(&entity.Admin{})
+	// dbc.AutoMigrate(&entity.Notification{})
+	// dbc.AutoMigrate(&entity.Relation{})
+	// dbc.AutoMigrate(&entity.Decision{})
 
-	// ad := entity.Admin{AdminId: "AD1", AdminPwd: "1234"}
+	// hasher := md5.New()
+	// hasher.Write([]byte("1234"))
+	// pwdnew := hex.EncodeToString(hasher.Sum(nil))
+
+	// ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
 	// dbc.Create(&ad)
 
 	if err != nil {

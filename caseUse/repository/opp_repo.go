@@ -13,6 +13,23 @@ func NewOpponentRepositoryImpl(Conn *gorm.DB) *OpponentRepositoryImpl {
 	return &OpponentRepositoryImpl{conn: Conn}
 }
 
+func (ori *OpponentRepositoryImpl) Opponents() ([]entity.Opponent, error) {
+	opp := []entity.Opponent{}
+	errs := ori.conn.Find(&opp).GetErrors()
+	if len(errs) > 0 {
+		return nil, nil
+	}
+	return opp, nil
+}
+func (ori *OpponentRepositoryImpl) Opponent(id int) (*entity.Opponent, []error) {
+	opp := entity.Opponent{}
+	errs := ori.conn.First(&opp, id).GetErrors()
+	if len(errs) > 0 {
+		return &opp, errs
+	}
+	return &opp, errs
+}
+
 func (ori *OpponentRepositoryImpl) CreateOpponent(opp *entity.Opponent) (*entity.Opponent, []error) {
 	csd := opp
 	errs := ori.conn.Create(&csd).GetErrors()

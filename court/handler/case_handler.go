@@ -63,6 +63,12 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 			panic(err2)
 		}
 
+	} else if r.Method == http.MethodGet {
+		case_type := r.URL.Query().Get("case_type")
+
+		jud, _ := lh.caseSrv.CaseJudges(case_type)
+		lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", jud)
+		//lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
 	} else {
 		lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
 	}
@@ -130,6 +136,35 @@ func (lh *CaseHandler) ExtendCase(w http.ResponseWriter, r *http.Request) {
 
 //Close a case by adding final decision and description >> by the judge
 func (lh *CaseHandler) CloseCase(w http.ResponseWriter, r *http.Request) {
-	lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
-	///TODO Close case here...
+	if r.Method == http.MethodGet {
+
+		juid := r.URL.Query().Get("juid")
+
+		cs, _ := lh.caseSrv.JudgeCases(juid)
+
+		lh.tmpl.ExecuteTemplate(w, "judge.case.close.layout", cs)
+
+	} else if r.Method == http.MethodPost {
+
+		case_num := r.FormValue("case_num")
+
+		decision_date, _ := time.Parse("2006-02-06", time.Now().String())
+		decision := r.FormValue("final_decision")
+		decision_desc := r.FormValue("close_desc")
+
+		//cs := entity.Case{ID: uint(id), CaseNum: case_num, CaseTitle: case_title, CaseDesc: case_desc, CaseType: case_type, CaseCreation: case_creation, CaseCourtDate: case_court_date, CaseJudge: case_judge}
+		des := entity.Decision{CaseNum: case_num, DecisionDate: decision_date, Decision: decision, DecisionDesc: decision_desc}
+		err := lh.caseSrv.CloseCase(case_num, &des)
+
+		if len(err) > 0 {
+			fmt.Println(">> -- >> -- >> error on sending the Case to the CloseCase func")
+			panic(err)
+		}
+
+		http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
+
+	} else {
+
+		http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
+	}
 }

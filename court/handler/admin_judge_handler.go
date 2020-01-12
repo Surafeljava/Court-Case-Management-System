@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -21,8 +24,22 @@ func (ajh *AdminJudgeHandler) NewJudge(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodPost {
 
-		judge_id := "JU1"
-		judge_pwd := "123456"
+		allJudges, err1 := ajh.juSrv.Judges()
+		if err1 != nil {
+			panic(err1)
+		}
+
+		ju_id := len(allJudges) + 1
+		judge_id := fmt.Sprintf("JU%d", ju_id)
+
+		//judge_id := "JU1"
+		//hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+		hasher := md5.New()
+		hasher.Write([]byte("1234"))
+		pwd := hex.EncodeToString(hasher.Sum(nil))
+
+		judge_pwd := pwd
+
 		judge_type := r.FormValue("judge_type")
 		judge_name := r.FormValue("judge_name")
 		judge_gender := r.FormValue("judge_gender")

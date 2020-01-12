@@ -4,20 +4,28 @@ import "github.com/Surafeljava/Court-Case-Management-System/entity"
 
 type CaseService interface {
 	Cases() ([]entity.Case, error)
+	JudgeCases(juid string) ([]entity.Case, error)
+	CaseJudges(case_type string) ([]entity.Judge, error)
 	Case(id int) (*entity.Case, []error)
 	CreateCase(casedoc *entity.Case) []error
 	UpdateCase(casedoc *entity.Case) (*entity.Case, []error)
-	CloseCase(casedoc entity.Case) error
-	ExtendCase(casedoc entity.Case) error
-	DeleteCase(id int) error
+	CloseCase(casedoc string, decision *entity.Decision) []error
+	ExtendCase(casedoc *entity.Case) []error
+	DeleteCase(id int) []error
 }
 
 type OpponentService interface {
+	Opponents() ([]entity.Opponent, error)
+	Opponent(id int) (*entity.Opponent, []error)
 	CreateOpponent(opp *entity.Opponent) (*entity.Opponent, []error)
 }
 
 type JudgeService interface {
+	Judges() ([]entity.Judge, error)
+	Judge(id int) (*entity.Judge, []error)
 	CreateJudge(judge *entity.Judge) (*entity.Judge, []error)
+	UpdateCase(judge *entity.Judge) (*entity.Judge, []error)
+	DeleteCase(id int) error
 }
 
 type LoginService interface {
@@ -26,7 +34,6 @@ type LoginService interface {
 	CheckJudge(id string, pwd string) (*entity.Judge, []error)
 	CheckOpponent(id string, pwd string) (*entity.Opponent, []error)
 }
-
 
 type CaseSearchService interface {
 	Cases() ([]entity.Case, []error)
