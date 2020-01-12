@@ -13,17 +13,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Home Page</title>
+    <title>Judge Home Page</title>
 </head>
 
 <body>
 
     <h1> Judge Page </h1>
-    <h3> Judge ID: {{ .judge.JudgeId }} </h3>
-    <h5> {{ .msg.Message }} </h5>
+    <h3> Judge ID: {{ .JudgeId }} </h3>
     <ul>
-        <li> <a href="/judge/cases/"> Update Case </a> </li>
-        <li> <a href="/pwdchange"> Change Password </a> </li>
+        <li> <a href="/judge/case/close?id={{ .JudgeId }}"> Close Case </a> </li>
+        <li> <a href="/pwdchange?id={{ .JudgeId }}"> Change Password </a> </li>
         <li> <a href="#"> View Self Report </a> </li>
         <li> <a href="#"> Search </a> </li>
     </ul>

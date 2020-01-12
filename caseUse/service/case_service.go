@@ -47,16 +47,34 @@ func (csi *CaseServiceImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, []er
 }
 
 //CloseCase Sevice >> close existing case
-func (csi *CaseServiceImpl) CloseCase(casedoc entity.Case) error {
-	return nil
+func (csi *CaseServiceImpl) CloseCase(casedoc string, decision *entity.Decision) []error {
+	errs := csi.caseRepo.CloseCase(casedoc, decision)
+	if len(errs) > 0 {
+		return errs
+	}
+	return errs
 }
 
 //ExtendCase Service >> extend the case court date of existing case
-func (csi *CaseServiceImpl) ExtendCase(casedoc entity.Case) error {
+func (csi *CaseServiceImpl) ExtendCase(casedoc *entity.Case) []error {
 	return nil
 }
 
 //DeleteCase Service >> delete existing case
-func (csi *CaseServiceImpl) DeleteCase(id int) error {
+func (csi *CaseServiceImpl) DeleteCase(id int) []error {
+	err := csi.caseRepo.DeleteCase(id)
+	if len(err) > 0 {
+		return err
+	}
 	return nil
+}
+
+func (csi *CaseServiceImpl) JudgeCases(juid string) ([]entity.Case, error) {
+	cases, errs := csi.caseRepo.JudgeCases(juid)
+	return cases, errs
+}
+
+func (csi *CaseServiceImpl) CaseJudges(case_type string) ([]entity.Judge, error) {
+	juds, errs := csi.caseRepo.CaseJudges(case_type)
+	return juds, errs
 }

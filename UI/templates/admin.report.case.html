@@ -1,0 +1,71 @@
+
+
+
+{{ define "admin.case.update.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.case.update.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.case.update.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Case Report </title>
+</head>
+
+<body>
+
+    <h1> Court Name </h1> <br>
+    <h3>court address</h3>
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Case Number</th>
+            <td scope="col">case number </td>
+        </tr>
+        <tr>
+            <th scope="col">Case Title</th>
+            <td scope="col">title about the case </td>
+        </tr>
+        <tr>
+            <th scope="col">Case Description</th>
+            <td scope="col">Description about the case</td>
+        </tr>
+        <tr>
+            <th scope="col">Case Status</th>
+            <td scope="col">the status of the case </td>
+        </tr>
+        <tr>
+            <th scope="col">Case Type</th>
+            <td scope="col">case type </td>
+        </tr>
+        <tr>
+            <th scope="col">Case Creation date</th>
+            <td scope="col">case creation date</td>
+        </tr>
+        <tr>
+            <th scope="col">Case Court date</th>
+            <td scope="col">case Court date</td>
+        </tr>
+        <tr>
+            <th scope="col">Case Judge</th>
+            <td scope="col">the judge who is assigned to handle the case</td>
+        </tr>
+                    
+    </thead>
+    </table>
+ 
+ 
+
+</body>
+
+{{ end }}
+
+
+

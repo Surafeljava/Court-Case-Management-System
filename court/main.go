@@ -28,9 +28,21 @@ func main() {
 	// dbc.AutoMigrate(&entity.Judge{})
 	// dbc.AutoMigrate(&entity.Admin{})
 	// dbc.AutoMigrate(&entity.Notification{})
+<<<<<<< HEAD
 
 	ad := entity.Admin{AdminId: "AD1", AdminPwd: "1234"}
 	dbc.Create(&ad)
+=======
+	// dbc.AutoMigrate(&entity.Relation{})
+	// dbc.AutoMigrate(&entity.Decision{})
+
+	// hasher := md5.New()
+	// hasher.Write([]byte("1234"))
+	// pwdnew := hex.EncodeToString(hasher.Sum(nil))
+
+	// ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
+	// dbc.Create(&ad)
+>>>>>>> e72b23c801a8c60ef330d58cd47ee6176cc2bd44
 
 	if err != nil {
 		panic(err)
@@ -38,15 +50,19 @@ func main() {
 
 	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
+	//Login repository and Service Creation
 	loginRepo := repository.NewLoginRepositoryImpl(dbc)
 	loginServ := service.NewLoginServiceImpl(loginRepo)
 
+	//Case repository and Service Creation
 	caseRepo := repository.NewCaseRepositoryImpl(dbc)
 	caseServ := service.NewCaseServiceImpl(caseRepo)
 
+	//Opponent repository and Service Creation
 	oppRepo := repository.NewOpponentRepositoryImpl(dbc)
 	oppServ := service.NewOpponentServiceImpl(oppRepo)
 
+	//Judge repository and Service Creation
 	adminJudgeRepo := repository.NewJudgeRepositoryImpl(dbc)
 	adminJudgeServ := service.NewJudgeServiceImpl(adminJudgeRepo)
 
@@ -71,12 +87,14 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
-	//http.HandleFunc("/login/check", loginHandler.AuthenticateUser)
 	http.HandleFunc("/admin/cases/new", newcaseHandler.NewCase)
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
+	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
 	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
 	http.HandleFunc("/admin/opponent/new", opponentHandler.NewOpponent)
 	http.HandleFunc("/admin/judge/new", adminJudgeHandler.NewJudge)
+
+	http.HandleFunc("/judge/cases/close", newcaseHandler.CloseCase)
 
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )

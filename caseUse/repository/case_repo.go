@@ -32,10 +32,15 @@ func (cri *CaseRepositoryImpl) Case(id int) (*entity.Case, []error) {
 func (cri *CaseRepositoryImpl) CreateCase(casedoc *entity.Case) []error {
 	csd := casedoc
 	errs := cri.conn.Create(&csd).GetErrors()
+
 	if len(errs) > 0 {
 		panic(errs)
 		//return errs
 	}
+
+	relation := entity.Relation{CaseNum: csd.CaseNum, PlId: "", AcId: ""}
+	cri.conn.Create(&relation)
+
 	return errs
 }
 func (cri *CaseRepositoryImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, []error) {
@@ -47,12 +52,50 @@ func (cri *CaseRepositoryImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, [
 	}
 	return cs, errs
 }
-func (cri *CaseRepositoryImpl) CloseCase(casedoc entity.Case) error {
+func (cri *CaseRepositoryImpl) CloseCase(casedoc string, decision *entity.Decision) []error {
+	cs := entity.Case{}
+	errs := cri.conn.Model(&cs).Where("case_num = ?", cs.CaseNum).Update("case_status", "Closed").GetErrors()
+	errs2 := cri.conn.Save(&decision).GetErrors()
+
+	if len(errs) > 0 || len(errs2) > 0 {
+		return errs
+	}
 	return nil
 }
-func (cri *CaseRepositoryImpl) ExtendCase(casedoc entity.Case) error {
+func (cri *CaseRepositoryImpl) ExtendCase(casedoc *entity.Case) []error {
+	cs := casedoc
+	errs := cri.conn.Save(&cs).GetErrors()
+	if len(errs) > 0 {
+		return errs
+	}
+	return errs
+}
+func (cri *CaseRepositoryImpl) DeleteCase(id int) []error {
+	cs, err := cri.Case(id)
+	if len(err) > 0 {
+		return err
+	}
+	errs := cri.conn.Delete(cs, id).GetErrors()
+	if len(errs) > 0 {
+		return errs
+	}
 	return nil
 }
-func (cri *CaseRepositoryImpl) DeleteCase(id int) error {
-	return nil
+
+func (cri *CaseRepositoryImpl) JudgeCases(juid string) ([]entity.Case, error) {
+	cases := []entity.Case{}
+	errs := cri.conn.Model(&cases).Where("case_judge = ?", juid).Find(&cases).GetErrors()
+	if len(errs) > 0 {
+		return nil, nil
+	}
+	return cases, nil
+}
+
+func (cri *CaseRepositoryImpl) CaseJudges(case_type string) ([]entity.Judge, error) {
+	juds := []entity.Judge{}
+	errs := cri.conn.Find(&juds).GetErrors()
+	if len(errs) > 0 {
+		return nil, nil
+	}
+	return juds, nil
 }

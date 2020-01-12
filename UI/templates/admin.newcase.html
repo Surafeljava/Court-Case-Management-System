@@ -38,8 +38,9 @@
         <label for="case_judge"> Choose Judge </label>
         <select class="case_judge" name="case_judge" required>
             <optgroup label="Case Judge">
-                <option value="JU1" selected>JU1</option>
-                <option value="JU2">JU2</option>
+                {{range .}}
+                    <option value="{{ .JudgeId }}"> {{ .JudgeId }} </option>
+                {{end}}
             </optgroup>
         </select>
         <br><br>
