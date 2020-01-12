@@ -6,7 +6,7 @@ import (
 	"github.com/Surafeljava/gorm"
 )
 
-// CaseSearchGormRepo Implements the menu.UserRepository interface
+// CaseSearchGormRepo Implements the Repository interface
 type CaseSearchGormRepo struct {
 	conn *gorm.DB
 }

@@ -1,9 +1,11 @@
 package appealUse
 
-import "github.com/Surafeljava/Court-Case-Management-System/entity"
+import entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 
 type AppealRepositroy interface {
-	AppealGet(caseNum string) (*entity.Case, []error)
+	Appeal(oppNum string) (*entity.Case, *entity.Opponent, *entity.Witness, *entity.Decision, []error)
+	RelationForAppeal(oppNum string) (*entity.Relation, []error)
+	CaseForAppeal(caseNum string) (*entity.Case, []error)
+	WitnessForAppeal(caseNum string) (*entity.Witness, []error)
+	DecisionForAppeal(caseNum string) (*entity.Decision, []error)
 }
-
-//Comment

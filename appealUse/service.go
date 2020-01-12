@@ -1,7 +1,7 @@
 package appealUse
 
-import "github.com/Surafeljava/Court-Case-Management-System/entity"
+import entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 
 type AppealService interface {
-	AppealGet(caseNum string) (*entity.Case, []error)
+	Appeal(oppNum string) (*entity.Case, *entity.Opponent, *entity.Witness, *entity.Decision, []error)
 }

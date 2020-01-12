@@ -8,6 +8,8 @@ import (
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	usrRepo "github.com/Surafeljava/Court-Case-Management-System/SearchUse/repository"
 	usrService "github.com/Surafeljava/Court-Case-Management-System/SearchUse/service"
+	aplRepo "github.com/Surafeljava/Court-Case-Management-System/appealUse/repository"
+	aplService "github.com/Surafeljava/Court-Case-Management-System/appealUse/service"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/repository"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/service"
 
@@ -31,12 +33,12 @@ func main() {
 	// dbc.AutoMigrate(&entity.Judge{})
 	// dbc.AutoMigrate(&entity.Admin{})
 	// dbc.AutoMigrate(&entity.Notification{})
+	// dbc.AutoMigrate(&entity.Relation{})
+	// dbc.AutoMigrate(&entity.Decision{})
+	dbc.AutoMigrate(&entity.Witness{})
 
 	ad := entity.Admin{AdminId: "AD1", AdminPwd: "1234"}
 	dbc.Create(&ad)
-
-	// dbc.AutoMigrate(&entity.Relation{})
-	// dbc.AutoMigrate(&entity.Decision{})
 
 	// hasher := md5.New()
 	// hasher.Write([]byte("1234"))
@@ -91,6 +93,11 @@ func main() {
 	adminNotificatHandler := handler.NewNotificationHandler(tmpl, notificationService)
 	OppJudgNotificatHandler := handler.NewOppJNotificationHandler(tmpl, notificationService)
 
+	//Appeal
+	appealRepo := aplRepo.NewAppealGormRepo(dbc)
+	appealService := aplService.NewAppealService(appealRepo)
+	oppAppealHandler := handler.NewAppealHandler(appealService)
+
 	fs := http.FileServer(http.Dir("../UI/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
@@ -123,6 +130,10 @@ func main() {
 	http.HandleFunc("/admin/postNotifications", adminNotificatHandler.AdminPostNotification)
 	http.HandleFunc("/judge/notifications", OppJudgNotificatHandler.NotificationsJudge)
 	http.HandleFunc("/opponent/notifications", OppJudgNotificatHandler.NotificationsOpponent)
+
+	//Appeal
+	http.HandleFunc("/admin/oppForAppealTrial", oppAppealHandler.OppTrial)
+	http.HandleFunc("/admin/oppAppeal", oppAppealHandler.OppAppeal)
 
 	http.ListenAndServe(":8181", nil)
 
