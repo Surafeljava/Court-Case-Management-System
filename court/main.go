@@ -8,7 +8,6 @@ import (
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/repository"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/service"
 	"github.com/Surafeljava/Court-Case-Management-System/court/handler"
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
 	"github.com/Surafeljava/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -16,13 +15,18 @@ import (
 func main() {
 	fmt.Println("Welcome To Court Case Management System")
 
-	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest password=123456")
+	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=123456")
 	defer dbc.Close()
 
 	//TODO: Creating tables on the database
-	dbc.CreateTable(entity.Opponent{})
-	//dbc.CreateTable(entity.Case{})
-	//dbc.CreateTable(entity.Judge{})
+	// dbc.AutoMigrate(&entity.Opponent{})
+	// dbc.AutoMigrate(&entity.Case{})
+	// dbc.AutoMigrate(&entity.Judge{})
+	//dbc.AutoMigrate(&entity.Admin{})
+	//dbc.AutoMigrate(&entity.Notification{})
+
+	// ad := entity.Admin{AdminId: "AD1", AdminPwd: "1234"}
+	// dbc.Create(&ad)
 
 	if err != nil {
 		panic(err)
@@ -50,8 +54,8 @@ func main() {
 	fs := http.FileServer(http.Dir("../UI/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
-	http.HandleFunc("/login", loginHandler.UserLogin)
-	http.HandleFunc("/login/check", loginHandler.UserLoginCheck)
+	http.HandleFunc("/login", loginHandler.AuthenticateUser)
+	//http.HandleFunc("/login/check", loginHandler.AuthenticateUser)
 	http.HandleFunc("/admin/cases/new", newcaseHandler.NewCase)
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
 	http.HandleFunc("/admin/cases", newcaseHandler.Cases)

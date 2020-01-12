@@ -40,6 +40,7 @@ func (lgi *LoginRepositoryImpl) CheckAdmin(id string, pwd string) (*entity.Admin
 	usr_id := id
 	usr_pwd := pwd
 	errs := lgi.conn.Where("admin_id = ? and admin_pwd = ?", usr_id, usr_pwd).Find(&admin).GetErrors()
+	// fmt.Println(">>>> in checkAdmin Repo")
 	if len(errs) > 0 {
 		return nil, errs
 	}

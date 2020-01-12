@@ -30,6 +30,29 @@ type Case struct {
 	CaseJudge     string `gorm:"type:varchar(50);not null"`
 }
 
+type Relation struct {
+	ID      uint
+	CaseNum string `gorm:"type:varchar(255);not null"`
+	PlId    string `gorm:"type:varchar(255);not null"`
+	AcId    string `gorm:"type:varchar(255);not null"`
+	JuId    string `gorm:"type:varchar(255);not null"`
+}
+
+type Decision struct {
+	ID           uint
+	CaseNum      string `gorm:"type:varchar(255);not null"`
+	DecisionDate time.Time
+	Decision     string `gorm:"type:varchar(255);not null"`
+	DecisionDesc string `gorm:"type:varchar(255);not null"`
+}
+
+type Witness struct {
+	ID          uint
+	CaseNum     string `gorm:"type:varchar(255);not null"`
+	WitnessDoc  string `gorm:"type:varchar(255);not null"`
+	WitnessType string `gorm:"type:varchar(255);not null"`
+}
+
 type Judge struct {
 	ID           uint
 	JudgeId      string `gorm:"type:varchar(50);not null"`
@@ -43,11 +66,11 @@ type Judge struct {
 }
 
 type Notification struct {
-	ID             uint      `json:"id"`
-	NotDescription string    `json:"not_description"`
-	NotTitle       string    `json:"not_title"`
-	NotLevel       string    `json:"not_level"`
-	NotDate        time.Time `json:"not_date"`
+	ID             uint
+	NotDescription string `gorm:"type:varchar(255);not null"`
+	NotTitle       string `gorm:"type:varchar(255);not null"`
+	NotLevel       string `gorm:"type:varchar(50);not null"`
+	NotDate        time.Time
 }
 
 type Opponent struct {
@@ -61,4 +84,9 @@ type Opponent struct {
 	OppAddress string `gorm:"type:varchar(50);not null"`
 	OppPhone   string `gorm:"type:varchar(50);not null"`
 	OppPhoto   string `gorm:"type:varchar(50);not null"`
+}
+
+type SuccessMessage struct {
+	Status  string
+	Message string
 }

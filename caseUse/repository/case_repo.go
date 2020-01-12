@@ -40,7 +40,8 @@ func (cri *CaseRepositoryImpl) CreateCase(casedoc *entity.Case) []error {
 }
 func (cri *CaseRepositoryImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, []error) {
 	cs := casedoc
-	errs := cri.conn.Save(cs).GetErrors()
+	errs := cri.conn.Save(&cs).GetErrors()
+	//errs := cri.conn.Model(&cs).Where("case_num = ?", cs.CaseNum).Update("case_title", "case_desc").GetErrors()
 	if len(errs) > 0 {
 		return nil, errs
 	}

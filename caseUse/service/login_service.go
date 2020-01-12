@@ -15,8 +15,6 @@ func NewLoginServiceImpl(logRepo caseUse.LoginRepository) *LoginServiceImpl {
 }
 
 func (lgi *LoginServiceImpl) CheckLogin(usr *entity.UserType) (*entity.UserType, []error) {
-
-	//TODO check the login and return something . . .
 	us, err := lgi.loginRepo.CheckLogin(usr)
 	if len(err) > 0 {
 		return nil, err
@@ -25,11 +23,24 @@ func (lgi *LoginServiceImpl) CheckLogin(usr *entity.UserType) (*entity.UserType,
 }
 
 func (lgi *LoginServiceImpl) CheckAdmin(id string, pwd string) (*entity.Admin, []error) {
-	return nil, nil
+	adm, err := lgi.loginRepo.CheckAdmin(id, pwd)
+	// fmt.Println(">>>>In CheckAdmin")
+	if len(err) > 0 {
+		return nil, err
+	}
+	return adm, nil
 }
 func (lgi *LoginServiceImpl) CheckJudge(id string, pwd string) (*entity.Judge, []error) {
-	return nil, nil
+	jud, err := lgi.loginRepo.CheckJudge(id, pwd)
+	if len(err) > 0 {
+		return nil, err
+	}
+	return jud, nil
 }
 func (lgi *LoginServiceImpl) CheckOpponent(id string, pwd string) (*entity.Opponent, []error) {
-	return nil, nil
+	opp, err := lgi.loginRepo.CheckOpponent(id, pwd)
+	if len(err) > 0 {
+		return nil, err
+	}
+	return opp, nil
 }

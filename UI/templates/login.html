@@ -18,8 +18,9 @@
 
 <body>
     <h1 class="text-center">LOGIN Page</h1>
+    <h3> {{ .Message }} </h3>
     <div>
-        <form method="POST" action="/login/check" enctype="multipart/form-data">
+        <form method="POST" action="/login" enctype="multipart/form-data">
             <input class="form-control" type="text" name="user_id" required="" placeholder="User ID" maxlength="10" minlength="3">
             <input class="form-control" type="password" name="user_pwd" required="" placeholder="Password" maxlength="20" minlength="3">
             <button class="btn btn-primary" type="submit">LOGIN </button>

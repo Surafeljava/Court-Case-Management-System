@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -17,37 +18,78 @@ func NewLoginHandler(T *template.Template, LS caseUse.LoginService) *LoginHandle
 	return &LoginHandler{tmpl: T, loginSrv: LS}
 }
 
-func (lh *LoginHandler) UserLoginCheck(w http.ResponseWriter, r *http.Request) {
-	//lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
+func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 
 		user_id := r.FormValue("user_id")
 		user_pwd := r.FormValue("user_pwd")
 
-		user1 := entity.UserType{UsrId: user_id, UsrPwd: user_pwd}
+		fmt.Println(user_id)
+		fmt.Println(user_pwd)
 
-		us2, err := lh.loginSrv.CheckLogin(&user1)
+		who := CheckWho(user_id)
 
-		if err != nil {
-			panic(err)
+		error_message := entity.SuccessMessage{Status: "Error", Message: "Wrong ID or Password Try again"}
+		success_message := entity.SuccessMessage{Status: "Success", Message: "Login Success!"}
+
+		if who == 0 {
+			adm, err := lh.loginSrv.CheckAdmin(user_id, user_pwd)
+			if adm != nil {
+				// togo := struct {
+				// 	admin entity.Admin
+				// 	msg   entity.SuccessMessage
+				// }{
+				// 	*adm,
+				// 	success_message,
+				// }
+
+				lh.tmpl.ExecuteTemplate(w, "admin.home.layout", adm)
+			} else if len(err) > 0 {
+				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
+			}
+		} else if who == 1 {
+			jud, err := lh.loginSrv.CheckJudge(user_id, user_pwd)
+			if jud != nil {
+				togo := struct {
+					judge entity.Judge
+					msg   entity.SuccessMessage
+				}{
+					*jud,
+					success_message,
+				}
+				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", togo)
+			} else if len(err) > 0 {
+				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
+			}
+		} else if who == 2 {
+			opp, err := lh.loginSrv.CheckOpponent(user_id, user_pwd)
+			if opp != nil {
+				togo := struct {
+					opponent entity.Opponent
+					msg      entity.SuccessMessage
+				}{
+					*opp,
+					success_message,
+				}
+				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", togo)
+			} else if len(err) > 0 {
+				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
+			}
+		} else {
+			lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
 		}
 
-		lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", us2)
-
 	} else {
-		lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
+		lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
 	}
 
-	http.Redirect(w, r, "/login", http.StatusSeeOther)
-}
-
-func (lh *LoginHandler) UserLogin(w http.ResponseWriter, r *http.Request) {
-	lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
 }
 
 func CheckWho(id string) int {
-	check := id[0:1]
+	check := id[0:2]
+	fmt.Println(check)
 	if check == "AD" {
+		// fmt.Println(">>>> AD-checked! and 0 returned")
 		return 0
 	} else if check == "JU" {
 		return 1

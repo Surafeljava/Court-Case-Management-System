@@ -1,17 +1,17 @@
-package service
+package repository
 
 import (
-	"github.com/danieltefera/Project_Search/entity"
-	"github.com/danieltefera/Project_Search/user"
+	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
+	"github.com/Surafeljava/Court-Case-Management-System/entity"
 )
 
 // CaseSearchService implements menu.UserService interface
 type CaseSearchService struct {
-	caseSearchRepo user.CaseSearchRepository
+	caseSearchRepo caseUse.CaseSearchRepository
 }
 
 // NewCaseSearchService  returns a new UserService object
-func NewCaseSearchService(caseSearchRepository user.CaseSearchRepository) user.CaseSearchService {
+func NewCaseSearchService(caseSearchRepository caseUse.CaseSearchRepository) caseUse.CaseSearchService {
 	return &CaseSearchService{caseSearchRepo: caseSearchRepository}
 }
 

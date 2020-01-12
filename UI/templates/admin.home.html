@@ -1,0 +1,36 @@
+{{ define "admin.home.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.home.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.home.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Home Page</title>
+</head>
+
+<body>
+
+    <h1> Admin Page </h1>
+    <h3> Admin ID: {{ .AdminId }} </h3>
+    
+    <ul>
+        <li> <a href="/admin/cases/new"> Create New Case </a> </li>
+        <li> <a href="/admin/judges/new"> Create New Judge </a> </li>
+        <li> <a href="/admin/pwdchange"> Change Password </a> </li>
+        <li> <a href="#"> View Court Report </a> </li>
+        <li> <a href="#"> Search </a> </li>
+        <li> <a href="#"> Manage Cases </a> </li>
+    </ul>
+
+</body>
+
+</html>
+{{ end }}

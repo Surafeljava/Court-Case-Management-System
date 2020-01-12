@@ -1,0 +1,33 @@
+{{ define "opponent.home.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "opponent.home.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "opponent.home.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Home Page</title>
+</head>
+
+<body>
+
+    <h1> Opponent Page </h1>
+    <h3> Opponent ID: {{ .opponent.OppId }} </h3>
+    <h5> {{ .msg.Message }} </h5>
+    <ul>
+        <li> <a href="/opponent/appeal/"> Appeal on Case </a> </li>
+        <li> <a href="/pwdchange"> Change Password </a> </li>
+        <li> <a href="#"> View Case Report </a> </li>
+    </ul>
+
+</body>
+
+</html>
+{{ end }}

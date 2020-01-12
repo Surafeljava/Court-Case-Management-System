@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/danieltefera/Project_Search/entity"
-	"github.com/danieltefera/Project_Search/user"
+	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
+	"github.com/Surafeljava/Court-Case-Management-System/entity"
 	"github.com/jinzhu/gorm"
 )
 
@@ -12,7 +12,7 @@ type CaseSearchGormRepo struct {
 }
 
 // NewCaseSearchGormRepo creates a new object of UserGormRepo
-func NewCaseSearchGormRepo(db *gorm.DB) user.CaseSearchRepository {
+func NewCaseSearchGormRepo(db *gorm.DB) caseUse.CaseSearchRepository {
 	return &CaseSearchGormRepo{conn: db}
 }
 

@@ -93,15 +93,11 @@ func (lh *CaseHandler) UpdateCase(w http.ResponseWriter, r *http.Request) {
 
 		cs, _ := lh.caseSrv.Case(id)
 
-		// if err != nil {
-		// 	panic(err)
-		// }
-
 		lh.tmpl.ExecuteTemplate(w, "admin.case.update.layout", cs)
 
 	} else if r.Method == http.MethodPost {
-		//cs.ID, _ := strconv.Atoi(r.FormValue("id"))
-		//id, _ := strconv.Atoi(r.FormValue("id"))
+
+		id, _ := strconv.Atoi(r.FormValue("id"))
 		case_num := r.FormValue("case_num")
 		case_title := r.FormValue("case_title")
 		case_desc := r.FormValue("case_desc")
@@ -110,9 +106,7 @@ func (lh *CaseHandler) UpdateCase(w http.ResponseWriter, r *http.Request) {
 		case_court_date, _ := time.Parse("2006-01-02", r.FormValue("court_date"))
 		case_judge := r.FormValue("case_judge")
 
-		//the_court_date, _ := time.Parse("2006-01-02", court_date)
-
-		cs := entity.Case{CaseNum: case_num, CaseTitle: case_title, CaseDesc: case_desc, CaseType: case_type, CaseCreation: case_creation, CaseCourtDate: case_court_date, CaseJudge: case_judge}
+		cs := entity.Case{ID: uint(id), CaseNum: case_num, CaseTitle: case_title, CaseDesc: case_desc, CaseType: case_type, CaseCreation: case_creation, CaseCourtDate: case_court_date, CaseJudge: case_judge}
 		_, err := lh.caseSrv.UpdateCase(&cs)
 
 		if len(err) > 0 {
