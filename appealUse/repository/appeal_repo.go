@@ -69,6 +69,25 @@ func (appealRepo *AppealGormRepo) OppForAppeal(oppNum string) (*entity.Opponent,
 	}
 	return &opp, errs
 }
+// WitnessForAppeal retrieves a case by its id from the database
+func (appealRepo *AppealGormRepo) WitnessForAppeal(caseNum string) (*entity.Witness, []error) {
+	wit := entity.Witness{}
+	errs := appealRepo.conn.Where("case_num =?", &caseNum).Find(&wit).GetErrors()
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return &wit, errs
+}
+
+// DecisionForAppeal retrieves a case by its id from the database
+func (appealRepo *AppealGormRepo) DecisionForAppeal(caseNum string) (*entity.Decision, []error) {
+	dic := entity.Decision{}
+	errs := appealRepo.conn.Where("case_num =?", &caseNum).Find(&dic).GetErrors()
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return &dic, errs
+}
 
 
 
