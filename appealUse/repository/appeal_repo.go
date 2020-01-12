@@ -51,21 +51,3 @@ func (appealRepo *AppealGormRepo) Appeal(oppNum string) (*entity.Case, *entity.O
 	return cases, opp, wit, dic, err
 }
 
-
-=======
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
-	"github.com/Surafeljava/gorm"
-)
-
-type AppealRepositoryImpl struct {
-	conn *gorm.DB
-}
-
-func NewAppealRepositoryImpl(conn *gorm.DB) *AppealRepositoryImpl {
-	return &AppealRepositoryImpl{conn: conn}
-}
-
-func (ar *AppealRepositoryImpl) AppealGet(caseNum string) (*entity.Case, []error) {
-	return nil, nil
-}
->>>>>>> d5fe02a10ac1dadfa81f7d2cf7ba65f32b88bc39
