@@ -1,0 +1,54 @@
+{{ define "admin.case.update.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.case.update.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.case.update.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Court Report </title>
+</head>
+
+<body>
+
+    <h1> Court Name </h1> <br>
+    <h3>court address</h3>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Case Number</th>
+                <th scope="col">Case Title</th>
+                <th scope="col">Case Description</th>
+                <th scope="col">Case Status</th>
+                <th scope="col">Case type</th>
+                <th scope="col">Case creation date</th>
+                <th scope="col">Case Court date</th>
+                <th scope="col">Case Judge</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .}}
+            <tr>
+                <th scope="row"> {{ .ID }} </th>
+                <td> {{ .CaseNum }} </td>
+                <td> {{ .CaseTitle }} </td>
+                <td> {{ .CaseDesc }} </td>
+                <td> {{ .CaseStatus }} </td>
+                <td> {{ .CaseType }} </td>
+                <td> {{ .CaseCreationdate }} </td>
+                <td> {{ .CaseCourtdate }} </td>
+                <td> {{ .CaseJudge }} </td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+
+</body>

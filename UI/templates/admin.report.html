@@ -1,0 +1,33 @@
+{{ define "admin.case.update.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.case.update.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.case.update.content" }}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> admin Report </title>
+</head>
+
+<body>
+
+    <h1> Report </h1>
+
+    <ul>
+        <li> <a href="#" name="courtreport"> Court Report </a> </li>
+    </ul>
+    <form action="#" method="post">
+        <button type="submit" name="casereport">Case Report</button>
+       <input  type="text" name="casenum" value="" placeholder="Case Number">
+   </form>
+</body>
+
+</html>
+{{ end }}
