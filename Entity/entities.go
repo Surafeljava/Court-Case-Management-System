@@ -91,6 +91,7 @@ type SuccessMessage struct {
 	Message string
 }
 
+//TODO: unfinished session work...
 type Session struct {
 	ID         uint
 	UUID       string `gorm:"type:varchar(255);not null"`
