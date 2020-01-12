@@ -1,6 +1,8 @@
 package notificationUse
 
-import entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
+import (
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
+)
 
 // NotificationRepository specifies notification related database operations
 type NotificationRepository interface {
@@ -9,5 +11,4 @@ type NotificationRepository interface {
 	Notifications() ([]entity.Notification, []error)
 	UpdateNotification(notf *entity.Notification) (*entity.Notification, []error)
 	DeleteNotification(id uint) []error
-}
 }

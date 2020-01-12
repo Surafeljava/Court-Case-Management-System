@@ -1,6 +1,8 @@
 package notificationUse
 
-import entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
+import (
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
+)
 
 //NotificationService interface
 type NotificationService interface {
@@ -9,5 +11,4 @@ type NotificationService interface {
 	Notifications() ([]entity.Notification, []error)
 	UpdateNotification(notf *entity.Notification) (*entity.Notification, []error)
 	DeleteNotification(id uint) []error
-}
 }

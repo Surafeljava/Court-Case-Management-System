@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
-	"github.com/Surafeljava/Court-Case-Management-System/notificationuse"
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
+	notificationuse "github.com/Surafeljava/Court-Case-Management-System/notificationUse"
 )
 
 //NotificationServiceImpl  struct

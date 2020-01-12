@@ -1,10 +1,9 @@
 package repository
 
 import (
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
-	"github.com/Surafeljava/Court-Case-Management-System/notificationuse"
-
-	"github.com/jinzhu/gorm"
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
+	notificationuse "github.com/Surafeljava/Court-Case-Management-System/notificationUse"
+	"github.com/Surafeljava/gorm"
 )
 
 //

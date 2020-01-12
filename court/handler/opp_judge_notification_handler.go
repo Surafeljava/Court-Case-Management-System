@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	notificationUse "github.com/Surafeljava/Court-Case-Management-System/notificationUse"
 )
 

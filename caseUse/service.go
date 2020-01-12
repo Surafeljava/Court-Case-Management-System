@@ -39,10 +39,7 @@ type LoginService interface {
 	CheckOpponent(id string, pwd string) (*entity.Opponent, []error)
 }
 
-<<<<<<< HEAD
 //CaseSearchService ...
-=======
->>>>>>> e72b23c801a8c60ef330d58cd47ee6176cc2bd44
 type CaseSearchService interface {
 	Cases() ([]entity.Case, []error)
 	Case(id uint) (*entity.Case, []error)
