@@ -1,7 +1,6 @@
 package repository
 
 import (
-<<<<<<< HEAD
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	user "github.com/Surafeljava/Court-Case-Management-System/appealUse"
 	"github.com/Surafeljava/gorm"
@@ -50,4 +49,27 @@ func (appealRepo *AppealGormRepo) Appeal(oppNum string) (*entity.Case, *entity.O
 	}
 	return cases, opp, wit, dic, err
 }
+
+// CaseForAppeal retrieves a case by its id from the database
+func (appealRepo *AppealGormRepo) CaseForAppeal(caseNum string) (*entity.Case, []error) {
+	cas := entity.Case{}
+	errs := appealRepo.conn.Where("case_num =?", &caseNum).Find(&cas).GetErrors()
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return &cas, errs
+}
+
+// OppForAppeal retrieves a case by its id from the database
+func (appealRepo *AppealGormRepo) OppForAppeal(oppNum string) (*entity.Opponent, []error) {
+	opp := entity.Opponent{}
+	errs := appealRepo.conn.Where("opp_id =?", &oppNum).Find(&opp).GetErrors()
+	if len(errs) > 0 {
+		return nil, errs
+	}
+	return &opp, errs
+}
+
+
+
 
