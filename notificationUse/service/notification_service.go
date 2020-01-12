@@ -2,8 +2,7 @@ package service
 
 import (
 	"github.com/Surafeljava/Court-Case-Management-System/entity"
-	notificationuse "github.com/Surafeljava/Court-Case-Management-System/notificationuse"
-	//	"github.com/berrybab/entity"
+	"github.com/Surafeljava/Court-Case-Management-System/notificationuse"
 )
 
 //NotificationServiceImpl  struct
@@ -28,7 +27,7 @@ func (notf *NotificationServiceImpl) Notifications() ([]entity.Notification, []e
 }
 
 //ViewNotification retrieves a Notification  by its id(title)
-func (notf *NotificationServiceImpl) ViewNotification(id string) (*entity.Notification, []error) {
+func (notf *NotificationServiceImpl) ViewNotification(id uint) (*entity.Notification, []error) {
 	notification, errs := notf.notfRepo.ViewNotification(id)
 	if len(errs) > 0 {
 		return nil, errs
@@ -37,10 +36,30 @@ func (notf *NotificationServiceImpl) ViewNotification(id string) (*entity.Notifi
 }
 
 //PostNotification  admin posts a  notifiacication
-func (notf *NotificationServiceImpl) PostNotification(notification *entity.Notification) (*entity.Notification, []error) {
-	notif, errs := notf.notfRepo.PostNotification(notification)
+func (notf *NotificationServiceImpl) PostNotification(notification *entity.Notification) []error {
+	errs := notf.notfRepo.PostNotification(notification)
+	if len(errs) > 0 {
+		return errs
+	}
+	return errs
+}
+
+//UpdateNotification implemented below
+func (notf *NotificationServiceImpl) UpdateNotification(notification *entity.Notification) (*entity.Notification, []error) {
+	notfic, errs := notf.notfRepo.UpdateNotification(notification)
+
 	if len(errs) > 0 {
 		return nil, errs
 	}
-	return notif, errs
+	return notfic, errs
+}
+
+//DeleteNotification deletes a given notification
+func (notf *NotificationServiceImpl) DeleteNotification(id uint) []error {
+	errs := notf.notfRepo.DeleteNotification(id)
+	if len(errs) > 0 {
+		return errs
+
+	}
+	return errs
 }
