@@ -50,7 +50,6 @@ func (appealRepo *AppealGormRepo) Appeal(oppNum string) (*entity.Case, *entity.O
 	return cases, opp, wit, dic, err
 }
 
-<<<<<<< HEAD
 //RelationForAppeal ...
 func (appealRepo *AppealGormRepo) RelationForAppeal(oppNum string) (*entity.Relation, []error) {
 	rel := entity.Relation{}
@@ -61,8 +60,6 @@ func (appealRepo *AppealGormRepo) RelationForAppeal(oppNum string) (*entity.Rela
 	return &rel, errs
 }
 
-=======
->>>>>>> cf23ab78fed03999e08d187821bc084162f2e487
 // CaseForAppeal retrieves a case by its id from the database
 func (appealRepo *AppealGormRepo) CaseForAppeal(caseNum string) (*entity.Case, []error) {
 	cas := entity.Case{}
@@ -81,7 +78,6 @@ func (appealRepo *AppealGormRepo) OppForAppeal(oppNum string) (*entity.Opponent,
 		return nil, errs
 	}
 	return &opp, errs
-<<<<<<< HEAD
 }
 
 // WitnessForAppeal retrieves a case by its id from the database
@@ -102,29 +98,4 @@ func (appealRepo *AppealGormRepo) DecisionForAppeal(caseNum string) (*entity.Dec
 		return nil, errs
 	}
 	return &dic, errs
-=======
->>>>>>> cf23ab78fed03999e08d187821bc084162f2e487
 }
-// WitnessForAppeal retrieves a case by its id from the database
-func (appealRepo *AppealGormRepo) WitnessForAppeal(caseNum string) (*entity.Witness, []error) {
-	wit := entity.Witness{}
-	errs := appealRepo.conn.Where("case_num =?", &caseNum).Find(&wit).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return &wit, errs
-}
-
-// DecisionForAppeal retrieves a case by its id from the database
-func (appealRepo *AppealGormRepo) DecisionForAppeal(caseNum string) (*entity.Decision, []error) {
-	dic := entity.Decision{}
-	errs := appealRepo.conn.Where("case_num =?", &caseNum).Find(&dic).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return &dic, errs
-}
-
-
-
-
