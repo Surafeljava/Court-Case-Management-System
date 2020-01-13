@@ -1,7 +1,8 @@
 package caseUse
 
-import "github.com/Surafeljava/Court-Case-Management-System/entity"
+import entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 
+//CaseRepository ...
 type CaseRepository interface {
 	Cases() ([]entity.Case, error)
 	JudgeCases(juid string) ([]entity.Case, error)
@@ -14,12 +15,14 @@ type CaseRepository interface {
 	DeleteCase(id int) []error
 }
 
+//OpponentRepository ...
 type OpponentRepository interface {
 	Opponents() ([]entity.Opponent, error)
 	Opponent(id int) (*entity.Opponent, []error)
 	CreateOpponent(opp *entity.Opponent) (*entity.Opponent, []error)
 }
 
+//JudgeRepository ...
 type JudgeRepository interface {
 	Judges() ([]entity.Judge, error)
 	Judge(id int) (*entity.Judge, []error)
@@ -28,6 +31,7 @@ type JudgeRepository interface {
 	DeleteCase(id int) error
 }
 
+//LoginRepository ...
 type LoginRepository interface {
 	CheckLogin(user *entity.UserType) (*entity.UserType, []error)
 	CheckAdmin(id string, pwd string) (*entity.Admin, []error)
@@ -35,6 +39,7 @@ type LoginRepository interface {
 	CheckOpponent(id string, pwd string) (*entity.Opponent, []error)
 }
 
+//CaseSearchRepository ...
 type CaseSearchRepository interface {
 	Cases() ([]entity.Case, []error)
 	Case(id uint) (*entity.Case, []error)

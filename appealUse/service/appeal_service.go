@@ -1,19 +1,28 @@
 package service
 
 import (
-	"github.com/Surafeljava/Court-Case-Management-System/appealUse"
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
+	appealUse "github.com/Surafeljava/Court-Case-Management-System/appealUse"
 )
 
-type AppealServiceImpl struct {
+//AppealService ...
+type AppealService struct {
 	appealRepo appealUse.AppealRepositroy
 }
 
-func NewAppealServiceImpl(notf appealUse.AppealRepositroy) appealUse.AppealRepositroy {
-	return &AppealServiceImpl{notfRepo: notf}
+//NewAppealService ...
+func NewAppealService(appealRepository appealUse.AppealRepositroy) appealUse.AppealService {
+	return &AppealService{appealRepo: appealRepository}
 
 }
 
-func (ar *AppealServiceImpl) AppealGet(caseNum string) (*entity.Case, []error) {
-	return nil, nil
+//Appeal ...
+func (appealService *AppealService) Appeal(oppNum string) (*entity.Case, *entity.Opponent, *entity.Witness, *entity.Decision, []error) {
+	cases, opp, wit, dec, errs := appealService.appealRepo.Appeal(oppNum)
+
+	if len(errs) > 0 {
+		return nil, nil, nil, nil, errs
+	}
+
+	return cases, opp, wit, dec, errs
 }

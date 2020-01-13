@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"time"
 
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
 )
 
 type OpponentHandler struct {

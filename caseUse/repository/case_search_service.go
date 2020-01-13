@@ -1,8 +1,8 @@
 package repository
 
 import (
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
 )
 
 // CaseSearchService implements menu.UserService interface

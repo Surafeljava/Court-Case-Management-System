@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
 
-	"github.com/Surafeljava/Court-Case-Management-System/entity"
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 )
 
 type LoginServiceImpl struct {
