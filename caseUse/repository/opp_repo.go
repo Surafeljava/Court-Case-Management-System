@@ -40,17 +40,16 @@ func (ori *OpponentRepositoryImpl) CreateOpponent(opp *entity.Opponent) (*entity
 	}
 
 	//TODO: Add the Plaintiff to according relation column
-	// rel := entity.Relation{}
-	// ori.conn.First(&rel, '1')
+	rel := entity.Relation{}
+	ori.conn.First(&rel, '1')
 
-	// if opp.OppType == "pl" {
-
-	// 	rel.PlId = opp.OppId
-	// 	ori.conn.Save(&rel)
-	// } else if opp.OppType == "ac" {
-	// 	rel.AcId = opp.OppId
-	// 	ori.conn.Save(&rel)
-	// }
+	if opp.OppType == "pl" {
+		rel.PlId = opp.OppId
+		ori.conn.Save(&rel)
+	} else if opp.OppType == "ac" {
+		rel.AcId = opp.OppId
+		ori.conn.Save(&rel)
+	}
 
 	return csd, errs
 	//return nil, nil

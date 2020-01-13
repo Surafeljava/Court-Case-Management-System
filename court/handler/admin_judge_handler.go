@@ -32,8 +32,6 @@ func (ajh *AdminJudgeHandler) NewJudge(w http.ResponseWriter, r *http.Request) {
 		ju_id := len(allJudges) + 1
 		judge_id := fmt.Sprintf("JU%d", ju_id)
 
-		//judge_id := "JU1"
-		//hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 		hasher := md5.New()
 		hasher.Write([]byte("1234"))
 		pwd := hex.EncodeToString(hasher.Sum(nil))
