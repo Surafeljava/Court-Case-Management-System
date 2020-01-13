@@ -30,7 +30,7 @@ func (notfRepo *NotificationRepositoryImpl) Notifications() ([]entity.Notificati
 //PostNotification posts notification in the database
 func (notfRepo *NotificationRepositoryImpl) PostNotification(notf *entity.Notification) []error {
 	notification := notf
-	errs := notfRepo.db.Create(notification).GetErrors()
+	errs := notfRepo.db.Create(&notification).GetErrors()
 
 	if len(errs) > 0 {
 		return errs
