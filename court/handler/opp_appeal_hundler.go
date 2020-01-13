@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
@@ -25,6 +26,8 @@ func (oppAp *AppealHandler) OppAppeal(w http.ResponseWriter, r *http.Request) {
 	cases, opp, wit, dic, err := oppAp.appealService.Appeal(oppNum)
 
 	Example := cases.CaseNum + " " + "Opponent ID : " + opp.OppName + "Witness:" + wit.WitnessDoc + "Decision: " + dic.DecisionDesc
+	fmt.Println(oppNum)
+	fmt.Println(Example)
 
 	if len(err) > 0 {
 		w.Header().Set("Content-Type", "application/json")

@@ -1,13 +1,10 @@
 package main
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
 	"html/template"
 	"net/http"
 
-	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	usrRepo "github.com/Surafeljava/Court-Case-Management-System/SearchUse/repository"
 	usrService "github.com/Surafeljava/Court-Case-Management-System/SearchUse/service"
 	aplRepo "github.com/Surafeljava/Court-Case-Management-System/appealUse/repository"
@@ -39,18 +36,27 @@ func main() {
 	// dbc.AutoMigrate(&entity.Decision{})
 	// dbc.AutoMigrate(&entity.Witness{})
 
-	hasher := md5.New()
-	hasher.Write([]byte("1234"))
-	pwdnew := hex.EncodeToString(hasher.Sum(nil))
+	// hasher := md5.New()
+	// hasher.Write([]byte("1234"))
+	// pwdnew := hex.EncodeToString(hasher.Sum(nil))
 
-	ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
-	dbc.Create(&ad)
+	// ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
+	// dbc.Create(&ad)
 
 	if err != nil {
 		panic(err)
 	}
 
-	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
+	// wit := entity.Witness{CaseNum: "CS1", WitnessDoc: "Witness sample doc", WitnessType: "type"}
+	// dbc.Create(&wit)
+
+	// des := entity.Decision{CaseNum: "CS1", DecisionDate: time.Now(), Decision: "The final decistion", DecisionDesc: "Decision description kjksahdjk"}
+	// dbc.Create(&des)
+
+	// rel := entity.Relation{CaseNum: "CS1", PlId: "OP1", AcId: "OP2"}
+	// dbc.Create(&rel)
+
+	// tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
 	//Login repository and Service Creation
 	loginRepo := repository.NewLoginRepositoryImpl(dbc)
