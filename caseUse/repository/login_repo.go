@@ -3,6 +3,7 @@ package repository
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/gorm"
@@ -48,6 +49,9 @@ func (lgi *LoginRepositoryImpl) CheckAdmin(id string, pwd string) (*entity.Admin
 	hasher := md5.New()
 	hasher.Write([]byte(usr_pwd))
 	pwdnew := hex.EncodeToString(hasher.Sum(nil))
+
+	fmt.Println(pwdnew)
+	fmt.Println(admin.AdminPwd)
 
 	if pwdnew == admin.AdminPwd {
 		return &admin, nil

@@ -19,11 +19,11 @@
 <body>
 
     <h1> Opponent Page </h1>
-    <h3> Opponent ID: {{ .opponent.OppId }} </h3>
-    <h5> {{ .msg.Message }} </h5>
+    <h3> Opponent ID: {{ .OppId }} </h3>
     <ul>
-        <li> <a href="/opponent/appeal/"> Appeal on Case </a> </li>
+        <li> <a href="/admin/oppAppeal?id={{ .OppId }}"> Appeal on Case </a> </li>
         <li> <a href="/pwdchange"> Change Password </a> </li>
+        <li> <a href="/opponent/notifications?id={{ .OppId }}"> View Notification </a> </li>
         <li> <a href="#"> View Case Report </a> </li>
     </ul>
 

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -23,7 +25,7 @@ import (
 func main() {
 	fmt.Println("Welcome To Court Case Management System")
 
-	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=1234")
+	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=123456")
 	//dbc, err := gorm.Open("postgres", "postgres://postgres:1234@localhost/courttest2?sslmode=disable")
 	defer dbc.Close()
 
@@ -35,17 +37,14 @@ func main() {
 	// dbc.AutoMigrate(&entity.Notification{})
 	// dbc.AutoMigrate(&entity.Relation{})
 	// dbc.AutoMigrate(&entity.Decision{})
-	dbc.AutoMigrate(&entity.Witness{})
+	// dbc.AutoMigrate(&entity.Witness{})
 
-	ad := entity.Admin{AdminId: "AD1", AdminPwd: "1234"}
+	hasher := md5.New()
+	hasher.Write([]byte("1234"))
+	pwdnew := hex.EncodeToString(hasher.Sum(nil))
+
+	ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
 	dbc.Create(&ad)
-
-	// hasher := md5.New()
-	// hasher.Write([]byte("1234"))
-	// pwdnew := hex.EncodeToString(hasher.Sum(nil))
-
-	// ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
-	// dbc.Create(&ad)
 
 	if err != nil {
 		panic(err)
