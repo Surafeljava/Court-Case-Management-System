@@ -107,14 +107,14 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
-	http.HandleFunc("/admin/cases/new", LoginRequired(newcaseHandler.NewCase))
+	http.HandleFunc("/admin/cases/new", LoginRequired(UserAuthorized(newcaseHandler.NewCase)))
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
 	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
 	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
 	http.HandleFunc("/admin/opponent/new", opponentHandler.NewOpponent)
 	http.HandleFunc("/admin/judge/new", adminJudgeHandler.NewJudge)
 
-	http.HandleFunc("/judge/cases/close", newcaseHandler.CloseCase)
+	http.HandleFunc("/judge/cases/close", LoginRequired(UserAuthorized(newcaseHandler.CloseCase)))
 
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )
@@ -156,7 +156,20 @@ func LoginRequired(handler http.HandlerFunc) http.HandlerFunc {
 
 		sess, err := r.Cookie("signed_user")
 
-		//Check the authorization of that cookie
+		if err != nil {
+			http.Redirect(w, r, "/login", 302)
+			return
+		}
+
+		//fmt.Printf(sess.Value)
+		fmt.Println(sess.Value)
+		handler.ServeHTTP(w, r)
+	}
+}
+
+func UserAuthorized(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		//Check the authorization of the user accessing the link
 		handler.ServeHTTP(w, r)
 	}
 }
