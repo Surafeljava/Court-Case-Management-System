@@ -11,7 +11,7 @@ type CaseSearchGormRepo struct {
 	conn *gorm.DB
 }
 
-// NewCaseSearchGormRepo creates a new object of UserGormRepo
+// NewCaseSearchGormRepo creates a new object of CaseSearchGormRepo
 func NewCaseSearchGormRepo(db *gorm.DB) user.CaseSearchRepository {
 	return &CaseSearchGormRepo{conn: db}
 }
