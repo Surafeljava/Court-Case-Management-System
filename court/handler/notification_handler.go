@@ -18,14 +18,12 @@ type NotificationHandler struct {
 //NewNotificationHandler creates Notification handler
 func NewNotificationHandler(T *template.Template, NotfServ notificationUse.NotificationService) *NotificationHandler {
 	return &NotificationHandler{tmpl: T, notfService: NotfServ}
-
 }
 
 //AdminUpdateNotification updates notification
 func (nh *NotificationHandler) AdminUpdateNotification(w http.ResponseWriter, r *http.Request) {
 	//To Do ..|
 	//update notification goes here
-
 }
 
 // AdminPostNotification handles POST coming from admin url request

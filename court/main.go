@@ -107,7 +107,7 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
-	http.HandleFunc("/admin/cases/new", newcaseHandler.NewCase)
+	http.HandleFunc("/admin/cases/new", LoginRequired(newcaseHandler.NewCase))
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
 	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
 	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
@@ -148,4 +148,15 @@ var tmpl = template.Must(template.ParseGlob("../UI/templates/*.html"))
 
 func adminSearch(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "adminSearch.layout", nil)
+}
+
+func LoginRequired(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		//Check if there is a session
+
+		sess, err := r.Cookie("signed_user")
+
+		//Check the authorization of that cookie
+		handler.ServeHTTP(w, r)
+	}
 }

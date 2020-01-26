@@ -24,8 +24,8 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		user_id := r.FormValue("user_id")
 		user_pwd := r.FormValue("user_pwd")
 
-		fmt.Println(user_id)
-		fmt.Println(user_pwd)
+		// fmt.Println(user_id)
+		// fmt.Println(user_pwd)
 
 		who := CheckWho(user_id)
 
@@ -35,13 +35,9 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		if who == 0 {
 			adm, err := lh.loginSrv.CheckAdmin(user_id, user_pwd)
 			if adm != nil {
-				// togo := struct {
-				// 	admin entity.Admin
-				// 	msg   entity.SuccessMessage
-				// }{
-				// 	*adm,
-				// 	success_message,
-				// }
+
+				//Creating admin session
+				CreateSession("signed_user", "admin", w)
 
 				lh.tmpl.ExecuteTemplate(w, "admin.home.layout", adm)
 			} else if len(err) > 0 {
@@ -50,13 +46,10 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		} else if who == 1 {
 			jud, err := lh.loginSrv.CheckJudge(user_id, user_pwd)
 			if jud != nil {
-				// togo := struct {
-				// 	judge entity.Judge
-				// 	msg   entity.SuccessMessage
-				// }{
-				// 	*jud,
-				// 	success_message,
-				// }
+
+				//Creating judge session
+				CreateSession("signed_user", "judge", w)
+
 				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
@@ -64,13 +57,10 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		} else if who == 2 {
 			opp, err := lh.loginSrv.CheckOpponent(user_id, user_pwd)
 			if opp != nil {
-				// togo := struct {
-				// 	opponent entity.Opponent
-				// 	msg      entity.SuccessMessage
-				// }{
-				// 	*opp,
-				// 	success_message,
-				// }
+
+				//Creating opponent session
+				CreateSession("signed_user", "judge", w)
+
 				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
@@ -85,6 +75,11 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 
 }
 
+func (lh *LoginHandler) LogoutUser(w http.ResponseWriter, r *http.Request) {
+	//Delete the cookie created on the login process
+	//back to the login page
+}
+
 func CheckWho(id string) int {
 	check := id[0:2]
 	fmt.Println(check)
@@ -96,4 +91,18 @@ func CheckWho(id string) int {
 		return 2
 	}
 	return -1
+}
+
+func ValidateInput(id string) {
+	//Validate all the inputs in here
+}
+
+func CreateSession(name string, value string, w http.ResponseWriter) {
+	c := http.Cookie{
+		Name:     name,
+		Value:    value,
+		HttpOnly: true,
+		MaxAge:   3600,
+	}
+	http.SetCookie(w, &c)
 }
