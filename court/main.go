@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"net/http"
 
-	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	usrRepo "github.com/Surafeljava/Court-Case-Management-System/SearchUse/repository"
 	usrService "github.com/Surafeljava/Court-Case-Management-System/SearchUse/service"
 	aplRepo "github.com/Surafeljava/Court-Case-Management-System/appealUse/repository"
@@ -23,7 +22,7 @@ import (
 func main() {
 	fmt.Println("Welcome To Court Case Management System")
 
-	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=1234")
+	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=123456")
 	//dbc, err := gorm.Open("postgres", "postgres://postgres:1234@localhost/courttest2?sslmode=disable")
 	defer dbc.Close()
 
@@ -35,10 +34,7 @@ func main() {
 	// dbc.AutoMigrate(&entity.Notification{})
 	// dbc.AutoMigrate(&entity.Relation{})
 	// dbc.AutoMigrate(&entity.Decision{})
-	dbc.AutoMigrate(&entity.Witness{})
-
-	ad := entity.Admin{AdminId: "AD1", AdminPwd: "1234"}
-	dbc.Create(&ad)
+	// dbc.AutoMigrate(&entity.Witness{})
 
 	// hasher := md5.New()
 	// hasher.Write([]byte("1234"))
@@ -51,7 +47,16 @@ func main() {
 		panic(err)
 	}
 
-	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
+	// wit := entity.Witness{CaseNum: "CS1", WitnessDoc: "Witness sample doc", WitnessType: "type"}
+	// dbc.Create(&wit)
+
+	// des := entity.Decision{CaseNum: "CS1", DecisionDate: time.Now(), Decision: "The final decistion", DecisionDesc: "Decision description kjksahdjk"}
+	// dbc.Create(&des)
+
+	// rel := entity.Relation{CaseNum: "CS1", PlId: "OP1", AcId: "OP2"}
+	// dbc.Create(&rel)
+
+	// tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
 	//Login repository and Service Creation
 	loginRepo := repository.NewLoginRepositoryImpl(dbc)
@@ -102,14 +107,14 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
-	http.HandleFunc("/admin/cases/new", newcaseHandler.NewCase)
+	http.HandleFunc("/admin/cases/new", LoginRequired(UserAuthorized(newcaseHandler.NewCase)))
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
 	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
 	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
 	http.HandleFunc("/admin/opponent/new", opponentHandler.NewOpponent)
 	http.HandleFunc("/admin/judge/new", adminJudgeHandler.NewJudge)
 
-	http.HandleFunc("/judge/cases/close", newcaseHandler.CloseCase)
+	http.HandleFunc("/judge/cases/close", LoginRequired(UserAuthorized(newcaseHandler.CloseCase)))
 
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )
@@ -143,4 +148,28 @@ var tmpl = template.Must(template.ParseGlob("../UI/templates/*.html"))
 
 func adminSearch(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "adminSearch.layout", nil)
+}
+
+func LoginRequired(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		//Check if there is a session
+
+		sess, err := r.Cookie("signed_user")
+
+		if err != nil {
+			http.Redirect(w, r, "/login", 302)
+			return
+		}
+
+		//fmt.Printf(sess.Value)
+		fmt.Println(sess.Value)
+		handler.ServeHTTP(w, r)
+	}
+}
+
+func UserAuthorized(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		//Check the authorization of the user accessing the link
+		handler.ServeHTTP(w, r)
+	}
 }

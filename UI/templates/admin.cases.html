@@ -7,19 +7,10 @@
 {{ end }} 
 
 {{ define "admin.cases.content" }}
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>View Cases</title>
-</head>
-
-<body>
+<div class="container">
 
     <h1> Admin View Cases </h1>
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -45,7 +36,5 @@
         </tbody>
     </table>
 
-</body>
-
-</html>
+</div>
 {{ end }}

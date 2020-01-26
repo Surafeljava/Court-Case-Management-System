@@ -68,7 +68,7 @@ func (lgi *LoginRepositoryImpl) CheckJudge(id string, pwd string) (*entity.Judge
 	hasher.Write([]byte(usr_pwd))
 	pwdnew := hex.EncodeToString(hasher.Sum(nil))
 
-	if pwdnew == judge.JudgeId {
+	if pwdnew == judge.JudgePwd {
 		return &judge, nil
 	}
 
@@ -87,7 +87,7 @@ func (lgi *LoginRepositoryImpl) CheckOpponent(id string, pwd string) (*entity.Op
 	hasher.Write([]byte(usr_pwd))
 	pwdnew := hex.EncodeToString(hasher.Sum(nil))
 
-	if pwdnew == opp.OppId {
+	if pwdnew == opp.OppPwd {
 		return &opp, nil
 	}
 
