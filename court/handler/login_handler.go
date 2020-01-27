@@ -172,7 +172,14 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 
 // Logout hanldes the POST /logout requests
 func (uh *LoginHandler) Logout(w http.ResponseWriter, r *http.Request) {
-	userSess, _ := r.Context().Value(ctxUserSessionKey).(*entity.Session)
+	userSess, er := r.Context().Value(ctxUserSessionKey).(entity.Session)
+	if !er {
+		fmt.Println("No user session registered with this Ctxusersessiokey!!")
+	}
+	fmt.Println("1 >>>>>>>>>>>>>>>>>>>")
+	fmt.Println(userSess.SigningKey)
+	// fmt.Println(userSess.UUID)
+	fmt.Println("2 >>>>>>>>>>>>>>>>>>>")
 	session.Remove(userSess.UUID, w)
 	uh.sessionService.DeleteSession(userSess.UUID)
 	http.Redirect(w, r, "/login", http.StatusSeeOther)

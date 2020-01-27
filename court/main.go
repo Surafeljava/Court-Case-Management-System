@@ -30,12 +30,10 @@ func CreateDBTables(db *gorm.DB) {
 func main() {
 	fmt.Println("Welcome To Court Case Management System")
 
-	// csrfSignKey := []byte(rtoken.GenerateRandomID(32))
 	csrfSignKey := []byte(rtoken.GenerateRandomID(32))
 	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
 	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=123456")
-	//dbc, err := gorm.Open("postgres", "postgres://postgres:1234@localhost/courttest2?sslmode=disable")
 
 	//Creating Database Tables
 	// CreateDBTables(dbc)
@@ -101,6 +99,7 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
+	http.HandleFunc("/logout", loginHandler.Logout)
 	http.HandleFunc("/admin/cases/new", loginHandler.AuthenticatedUser(newcaseHandler.NewCase))
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
 	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
