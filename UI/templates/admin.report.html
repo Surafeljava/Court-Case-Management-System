@@ -7,27 +7,23 @@
 {{ end }} 
 
 {{ define "admin.report.content" }}
-<html lang="en">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Court Statistics and Report</h2>
+    </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> admin Report </title>
-</head>
-
-<body>
-
-    <h1> Report </h1>
-
-    <ul>
-        <li> <a href="#" name="courtreport"> Court Report </a> </li>
-    </ul>
-    <form action="#" method="post">
-        <button type="submit" name="casereport">Case Report</button>
-       <input  type="text" name="casenum" value="" placeholder="Case Number">
-   </form>
-</body>
-
-</html>
+    <div class="col-auto">
+        <h3> Number of All Cases in the Court:  <b> {{ .AllCases }} </b> </h3>
+        <h4> Number of Closed Cases:  <b> {{ .ClosedCases }} </b> </h4>
+        <h4> Number of Open Cases:  <b> {{ .OpenCases }} </b> </h4>
+        <br>
+        <h3> Number of Judges in the Court:  <b> {{ .AllJudges }} </b> </h3>
+        <h4> Number of Criminal Judges:  <b> {{ .CriminalJudges }} </b> </h4>
+        <h4> Number of Civil Judges:  <b> {{ .CivilJudges }} </b> </h4>
+        <br>
+        <h3> Number of Notifications Posted:  <b> {{ .AllNotifications }} </b> </h3>
+        <h5><a href="/login"> Login </a></h5>
+    </div>
+    
+</main>
 {{ end }}
