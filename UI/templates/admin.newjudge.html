@@ -7,49 +7,69 @@
 {{ end }} 
 
 {{ define "admin.newjudge.content" }}
-<html lang="en">
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> Create New Judge </title>
-</head>
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Create New Judge</h2>
+    </div>
 
-<body>
-
-    <h1> Create New Judge </h1>
-
-    <form action="/admin/judge/new" method="POST" enctype="multipart/form-data">
-        <input type="text" required name="judge_name" placeholder="Judge Name">
-        <br><br>
-        <label for="judge_gender"> Gender </label>
-        <select class="judge_gender" required name="judge_gender">
-            <optgroup label="Gender">
-                <option value="0" selected> Male </option>
-                <option value="1"> Female </option>
-            </optgroup>
-        </select>
-        <br><br>
-        <textarea name="judge_address" cols="30" rows="6" placeholder="Judge Address"></textarea>
-        <br><br>
-        <input type="text" required name="judge_phone" placeholder="Phone Number (+251)">
-        <br><br>
-        <label for="judge_type"> Judge Type </label>
-        <select class="judge_type" required name="judge_type">
-            <optgroup label="Judge Type">
-                <option value="0" selected> Criminal </option>
-                <option value="1"> Civil </option>
-            </optgroup>
-        </select>
-        <br><br>
-        <input type="file" name="judge_photo" required>
-        <br><br>
-        <button type="submit"> Create Judge </button>
-        <button type="reset"> Reset </button>
+    <form form class="form-newcase"  action="/admin/judge/new" method="POST" enctype="multipart/form-data">
+        <div class="col-auto">
+            <label for="judge_name" class='col-form-label'> Judge FullName </label>
+            <input type="text" class='form-control' id='judge_name' required name="judge_name" placeholder="Judge Name">
+        </div>
+        <div class="col-auto">
+            <label for="judge_gender" class='col-form-label'> Gender </label>
+            <select class='form-control' id='judge_gender' required name="judge_gender">
+                <optgroup label="Gender">
+                    <option value="0" selected> Male </option>
+                    <option value="1"> Female </option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="judge_address" class='col-form-label'> Judge Address </label>
+            <textarea id='judge_address' class='form-control' name="judge_address" cols="30" rows="6" placeholder="Judge Address"></textarea>
+        </div>
+        <div class="col-auto">
+            <label for="judge_phone" class='col-form-label'> Judge Phone </label>
+            <input type="text" class='form-control' id='judge_phone' required name="judge_phone" placeholder="Phone Number (+251)">
+        </div>
+        <div class="col-auto">
+            <label for="judge_type" class='col-form-label'> Judge Type </label>
+            <select id='judge_type' class='form-control' required name="judge_type">
+                <optgroup label="Judge Type">
+                    <option value="0" selected> Criminal </option>
+                    <option value="1"> Civil </option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for="judge_photo" class='col-form-label'> Judge Type </label>
+            <input type="file" class='form-control' id='judge_photo' name="judge_photo" required>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class='btn btn-primary form-control'> Create Judge </button>
+            <button type="reset" class='btn btn-warning form-control'> Reset </button>
+        </div>
     </form>
 
-</body>
+</main>
 
-</html>
 {{ end }}

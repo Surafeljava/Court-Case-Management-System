@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"fmt"
+
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/jinzhu/gorm"
 )
@@ -85,7 +87,10 @@ func (cri *CaseRepositoryImpl) DeleteCase(id int) []error {
 func (cri *CaseRepositoryImpl) JudgeCases(juid string) ([]entity.Case, error) {
 	cases := []entity.Case{}
 	errs := cri.conn.Model(&cases).Where("case_judge = ?", juid).Find(&cases).GetErrors()
+	fmt.Println("****************** Here ***************")
+	fmt.Println(juid)
 	if len(errs) > 0 {
+
 		return nil, nil
 	}
 	return cases, nil

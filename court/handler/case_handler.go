@@ -9,6 +9,7 @@ import (
 
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
+	"github.com/Surafeljava/Court-Case-Management-System/form"
 )
 
 type CaseHandler struct {
@@ -51,6 +52,20 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 		case_type := r.FormValue("case_type")
 		court_date := r.FormValue("court_date")
 		case_judge := r.FormValue("case_judge")
+
+		//validate the inputs from the form
+
+		newCaseForm := form.Input{Values: r.PostForm, VErrors: form.ValidationErrors{}}
+		newCaseForm.Required("case_title", "case_desc", "case_type", "court_date", "case_judge")
+		newCaseForm.MinLength("case_desc", 8)
+		newCaseForm.MinLength("case_judge", 3)
+		// newCaseForm.CSRF = token
+
+		//Checking the validation of the form inputs
+		if !newCaseForm.Valid() {
+			lh.tmpl.ExecuteTemplate(w, "login.layout", newCaseForm)
+			return
+		}
 
 		the_court_date, _ := time.Parse("2006-01-02", court_date)
 		//the_case_creation, _ := time.Parse("2006-01-02", time.Now())
@@ -156,9 +171,13 @@ func (lh *CaseHandler) ExtendCase(w http.ResponseWriter, r *http.Request) {
 func (lh *CaseHandler) CloseCase(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 
-		juid := r.URL.Query().Get("juid")
+		juid := r.URL.Query().Get("id")
 
-		cs, _ := lh.caseSrv.JudgeCases(juid)
+		cs, er := lh.caseSrv.JudgeCases(juid)
+
+		if er != nil {
+			fmt.Println("Error Getting Cases for the judge")
+		}
 
 		lh.tmpl.ExecuteTemplate(w, "judge.case.close.layout", cs)
 
@@ -179,10 +198,11 @@ func (lh *CaseHandler) CloseCase(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
+		http.Redirect(w, r, "/judge/cases/close", http.StatusSeeOther)
+		//lh.tmpl.ExecuteTemplate(w, "judge.home.layout", nil)
 
 	} else {
 
-		http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
+		http.Redirect(w, r, "/judge/cases/close", http.StatusSeeOther)
 	}
 }

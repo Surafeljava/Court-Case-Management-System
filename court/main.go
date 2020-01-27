@@ -101,13 +101,13 @@ func main() {
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
 	http.HandleFunc("/logout", loginHandler.Logout)
 	http.HandleFunc("/admin/cases/new", loginHandler.AuthenticatedUser(newcaseHandler.NewCase))
-	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
-	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
-	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
-	http.HandleFunc("/admin/opponent/new", opponentHandler.NewOpponent)
-	http.HandleFunc("/admin/judge/new", adminJudgeHandler.NewJudge)
+	http.HandleFunc("/admin/cases/update", loginHandler.AuthenticatedUser(newcaseHandler.UpdateCase))
+	http.HandleFunc("/admin/cases/delete", loginHandler.AuthenticatedUser(newcaseHandler.DeleteCase))
+	http.HandleFunc("/admin/cases", loginHandler.AuthenticatedUser(newcaseHandler.Cases))
+	http.HandleFunc("/admin/opponent/new", loginHandler.AuthenticatedUser(opponentHandler.NewOpponent))
+	http.HandleFunc("/admin/judge/new", loginHandler.AuthenticatedUser(adminJudgeHandler.NewJudge))
 
-	http.HandleFunc("/judge/cases/close", LoginRequired(UserAuthorized(newcaseHandler.CloseCase)))
+	http.HandleFunc("/judge/cases/close", loginHandler.AuthenticatedUser(newcaseHandler.CloseCase))
 
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )

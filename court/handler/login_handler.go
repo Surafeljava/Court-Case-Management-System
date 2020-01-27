@@ -213,3 +213,21 @@ func CheckWho(id string) int {
 	}
 	return -1
 }
+
+func (uh *LoginHandler) ChangePassword(w http.ResponseWriter, r *http.Request) string {
+	newpwd := "newpwd"
+
+	if r.Method == http.MethodGet {
+		//Just load the change password page
+	}
+
+	if r.Method == http.MethodPost {
+		//0. Check who is trying to change the password Admin, Judge, Opponent
+		//1. Check if the old password matches
+		//2. Check if the two new passwords match
+		//3. Hash the new password
+		//4. Change the password in the user database
+	}
+
+	return newpwd
+}
