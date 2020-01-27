@@ -1,0 +1,44 @@
+{{ define "admin.notifications.layout" }}
+{{ template "navbar" . }}
+{{ template "admin.notifications.content" . }}
+{{ template "footer" . }}
+{{ end }}
+
+{{ define "admin.notifications.content"}}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Notifications</h2>
+    </div>
+    <div class="pt-3 pb-2 mb-3">
+      <a class="btn btn-primary btn-lg" href="/admin/notifications/postnotification" role="button">Post Notification</a>
+  </div>   
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Role Number</th>
+            <th scope="col">Notf_Title</th>
+            <th scope="col">Notf_Description</th>
+            <th scope="col">Notf_Level</th>
+            <th scope="col">Notf_Date</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+            {{ range . }}
+          <tr>
+            <th scope="row"> {{ .ID }} </th>
+            <td> {{ .NotTitle }} </td>
+            <td> {{ .NotDescription}} </td>
+            <td>{{ .NotLevel}} </td>
+            <td>{{ .NotDate}} </td>
+
+           <td> <a href="/admin/notifications/update?id={{ .ID }}">Update</a> </td>
+            <td> <a href="/admin/notifications/delete?id={{ .ID }}">Delete</a> </td>------->
+          </tr>
+          {{ end }}
+          </tbody>
+          </table>
+</main>
+{{ end }}
