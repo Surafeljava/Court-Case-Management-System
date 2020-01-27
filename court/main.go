@@ -70,6 +70,7 @@ func main() {
 	newcaseHandler := handler.NewCaseHandler(tmpl, caseServ)
 	opponentHandler := handler.NewOpponentHandler(tmpl, oppServ)
 	adminJudgeHandler := handler.NewAdminJudgeHandler(tmpl, adminJudgeServ)
+	
 
 	//Searching
 	//Case_Search
