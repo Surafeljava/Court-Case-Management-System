@@ -36,7 +36,7 @@ func main() {
 	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=123456")
 
 	//Creating Database Tables
-	// CreateDBTables(dbc)
+	//CreateDBTables(dbc)
 
 	defer dbc.Close()
 
@@ -108,6 +108,7 @@ func main() {
 	http.HandleFunc("/admin/judge/new", loginHandler.AuthenticatedUser(adminJudgeHandler.NewJudge))
 
 	http.HandleFunc("/judge/cases/close", loginHandler.AuthenticatedUser(newcaseHandler.CloseCase))
+	http.HandleFunc("/user/changepwd", loginHandler.AuthenticatedUser(loginHandler.ChangePassword))
 
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )

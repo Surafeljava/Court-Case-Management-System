@@ -214,11 +214,22 @@ func CheckWho(id string) int {
 	return -1
 }
 
-func (uh *LoginHandler) ChangePassword(w http.ResponseWriter, r *http.Request) string {
-	newpwd := "newpwd"
+func (uh *LoginHandler) ChangePassword(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 		//Just load the change password page
+
+		uid := r.URL.Query().Get("id")
+
+		message := struct {
+			ID      string
+			Message string
+		}{
+			ID:      uid,
+			Message: "Everything is fine",
+		}
+
+		uh.tmpl.ExecuteTemplate(w, "user.changepwd.layout", message)
 	}
 
 	if r.Method == http.MethodPost {
@@ -228,6 +239,4 @@ func (uh *LoginHandler) ChangePassword(w http.ResponseWriter, r *http.Request) s
 		//3. Hash the new password
 		//4. Change the password in the user database
 	}
-
-	return newpwd
 }
