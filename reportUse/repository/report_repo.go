@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/Surafeljava/Court-Case-Management-System/entity"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type ReportRepositoryImpl struct {

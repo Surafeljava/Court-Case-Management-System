@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type LoginRepositoryImpl struct {

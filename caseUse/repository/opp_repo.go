@@ -2,7 +2,7 @@ package repository
 
 import (
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type OpponentRepositoryImpl struct {

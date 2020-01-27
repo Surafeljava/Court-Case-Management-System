@@ -3,7 +3,7 @@ package repository
 import (
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	user "github.com/Surafeljava/Court-Case-Management-System/appealUse"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 // AppealGormRepo Implements the Repoeitory interface

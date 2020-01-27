@@ -44,3 +44,9 @@ type CaseSearchService interface {
 	Cases() ([]entity.Case, []error)
 	Case(id uint) (*entity.Case, []error)
 }
+
+type SessionService interface {
+	Session(sessionID string) (*entity.Session, []error)
+	StoreSession(session *entity.Session) (*entity.Session, []error)
+	DeleteSession(sessionID string) (*entity.Session, []error)
+}

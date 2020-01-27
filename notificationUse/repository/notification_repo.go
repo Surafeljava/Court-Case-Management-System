@@ -3,7 +3,7 @@ package repository
 import (
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	notificationuse "github.com/Surafeljava/Court-Case-Management-System/notificationUse"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 //

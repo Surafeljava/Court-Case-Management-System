@@ -4,59 +4,47 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	usrRepo "github.com/Surafeljava/Court-Case-Management-System/SearchUse/repository"
 	usrService "github.com/Surafeljava/Court-Case-Management-System/SearchUse/service"
 	aplRepo "github.com/Surafeljava/Court-Case-Management-System/appealUse/repository"
 	aplService "github.com/Surafeljava/Court-Case-Management-System/appealUse/service"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/repository"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/service"
+	"github.com/Surafeljava/Court-Case-Management-System/rtoken"
 
 	"github.com/Surafeljava/Court-Case-Management-System/court/handler"
 	notificationRepo "github.com/Surafeljava/Court-Case-Management-System/notificationUse/repository"
 	notificationServ "github.com/Surafeljava/Court-Case-Management-System/notificationUse/service"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
+
+//TODO: Creating database tables
+func CreateDBTables(db *gorm.DB) {
+	db.CreateTable(&entity.Opponent{}, &entity.Case{}, &entity.Judge{}, &entity.Admin{}, &entity.Notification{}, &entity.Relation{}, &entity.Decision{}, &entity.Witness{}, &entity.Session{})
+}
 
 func main() {
 	fmt.Println("Welcome To Court Case Management System")
 
+	// csrfSignKey := []byte(rtoken.GenerateRandomID(32))
+	csrfSignKey := []byte(rtoken.GenerateRandomID(32))
+	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
+
 	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=123456")
 	//dbc, err := gorm.Open("postgres", "postgres://postgres:1234@localhost/courttest2?sslmode=disable")
+
+	//Creating Database Tables
+	// CreateDBTables(dbc)
+
 	defer dbc.Close()
-
-	//TODO: Creating tables on the database
-	// dbc.AutoMigrate(&entity.Opponent{})
-	// dbc.AutoMigrate(&entity.Case{})
-	// dbc.AutoMigrate(&entity.Judge{})
-	// dbc.AutoMigrate(&entity.Admin{})
-	// dbc.AutoMigrate(&entity.Notification{})
-	// dbc.AutoMigrate(&entity.Relation{})
-	// dbc.AutoMigrate(&entity.Decision{})
-	// dbc.AutoMigrate(&entity.Witness{})
-
-	// hasher := md5.New()
-	// hasher.Write([]byte("1234"))
-	// pwdnew := hex.EncodeToString(hasher.Sum(nil))
-
-	// ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
-	// dbc.Create(&ad)
 
 	if err != nil {
 		panic(err)
 	}
-
-	// wit := entity.Witness{CaseNum: "CS1", WitnessDoc: "Witness sample doc", WitnessType: "type"}
-	// dbc.Create(&wit)
-
-	// des := entity.Decision{CaseNum: "CS1", DecisionDate: time.Now(), Decision: "The final decistion", DecisionDesc: "Decision description kjksahdjk"}
-	// dbc.Create(&des)
-
-	// rel := entity.Relation{CaseNum: "CS1", PlId: "OP1", AcId: "OP2"}
-	// dbc.Create(&rel)
-
-	// tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
 	//Login repository and Service Creation
 	loginRepo := repository.NewLoginRepositoryImpl(dbc)
@@ -70,11 +58,17 @@ func main() {
 	oppRepo := repository.NewOpponentRepositoryImpl(dbc)
 	oppServ := service.NewOpponentServiceImpl(oppRepo)
 
+	//Session Repository and Service Creation
+	sessRepo := repository.NewSessionGormRepo(dbc)
+	sessServ := service.NewSessionService(sessRepo)
+
 	//Judge repository and Service Creation
 	adminJudgeRepo := repository.NewJudgeRepositoryImpl(dbc)
 	adminJudgeServ := service.NewJudgeServiceImpl(adminJudgeRepo)
 
-	loginHandler := handler.NewLoginHandler(tmpl, loginServ)
+	sess := configSess()
+	loginHandler := handler.NewLoginHandler(tmpl, loginServ, sessServ, sess, csrfSignKey)
+
 	newcaseHandler := handler.NewCaseHandler(tmpl, caseServ)
 	opponentHandler := handler.NewOpponentHandler(tmpl, oppServ)
 	adminJudgeHandler := handler.NewAdminJudgeHandler(tmpl, adminJudgeServ)
@@ -107,7 +101,7 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
-	http.HandleFunc("/admin/cases/new", LoginRequired(UserAuthorized(newcaseHandler.NewCase)))
+	http.HandleFunc("/admin/cases/new", loginHandler.AuthenticatedUser(newcaseHandler.NewCase))
 	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
 	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
 	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
@@ -171,5 +165,21 @@ func UserAuthorized(handler http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Check the authorization of the user accessing the link
 		handler.ServeHTTP(w, r)
+	}
+}
+
+func configSess() *entity.Session {
+	tokenExpires := time.Now().Add(time.Minute * 30).Unix()
+	sessionID := rtoken.GenerateRandomID(32)
+	signingString, err := rtoken.GenerateRandomString(32)
+	if err != nil {
+		panic(err)
+	}
+	signingKey := []byte(signingString)
+
+	return &entity.Session{
+		Expires:    tokenExpires,
+		SigningKey: signingKey,
+		UUID:       sessionID,
 	}
 }
