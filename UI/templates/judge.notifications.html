@@ -11,6 +11,9 @@
         <h2>Notifications</h2>
     </div>
    
+
+
+    
     <table class="table table-striped">
         <thead>
           <tr>
@@ -32,7 +35,7 @@
             <td>{{ .NotLevel}} </td>
             <td>{{ .NotDate}} </td>
 
-           <td> <a href="/judge/notifications/update?id={{ .ID }}">Edit</a> </td>
+           <td> <a href="/judge/notifications/update?id={{ .ID }}">View</a> </td>
             <td> <a href="/judge/notifications/delete?id={{ .ID }}">Delete</a> </td>------->
           </tr>
           {{ end }}

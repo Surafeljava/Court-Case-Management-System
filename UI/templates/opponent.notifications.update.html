@@ -1,10 +1,12 @@
-{{ define "opponent.notifications.layout" }}
-{{ template "navbar" . }}
-{{ template "opponent.notifications.content" . }}
-{{ template "footer" . }}
-{{ end }}
+{{ define "opponent.notifications.update.layout" }} 
 
-{{ define "opponent.notifications.content"}}
+{{ template "navbar" . }} 
+{{ template "opponent.notifications.update.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "opponent.notifications.update.content" }}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -24,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-            {{ range . }}
+            
           <tr>
             <th scope="row"> {{ .ID }} </th>
             <td> {{ .NotTitle }} </td>
@@ -32,11 +34,11 @@
             <td>{{ .NotLevel}} </td>
             <td>{{ .NotDate}} </td>
 
-           <td> <a href="/opponent/notifications/update?id={{ .ID }}">View</a> </td>
-            <td> <a href="/opponent/notifications/delete?id={{ .ID }}">Delete</a> </td>------->
+           
           </tr>
-          {{ end }}
+         
           </tbody>
           </table>
 </main>
+
 {{ end }}

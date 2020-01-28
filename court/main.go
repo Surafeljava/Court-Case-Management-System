@@ -70,6 +70,7 @@ func main() {
 	newcaseHandler := handler.NewCaseHandler(tmpl, caseServ)
 	opponentHandler := handler.NewOpponentHandler(tmpl, oppServ)
 	adminJudgeHandler := handler.NewAdminJudgeHandler(tmpl, adminJudgeServ)
+	
 
 	//Searching
 	//Case_Search
@@ -86,9 +87,12 @@ func main() {
 	notificatioRepos := notificationRepo.NewNotificationRepositoryImpl(dbc)
 	notificationService := notificationServ.NewNotificationServiceImpl(notificatioRepos)
 
+	
 	//Notification
 	adminNotificatHandler := handler.NewNotificationHandler(tmpl, notificationService)
 	OppJudgNotificatHandler := handler.NewOppJNotificationHandler(tmpl, notificationService)
+	judgeNotificationHandler := handler.NewJudgeNotificationHandler(tmpl, notificationService)
+
 
 	//Appeal
 	appealRepo := aplRepo.NewAppealGormRepo(dbc)
@@ -126,9 +130,18 @@ func main() {
 	http.HandleFunc("/v1/admin/judges/singlejudge", judgeSearchHandler.GetSingleJudge)
 
 	//notification
-	http.HandleFunc("/admin/postNotifications", adminNotificatHandler.AdminPostNotification)
-	http.HandleFunc("/judge/notifications", OppJudgNotificatHandler.NotificationsJudge)
+	http.HandleFunc("/admin/notifications/delete", adminNotificatHandler.AdminDeleteNotification)
+	http.HandleFunc("/admin/notifications", adminNotificatHandler.AdminNotifications)
+	http.HandleFunc("/admin/notifications/update", adminNotificatHandler.AdminUpdateNotification)
+	http.HandleFunc("/admin/notifications/postnotification", adminNotificatHandler.AdminPostNotification)
+
+	http.HandleFunc("/judge/notifications", judgeNotificationHandler.NotificationsJudge)
 	http.HandleFunc("/opponent/notifications", OppJudgNotificatHandler.NotificationsOpponent)
+
+	http.HandleFunc("/judge/notifications/delete", judgeNotificationHandler.DeleteJudgeNotification)
+	http.HandleFunc("/opponent/notifications/delete", OppJudgNotificatHandler.DeleteOpponentNotification)
+	http.HandleFunc("/judge/notifications/update", judgeNotificationHandler.SingleNotificationJudge)
+	http.HandleFunc("/opponent/notifications/update", OppJudgNotificatHandler.SingleNotificationOpponent)
 
 	//Appeal
 	http.HandleFunc("/admin/oppForAppealTrial", oppAppealHandler.OppTrial)
