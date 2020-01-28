@@ -120,6 +120,7 @@ func main() {
 	http.HandleFunc("/admin/cases", loginHandler.AuthenticatedUser(newcaseHandler.Cases))
 	http.HandleFunc("/admin/opponent/new", loginHandler.AuthenticatedUser(opponentHandler.NewOpponent))
 	http.HandleFunc("/admin/judge/new", loginHandler.AuthenticatedUser(adminJudgeHandler.NewJudge))
+	http.HandleFunc("/search/case", newcaseHandler.SearchCaseInfo)
 
 	http.HandleFunc("/judge/cases/close", loginHandler.AuthenticatedUser(newcaseHandler.CloseCase))
 	http.HandleFunc("/user/changepwd", loginHandler.AuthenticatedUser(loginHandler.ChangePassword))
@@ -129,7 +130,7 @@ func main() {
 	// http.HandleFunc("/notification", )
 
 	//Admin Report and Statistics
-	http.HandleFunc("/admin/report", reportHandle.GetStatistics)
+	http.HandleFunc("/admin/report", loginHandler.AuthenticatedUser(reportHandle.GetStatistics))
 
 	//Court and Admin Create
 	http.HandleFunc("/courtcreate", courtHandle.CreateCourt)

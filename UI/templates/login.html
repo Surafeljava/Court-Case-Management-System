@@ -23,16 +23,23 @@
         margin: 10px;
     }
 </style>
+<head>
+    <meta charset="utf-8">
+    <script type ="text/javascript" src="..assets/js/jquery-3.4.1.min.js"></script>
+    <script type ="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  </head>
+
+<body background="../assets/img/all_bg.jpg">
 <div class="container">
     <form class="form-signin" method="POST" action="/login">
-        <h3 class="h3 mb-3 font-weight-normal">Please sign in</h3>
+        <h3 class="h3 mb-3 font-weight-normal">LOGIN</h3>
         <input type="hidden" name="_csrf" value="{{ .CSRF }}" />
         {{with .VErrors.Get "generic" }}
         <label class="text-danger">{{ . }}</label>
         {{end}}
         <div class="col-auto">
             <label for="user_id" class="col-form-label">User ID</label>
-            <input type="text" id="user_id" name="user_id" value='{{ .Values.Get "email" }}' class="form-control" placeholder="User ID" required autofocus>
+            <input type="text" id="user_id" name="user_id" class="form-control" placeholder="User ID" required autofocus>
         </div>
         <div class="col-auto">
             <label for="password" class="col-form-label">Password</label>
@@ -42,9 +49,54 @@
         <button class="btn btn-lg btn-warning btn-block form-control" type="reset">Reset</button>
     </form>
 
-    <div class="col-auto">
-        <h5><a href="/courtcreate"> Create Court </a></h5>
-        <h5><a href="/admincreate"> Create Admin </a></h5>
-    </div>
+    <br>
+    <h3 class="h3 mb-3 font-weight-normal">Search Case</h3>
+    <form class="form-signin" id="view_case_form" method="GET" action="/search/case">
+        <label for="case_num" class="col-form-label">User ID</label>
+        <input type="text" id="case_num" name="case_num" class="form-control" placeholder="Case Number" required autofocus>
+        <button class="btn btn-lg btn-dark btn-block form-control" type="submit" id="view_case_btn">Search Case</button>
+    </form>
 </div>
+
+    <h4 id="cs_num"> Case Number :  </h4>
+    <h4 id="cs_title"> Case Title : </h4>
+    <h4 id="cs_court_date"> Court Date : </h4>
+    <h4 id="cs_status"> Case Status : </h4>
+
+    <script type="text/javascript">
+
+      $(function(){
+
+        $("#view_case_form").submit(function(e){
+          e.preventDefault();
+        });
+
+        $("#view_case_btn").click(function(){
+          var case_num_val = $("#case_num").val();
+          console.log(case_num_val);
+          $("#case_num").val('');
+          $.ajax({
+             url: '/search/case',
+             type: 'GET',
+             data: {
+                       case_num:case_num_val
+                   },
+             success: function(data) {
+               $.each(data, function(key, value){
+                 $("#cs_num").append(case_num_val);
+                 $("#cs_title").append(value.case_title);
+                 $("#cs_court_date").append(value.court_date);
+                 $("#cs_status").append(value.case_status);
+               });
+             },
+             error: function(e) {
+             	console.log(e.message);
+             }
+           });
+        });
+      });
+
+    </script>
+
+</body>
 {{ end }}

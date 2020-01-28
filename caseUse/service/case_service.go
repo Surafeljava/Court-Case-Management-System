@@ -28,6 +28,11 @@ func (csi *CaseServiceImpl) Case(id int) (*entity.Case, []error) {
 	return css, nil
 }
 
+func (csi *CaseServiceImpl) CaseByNum(case_num string) (*entity.Case, []error) {
+	css, err := csi.caseRepo.CaseByNum(case_num)
+	return css, err
+}
+
 //add new case to the database
 func (csi *CaseServiceImpl) CreateCase(casedoc *entity.Case) []error {
 	err1 := csi.caseRepo.CreateCase(casedoc)

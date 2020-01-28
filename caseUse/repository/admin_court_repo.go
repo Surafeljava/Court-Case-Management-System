@@ -23,8 +23,22 @@ func (acr *AdminCourtRepositoryImpl) Court() (*entity.Court, []error) {
 	return &court, nil
 }
 
+func (acr *AdminCourtRepositoryImpl) Admin() (*entity.Admin, []error) {
+	admin := entity.Admin{}
+
+	err := acr.conn.First(&admin).GetErrors()
+	if len(err) > 0 {
+		return nil, err
+	}
+	return &admin, nil
+}
+
 func (acr *AdminCourtRepositoryImpl) CreateCourt(court *entity.Court) (*entity.Court, []error) {
-	return nil, nil
+	err := acr.conn.Save(&court).GetErrors()
+	if len(err) > 0 {
+		return nil, err
+	}
+	return court, nil
 }
 func (acr *AdminCourtRepositoryImpl) UpdateCourt(court *entity.Court) (*entity.Court, []error) {
 	return nil, nil
@@ -32,5 +46,9 @@ func (acr *AdminCourtRepositoryImpl) UpdateCourt(court *entity.Court) (*entity.C
 
 // DeleteCourt(id int) error
 func (acr *AdminCourtRepositoryImpl) CreateAdmin(admin *entity.Admin) (*entity.Admin, []error) {
-	return nil, nil
+	err := acr.conn.Save(&admin).GetErrors()
+	if len(err) > 0 {
+		return nil, err
+	}
+	return admin, nil
 }

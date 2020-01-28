@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -212,5 +213,30 @@ func (lh *CaseHandler) CloseCase(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 		http.Redirect(w, r, "/judge/cases/close", http.StatusSeeOther)
+	}
+}
+
+func (lh *CaseHandler) SearchCaseInfo(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		// case_num := r.PostFormValue("case_num")
+		case_num := r.URL.Query().Get("case_num")
+		cs, _ := lh.caseSrv.CaseByNum(case_num)
+
+		caseData := entity.CaseInfo{CaseTitle: cs.CaseTitle, CaseStatus: cs.CaseStatus, CourtDate: cs.CaseCourtDate}
+
+		fmt.Println(caseData.CaseTitle)
+		output, err := json.MarshalIndent(caseData, "", "\t\t")
+
+		if err != nil {
+			w.Header().Set("Content-Type", "application/json")
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(output)
+		return
+		//Encode the case to json adn write it to the response writer
+
 	}
 }

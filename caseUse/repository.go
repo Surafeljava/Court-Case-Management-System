@@ -8,6 +8,7 @@ type CaseRepository interface {
 	JudgeCases(juid string) ([]entity.Case, error)
 	CaseJudges(case_type string) ([]entity.Judge, error)
 	Case(id int) (*entity.Case, []error)
+	CaseByNum(case_num string) (*entity.Case, []error)
 	CreateCase(casedoc *entity.Case) []error
 	UpdateCase(casedoc *entity.Case) (*entity.Case, []error)
 	CloseCase(casedoc string, decision *entity.Decision) []error
@@ -56,6 +57,7 @@ type SessionRepository interface {
 
 type CourtRepository interface {
 	Court() (*entity.Court, []error)
+	Admin() (*entity.Admin, []error)
 	CreateCourt(court *entity.Court) (*entity.Court, []error)
 	UpdateCourt(court *entity.Court) (*entity.Court, []error)
 	// DeleteCourt(id int) error

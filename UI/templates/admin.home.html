@@ -7,35 +7,47 @@
 {{ end }} 
 
 {{ define "admin.home.content" }}
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Home Page</title>
-</head>
-
-<body>
-
-    <h1> Admin Page </h1>
-    <h3> Admin ID: {{ .AdminId }} </h3>
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Admin Home</h2>
+    </div>
+    <h3> ID: {{ .AdminId }} </h3>
     
-    <ol>
-        <li> <a href="/admin/cases"> View Case </a> </li>
-        <li> <a href="/admin/cases/new"> Create New Case </a> </li>
-        <li> <a href="/admin/judge/new"> Create New Judge </a> </li>
-        <li> <a href="/user/changepwd?id={{ .AdminId }}"> Change Password </a> </li>
-        <li> <a href="/admin/report"> View Court Report </a> </li>
-        <li> <a href="/admin/notifications"> Notifications </a> </li>
-        <li> <a href="/v1/adminSearch"> Search </a> </li>
-        <h5><a href="/courtupdate"> Update Court Info. </a></h5>
-        <li> <a href="/logout"> <h4>Logout</h4> </a> </li>
-    </ol>
+    <div class="row">
+        <div class="col-sm-3">
+            <h5> <a href="/admin/cases" class="btn btn-primary"> View Case </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/admin/cases/new" class="btn btn-primary"> Create New Case </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/admin/judge/new" class="btn btn-primary"> Create New Judge </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/user/changepwd?id={{ .AdminId }}" class="btn btn-primary"> Change Password </a> </h5>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <h5> <a href="/admin/report" class="btn btn-primary"> View Court Report </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/admin/notifications" class="btn btn-primary"> Notifications </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/v1/adminSearch" class="btn btn-primary"> Search </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5><a href="/courtupdate" class="btn btn-primary"> Update Court Info. </a></h5>
+        </div>
+    </div>
+    <br>
+        <h5> <a href="/logout" class="btn btn-warning"> <h4>Logout</h4> </a> </h5>
 
-    
 
+</main>
 </body>
-
-</html>
 {{ end }}

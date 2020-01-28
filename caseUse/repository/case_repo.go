@@ -29,6 +29,16 @@ func (cri *CaseRepositoryImpl) Case(id int) (*entity.Case, []error) {
 	}
 	return &css, errs
 }
+
+func (cri *CaseRepositoryImpl) CaseByNum(case_num string) (*entity.Case, []error) {
+	css := entity.Case{}
+	errs := cri.conn.Where("case_num = ?", case_num).First(&css).GetErrors()
+	if len(errs) > 0 {
+		return &css, errs
+	}
+	return &css, errs
+}
+
 func (cri *CaseRepositoryImpl) CreateCase(casedoc *entity.Case) []error {
 	csd := casedoc
 	errs := cri.conn.Create(&csd).GetErrors()

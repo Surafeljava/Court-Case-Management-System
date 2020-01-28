@@ -30,6 +30,12 @@ type Case struct {
 	CaseJudge     string `gorm:"type:varchar(50);not null"`
 }
 
+type CaseInfo struct {
+	CaseTitle  string    `json:"case_title" gorm:"type:varchar(255)"`
+	CaseStatus string    `json:"case_status" gorm:"type:varchar(255)"`
+	CourtDate  time.Time `json:"court_date" gorm:"type:varchar(255)"`
+}
+
 type Relation struct {
 	ID      uint
 	CaseNum string `gorm:"type:varchar(255);not null"`

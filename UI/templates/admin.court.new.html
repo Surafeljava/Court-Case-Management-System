@@ -28,7 +28,8 @@
         <h2>Create Court</h2>
     </div>
 
-    <form form class="form-newcase" action="/admin/cases/new" method="POST">
+    <form form class="form-newcase" action="/courtcreate" method="POST">
+    <h5> Message: {{ . }} </h5>
     <div class="col-auto">
         <label for='court_name' class='col-form-label'>Court Name</label>
         <input type='text' class='form-control' name='court_name' id='court_name' required autofocus placeholder='Court Name'>
@@ -49,10 +50,10 @@
     </div>
     <div class="col-auto">
         <label for="court_phone" class='col-form-label'> Court Phone </label>
-        <input class='form-control' type="number" required name='court_phone' id='court_phone'>
+        <input class='form-control' type="phone" required name='court_phone' id='court_phone'>
     </div>
     <div class="col-auto">
-        <button type="submit" class='btn btn-primary form-control'> Create Case </button>
+        <button type="submit" class='btn btn-primary form-control'> Create Court </button>
         <button type="reset" class='btn btn-warning form-control'> Reset </button>
     </div>
     </form>
