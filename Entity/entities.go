@@ -98,3 +98,18 @@ type Session struct {
 	Expires    int64  `gorm:"type:varchar(255);not null"`
 	SigningKey []byte `gorm:"type:varchar(255);not null"`
 }
+
+type Messg struct {
+	UserID       string
+	UserPwd      string
+	UserName     string
+	AddtionalMsg string
+}
+
+type Court struct {
+	ID           uint
+	CourtName    string `gorm:"type:varchar(255);not null"`
+	CourtLevel   string `gorm:"type:varchar(255);not null"`
+	CourtAddress string `gorm:"type:varchar(255);not null"`
+	CourtPhone   string `gorm:"type:varchar(255);not null"`
+}

@@ -109,8 +109,14 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		//Checking the type of user trying to login
 		who := CheckWho(user_id)
 
-		error_message := entity.SuccessMessage{Status: "Error", Message: "Wrong ID or Password Try again"}
+		// error_message := entity.SuccessMessage{Status: "Error", Message: "Wrong ID or Password Try again"}
 		//success_message := entity.SuccessMessage{Status: "Success", Message: "Login Success!"}
+
+		errMsg := struct {
+			Message string
+		}{
+			Message: "Wrong ID or Password Try again",
+		}
 
 		if who == 0 {
 			adm, err := lh.loginSrv.CheckAdmin(user_id, user_pwd)
@@ -127,7 +133,7 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 
 				lh.tmpl.ExecuteTemplate(w, "admin.home.layout", adm)
 			} else if len(err) > 0 {
-				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
+				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
 		} else if who == 1 {
 			jud, err := lh.loginSrv.CheckJudge(user_id, user_pwd)
@@ -143,7 +149,7 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 				}
 				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud)
 			} else if len(err) > 0 {
-				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
+				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
 		} else if who == 2 {
 			opp, err := lh.loginSrv.CheckOpponent(user_id, user_pwd)
@@ -160,14 +166,14 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 
 				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp)
 			} else if len(err) > 0 {
-				lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
+				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
 		} else {
-			lh.tmpl.ExecuteTemplate(w, "login.layout", error_message)
+			lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 		}
 
 	} else {
-		lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
+		lh.tmpl.ExecuteTemplate(w, "login.layout", "Please Login First")
 	}
 
 }

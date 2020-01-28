@@ -7,56 +7,77 @@
 {{ end }} 
 
 {{ define "admin.newopp.content" }}
-<html lang="en">
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> New Opponent </title>
-</head>
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Create New Opponent</h2>
+    </div>
 
-<body>
-
-    <h1> Create New Opponent </h1>
-
-    <form action="/admin/opponent/new" method="POST" enctype="multipart/form-data">
-        <input type="text" name="case_num" readonly placeholder="Case Number">
-        <br><br>
-        <label for="opp_type"> Opponent Type: </label>
-        <select name="opp_type" class="opp_type" required>
-            <optgroup label="Opponent Type">
-                <option value="pl" selected>Plaintiff</option>
-                <option value="ac">Accused</option>
-            </optgroup>
-        </select>
-        <br><br>
-        <input type="text" name="opp_fn" required placeholder="First Name">
-        <br><br>
-        <input type="text" name="opp_ln" required placeholder="Last Name">
-        <br><br>
-        <label for="opp_gender"> Gender: </label>
-        <select name="opp_gender" class="opp_gender" required>
-            <optgroup label="Gender">
-                <option value="M">Male</option>
-                <option value="F">Female</option>
-            </optgroup>
-        </select>
-        <br><br>
-        <input type="date" name="opp_bd" required>
-        <br><br>
-        <textarea name="opp_address" cols="30" rows="6" placeholder="Address"></textarea>
-        <br><br>
-        <input type="text" name="opp_phone" required placeholder="Phone Number(+251)">
-        <br><br>
-        <input type="file" name="opp_photo" required>
-        <br><br>
-        <button type="submit">Create Opponent</button>
-        <button type="reset">Reset</button>
+    <form form class="form-newcase"  action="/admin/opponent/new" method="POST" enctype="multipart/form-data">
+        <div class="col-auto">
+            <label for='case_num' class='col-form-label'>Case Number</label>
+            <input type="text" class='form-control' name="case_num" id='case_num' readonly placeholder="Case Number" value="{{ .CaseNum }}" />
+        </div>
+        <div class="col-auto">
+            <label for='opp_type' class='col-form-label'>Opponent Type</label>
+            <input type="text" class='form-control' name="opp_type" id='opp_type' readonly placeholder="Opponent Type" value="{{ .OppType }}" />
+        </div>
+        <div class="col-auto">
+            <label for='opp_fn' class='col-form-label'>First Name</label>
+            <input type="text" class='form-control' name="opp_fn" id='opp_fn' required placeholder="First Name">
+        </div>
+        <div class="col-auto">
+            <label for='opp_ln' class='col-form-label'>Last Name</label>
+            <input type="text" class='form-control' name="opp_ln" id='opp_ln' required placeholder="Last Name">
+        </div>
+        <div class="col-auto">
+            <label for='opp_gender' class='col-form-label'>Gender</label>
+            <select class='form-control' name="opp_gender" id='opp_gender' required>
+                <optgroup label="Gender">
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                </optgroup>
+            </select>
+        </div>
+        <div class="col-auto">
+            <label for='opp_bd' class='col-form-label'>Birth Date</label>
+            <input type="date" class='form-control' name="opp_bd" id='opp_bd' required>
+        </div>
+        <div class="col-auto">
+            <label for='opp_address' class='col-form-label'>Address</label>
+            <textarea class='form-control' name="opp_address" rows="5" id='opp_address' placeholder="Opponent Address"></textarea>
+        </div>
+        <div class="col-auto">
+            <label for='opp_phone' class='col-form-label'>Phone Number</label>
+            <input type="tel" class='form-control' name="opp_phone" id='opp_phone' required>
+        </div>
+        <div class="col-auto">
+            <label for='opp_photo' class='col-form-label'>Photo</label>
+            <input type="file" class='form-control' name="opp_photo" id='opp_photo' required>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class='btn btn-primary form-control'> Create Opponent </button>
+            <button type="reset" class='btn btn-warning form-control'> Reset </button>
+        </div>
 
     </form>
 
-</body>
+</main>
 
-</html>
 {{ end }}

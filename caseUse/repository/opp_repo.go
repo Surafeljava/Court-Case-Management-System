@@ -30,7 +30,7 @@ func (ori *OpponentRepositoryImpl) Opponent(id int) (*entity.Opponent, []error) 
 	return &opp, errs
 }
 
-func (ori *OpponentRepositoryImpl) CreateOpponent(opp *entity.Opponent) (*entity.Opponent, []error) {
+func (ori *OpponentRepositoryImpl) CreateOpponent(case_num string, opp *entity.Opponent) (*entity.Opponent, []error) {
 	csd := opp
 	errs := ori.conn.Create(&csd).GetErrors()
 
@@ -41,12 +41,16 @@ func (ori *OpponentRepositoryImpl) CreateOpponent(opp *entity.Opponent) (*entity
 
 	//TODO: Add the Plaintiff to according relation column
 	rel := entity.Relation{}
-	ori.conn.First(&rel, '1')
+	err := ori.conn.Where("case_num = ?", case_num).First(&rel).GetErrors()
 
-	if opp.OppType == "pl" {
+	if len(err) > 0 {
+		return nil, err
+	}
+
+	if opp.OppType == "plaintiff" {
 		rel.PlId = opp.OppId
 		ori.conn.Save(&rel)
-	} else if opp.OppType == "ac" {
+	} else if opp.OppType == "accused" {
 		rel.AcId = opp.OppId
 		ori.conn.Save(&rel)
 	}

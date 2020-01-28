@@ -32,14 +32,18 @@
         {{end}}
         <div class="col-auto">
             <label for="user_id" class="col-form-label">User ID</label>
-            <input type="text" id="user_id" name="user_id" value='{{ .Values.Get "email" }}' class="form-control" placeholder="User ID"
-                required autofocus>
+            <input type="text" id="user_id" name="user_id" value='{{ .Values.Get "email" }}' class="form-control" placeholder="User ID" required autofocus>
         </div>
         <div class="col-auto">
             <label for="password" class="col-form-label">Password</label>
             <input type="password" id="password" name="user_pwd" class="form-control" placeholder="Password" required>
         </div>
         <button class="btn btn-lg btn-primary btn-block form-control" type="submit">LOGIN</button>
+        <button class="btn btn-lg btn-warning btn-block form-control" type="reset">Reset</button>
     </form>
+
+    <div class="col-auto">
+        <h5><a href="/courtCreate"> Create Court </a></h5>
+    </div>
 </div>
 {{ end }}

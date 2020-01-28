@@ -19,7 +19,7 @@ type CaseRepository interface {
 type OpponentRepository interface {
 	Opponents() ([]entity.Opponent, error)
 	Opponent(id int) (*entity.Opponent, []error)
-	CreateOpponent(opp *entity.Opponent) (*entity.Opponent, []error)
+	CreateOpponent(case_num string, opp *entity.Opponent) (*entity.Opponent, []error)
 }
 
 //JudgeRepository ...
@@ -29,7 +29,7 @@ type JudgeRepository interface {
 	CreateJudge(judge *entity.Judge) (*entity.Judge, []error)
 	UpdateCase(judge *entity.Judge) (*entity.Judge, []error)
 	DeleteCase(id int) error
-	CaseTypeJudges() ([]entity.Judge, error)
+	CaseTypeJudges(cstype string) ([]entity.Judge, error)
 }
 
 //LoginRepository ...
@@ -52,4 +52,11 @@ type SessionRepository interface {
 	Session(sessionID string) (*entity.Session, []error)
 	StoreSession(session *entity.Session) (*entity.Session, []error)
 	DeleteSession(sessionID string) (*entity.Session, []error)
+}
+
+type CourtRepository interface {
+	CreateCourt(court *entity.Court) (*entity.Court, []error)
+	UpdateCourt(court *entity.Court) (*entity.Court, []error)
+	// DeleteCourt(id int) error
+	CreateAdmin(admin *entity.Admin) (*entity.Admin, []error)
 }

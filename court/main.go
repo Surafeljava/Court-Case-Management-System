@@ -24,7 +24,7 @@ import (
 
 //TODO: Creating database tables
 func CreateDBTables(db *gorm.DB) {
-	db.CreateTable(&entity.Opponent{}, &entity.Case{}, &entity.Judge{}, &entity.Admin{}, &entity.Notification{}, &entity.Relation{}, &entity.Decision{}, &entity.Witness{}, &entity.Session{})
+	db.CreateTable(&entity.Court{}, &entity.Opponent{}, &entity.Case{}, &entity.Judge{}, &entity.Admin{}, &entity.Notification{}, &entity.Relation{}, &entity.Decision{}, &entity.Witness{}, &entity.Session{})
 }
 
 func main() {
@@ -37,6 +37,7 @@ func main() {
 
 	//Creating Database Tables
 	//CreateDBTables(dbc)
+	dbc.AutoMigrate(&entity.Court{})
 
 	defer dbc.Close()
 
@@ -67,11 +68,6 @@ func main() {
 	sess := configSess()
 	loginHandler := handler.NewLoginHandler(tmpl, loginServ, sessServ, sess, csrfSignKey)
 
-	newcaseHandler := handler.NewCaseHandler(tmpl, caseServ)
-	opponentHandler := handler.NewOpponentHandler(tmpl, oppServ)
-	adminJudgeHandler := handler.NewAdminJudgeHandler(tmpl, adminJudgeServ)
-	
-
 	//Searching
 	//Case_Search
 	caseSearchRepo := usrRepo.NewCaseSearchGormRepo(dbc)
@@ -87,12 +83,14 @@ func main() {
 	notificatioRepos := notificationRepo.NewNotificationRepositoryImpl(dbc)
 	notificationService := notificationServ.NewNotificationServiceImpl(notificatioRepos)
 
-	
+	newcaseHandler := handler.NewCaseHandler(tmpl, caseServ, notificationService)
+	opponentHandler := handler.NewOpponentHandler(tmpl, oppServ)
+	adminJudgeHandler := handler.NewAdminJudgeHandler(tmpl, adminJudgeServ)
+
 	//Notification
 	adminNotificatHandler := handler.NewNotificationHandler(tmpl, notificationService)
 	OppJudgNotificatHandler := handler.NewOppJNotificationHandler(tmpl, notificationService)
 	judgeNotificationHandler := handler.NewJudgeNotificationHandler(tmpl, notificationService)
-
 
 	//Appeal
 	appealRepo := aplRepo.NewAppealGormRepo(dbc)
@@ -155,30 +153,6 @@ var tmpl = template.Must(template.ParseGlob("../UI/templates/*.html"))
 
 func adminSearch(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "adminSearch.layout", nil)
-}
-
-func LoginRequired(handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		//Check if there is a session
-
-		sess, err := r.Cookie("signed_user")
-
-		if err != nil {
-			http.Redirect(w, r, "/login", 302)
-			return
-		}
-
-		//fmt.Printf(sess.Value)
-		fmt.Println(sess.Value)
-		handler.ServeHTTP(w, r)
-	}
-}
-
-func UserAuthorized(handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		//Check the authorization of the user accessing the link
-		handler.ServeHTTP(w, r)
-	}
 }
 
 func configSess() *entity.Session {

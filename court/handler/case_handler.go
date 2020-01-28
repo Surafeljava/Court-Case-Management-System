@@ -10,15 +10,17 @@ import (
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse"
 	"github.com/Surafeljava/Court-Case-Management-System/form"
+	notificationUse "github.com/Surafeljava/Court-Case-Management-System/notificationUse"
 )
 
 type CaseHandler struct {
 	tmpl    *template.Template
 	caseSrv caseUse.CaseService
+	admiNot notificationUse.NotificationService
 }
 
-func NewCaseHandler(T *template.Template, CS caseUse.CaseService) *CaseHandler {
-	return &CaseHandler{tmpl: T, caseSrv: CS}
+func NewCaseHandler(T *template.Template, CS caseUse.CaseService, AN notificationUse.NotificationService) *CaseHandler {
+	return &CaseHandler{tmpl: T, caseSrv: CS, admiNot: AN}
 }
 
 //Get all the cases in the court to the admin
@@ -73,6 +75,10 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 		newcs := entity.Case{CaseNum: case_num, CaseTitle: case_title, CaseDesc: case_desc, CaseStatus: "open", CaseType: case_type, CaseCreation: time.Now(), CaseCourtDate: the_court_date, CaseJudge: case_judge}
 
 		err2 := lh.caseSrv.CreateCase(&newcs)
+
+		//Posting notification about the new case creation for the judge
+		notf := entity.Notification{NotDescription: case_num, NotTitle: "Case Assigned", NotLevel: case_judge, NotDate: time.Now()}
+		lh.admiNot.PostNotification(&notf)
 
 		if len(err2) > 0 {
 			panic(err2)
@@ -195,6 +201,10 @@ func (lh *CaseHandler) CloseCase(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(">> -- >> -- >> error on sending the Case to the CloseCase func")
 			panic(err)
 		}
+
+		//Posting notification about the case close for all
+		notf := entity.Notification{NotDescription: case_num, NotTitle: "Case Closed", NotLevel: "all", NotDate: time.Now()}
+		lh.admiNot.PostNotification(&notf)
 
 		http.Redirect(w, r, "/judge/cases/close", http.StatusSeeOther)
 		//lh.tmpl.ExecuteTemplate(w, "judge.home.layout", nil)
