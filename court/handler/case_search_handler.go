@@ -32,18 +32,11 @@ func (uh *CaseSearchHandler) Cases(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-//GetSingleCase -
+//GetSingleCase retrives a SINGLE CASE given the Case Number
 func (uh *CaseSearchHandler) GetSingleCase(w http.ResponseWriter,
 	r *http.Request) {
 
 	caseNum := r.FormValue("search_caseNum")
-	//id, err := strconv.Atoi(idraw)
-
-	// if err != nil {
-	// 	w.Header().Set("Content-Type", "application/json")
-	// 	http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-	// 	return
-	// }
 
 	singlecase, errs := uh.caseSearchService.Case(caseNum)
 
@@ -55,3 +48,5 @@ func (uh *CaseSearchHandler) GetSingleCase(w http.ResponseWriter,
 	tmpl.ExecuteTemplate(w, "caseSearchResultSingle.layout", singlecase)
 	return
 }
+
+//TODO Input Validation

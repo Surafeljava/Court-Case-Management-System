@@ -36,12 +36,12 @@ func (notf *NotificationServiceImpl) ViewNotification(id uint) (*entity.Notifica
 }
 
 //PostNotification  admin posts a  notifiacication
-func (notf *NotificationServiceImpl) PostNotification(notification *entity.Notification) []error {
-	errs := notf.notfRepo.PostNotification(notification)
+func (notf *NotificationServiceImpl) PostNotification(notification *entity.Notification) (*entity.Notification, []error) {
+	ntf, errs := notf.notfRepo.PostNotification(notification)
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 	}
-	return errs
+	return ntf, errs
 }
 
 //UpdateNotification implemented below
@@ -55,11 +55,11 @@ func (notf *NotificationServiceImpl) UpdateNotification(notification *entity.Not
 }
 
 //DeleteNotification deletes a given notification
-func (notf *NotificationServiceImpl) DeleteNotification(id uint) []error {
-	errs := notf.notfRepo.DeleteNotification(id)
+func (notf *NotificationServiceImpl) DeleteNotification(id uint) (*entity.Notification, []error) {
+	ntf, errs := notf.notfRepo.DeleteNotification(id)
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 
 	}
-	return errs
+	return ntf, nil
 }

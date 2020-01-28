@@ -28,14 +28,14 @@ func (notfRepo *NotificationRepositoryImpl) Notifications() ([]entity.Notificati
 }
 
 //PostNotification posts notification in the database
-func (notfRepo *NotificationRepositoryImpl) PostNotification(notf *entity.Notification) []error {
+func (notfRepo *NotificationRepositoryImpl) PostNotification(notf *entity.Notification) (*entity.Notification, []error) {
 	notification := notf
 	errs := notfRepo.db.Create(&notification).GetErrors()
 
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 	}
-	return errs
+	return notification, nil
 }
 
 //ViewNotification retrieves a notification by title
@@ -44,7 +44,6 @@ func (notfRepo *NotificationRepositoryImpl) ViewNotification(id uint) (*entity.N
 	errs := notfRepo.db.First(&notification, id).GetErrors()
 	if len(errs) > 0 {
 		return nil, errs
-
 	}
 	return &notification, errs
 
@@ -63,18 +62,18 @@ func (notfRepo *NotificationRepositoryImpl) UpdateNotification(notf *entity.Noti
 }
 
 //DeleteNotification deletes a given notification by id
-func (notfRepo *NotificationRepositoryImpl) DeleteNotification(id uint) []error {
+func (notfRepo *NotificationRepositoryImpl) DeleteNotification(id uint) (*entity.Notification, []error) {
 
 	notification, errs := notfRepo.ViewNotification(id)
 
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 	}
 
 	errs = notfRepo.db.Delete(notification, id).GetErrors()
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 
 	}
-	return errs
+	return notification, nil
 }

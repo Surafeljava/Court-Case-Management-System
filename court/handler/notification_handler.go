@@ -35,7 +35,7 @@ func (nh *NotificationHandler) AdminPostNotification(w http.ResponseWriter, r *h
 		notDescription := r.FormValue("not_desc")
 
 		notification := entity.Notification{NotDescription: notDescription, NotTitle: notTitle, NotLevel: notLevel, NotDate: time.Now()}
-		errs := nh.notfService.PostNotification(&notification)
+		_, errs := nh.notfService.PostNotification(&notification)
 
 		if len(errs) > 0 {
 			return

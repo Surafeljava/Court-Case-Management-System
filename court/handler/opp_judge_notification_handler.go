@@ -59,7 +59,7 @@ func (ojh *OppJNotificationHandler) DeleteNotification(w http.ResponseWriter, r 
 		forWhom := CheckForWhom(notification.NotLevel)
 		if forWhom == 1 {
 
-			errs := ojh.notfService.DeleteNotification(uint(id))
+			_, errs := ojh.notfService.DeleteNotification(uint(id))
 
 			if len(errs) > 0 {
 				return
@@ -68,7 +68,7 @@ func (ojh *OppJNotificationHandler) DeleteNotification(w http.ResponseWriter, r 
 			http.Redirect(w, r, "/judge/notifications", http.StatusSeeOther)
 		} else if forWhom == 2 {
 
-			errs := ojh.notfService.DeleteNotification(uint(id))
+			_, errs := ojh.notfService.DeleteNotification(uint(id))
 
 			if len(errs) > 0 {
 				return
