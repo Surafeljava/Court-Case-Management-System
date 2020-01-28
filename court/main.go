@@ -36,7 +36,6 @@ func main() {
 	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
 	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=1234")
-	//dbc, err := gorm.Open("postgres", "postgres://postgres:1234@localhost/courttest2?sslmode=disable")
 
 	//Creating Database Tables
 	//CreateDBTables(dbc)

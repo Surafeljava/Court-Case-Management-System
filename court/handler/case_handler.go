@@ -20,11 +20,12 @@ type CaseHandler struct {
 	admiNot notificationUse.NotificationService
 }
 
+//NewCaseHandler ...
 func NewCaseHandler(T *template.Template, CS caseUse.CaseService, AN notificationUse.NotificationService) *CaseHandler {
 	return &CaseHandler{tmpl: T, caseSrv: CS, admiNot: AN}
 }
 
-//Get all the cases in the court to the admin
+//Cases all the cases in the court to the admin
 func (lh *CaseHandler) Cases(w http.ResponseWriter, r *http.Request) {
 	cases := []entity.Case{}
 	cases, err := lh.caseSrv.Cases()
@@ -34,7 +35,7 @@ func (lh *CaseHandler) Cases(w http.ResponseWriter, r *http.Request) {
 	lh.tmpl.ExecuteTemplate(w, "admin.cases.layout", cases)
 }
 
-//Add new Cases
+//NewCase Add new Cases ...
 func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 	//lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
 	//TODO Create a new case here...
@@ -75,7 +76,7 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 
 		newcs := entity.Case{CaseNum: case_num, CaseTitle: case_title, CaseDesc: case_desc, CaseStatus: "open", CaseType: case_type, CaseCreation: time.Now(), CaseCourtDate: the_court_date, CaseJudge: case_judge}
 
-		err2 := lh.caseSrv.CreateCase(&newcs)
+		_, err2 := lh.caseSrv.CreateCase(&newcs)
 
 		//Posting notification about the new case creation for the judge
 		notf := entity.Notification{NotDescription: case_num, NotTitle: "Case Assigned", NotLevel: case_judge, NotDate: time.Now()}
@@ -98,7 +99,7 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
 }
 
-//Delete existing cases
+//DeleteCase Delete existing cases
 func (lh *CaseHandler) DeleteCase(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 
@@ -111,7 +112,7 @@ func (lh *CaseHandler) DeleteCase(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
-		errs := lh.caseSrv.DeleteCase(id)
+		_, errs := lh.caseSrv.DeleteCase(id)
 
 		if len(errs) > 0 {
 			http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
@@ -122,7 +123,7 @@ func (lh *CaseHandler) DeleteCase(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Update existing cases
+//UpdateCase Update existing cases
 func (lh *CaseHandler) UpdateCase(w http.ResponseWriter, r *http.Request) {
 	//lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
 	//TODO Update case here...
@@ -168,6 +169,7 @@ func (lh *CaseHandler) UpdateCase(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//CaseTypeJudge ...
 func (lh *CaseHandler) CaseTypeJudge(w http.ResponseWriter, r *http.Request) {
 	//Get the judges suitable for that case
 }

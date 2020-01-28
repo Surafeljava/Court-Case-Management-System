@@ -28,18 +28,19 @@ func (csi *CaseServiceImpl) Case(id int) (*entity.Case, []error) {
 	return css, nil
 }
 
+//CaseByNum ...
 func (csi *CaseServiceImpl) CaseByNum(case_num string) (*entity.Case, []error) {
 	css, err := csi.caseRepo.CaseByNum(case_num)
 	return css, err
 }
 
-//add new case to the database
-func (csi *CaseServiceImpl) CreateCase(casedoc *entity.Case) []error {
-	err1 := csi.caseRepo.CreateCase(casedoc)
+//CreateCase add new case to the database
+func (csi *CaseServiceImpl) CreateCase(casedoc *entity.Case) (*entity.Case, []error) {
+	CS, err1 := csi.caseRepo.CreateCase(casedoc)
 	if len(err1) > 0 {
 		panic(err1)
 	}
-	return err1
+	return CS, err1
 }
 
 //UpdateCase >> update a case
@@ -66,19 +67,21 @@ func (csi *CaseServiceImpl) ExtendCase(casedoc *entity.Case) []error {
 }
 
 //DeleteCase Service >> delete existing case
-func (csi *CaseServiceImpl) DeleteCase(id int) []error {
-	err := csi.caseRepo.DeleteCase(id)
+func (csi *CaseServiceImpl) DeleteCase(id int) (*entity.Case, []error) {
+	CS, err := csi.caseRepo.DeleteCase(id)
 	if len(err) > 0 {
-		return err
+		return nil, err
 	}
-	return nil
+	return CS, nil
 }
 
+//JudgeCases ...
 func (csi *CaseServiceImpl) JudgeCases(juid string) ([]entity.Case, error) {
 	cases, errs := csi.caseRepo.JudgeCases(juid)
 	return cases, errs
 }
 
+//CaseJudges ...
 func (csi *CaseServiceImpl) CaseJudges(case_type string) ([]entity.Judge, error) {
 	juds, errs := csi.caseRepo.CaseJudges(case_type)
 	return juds, errs

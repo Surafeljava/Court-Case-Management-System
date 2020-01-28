@@ -39,19 +39,19 @@ func (cri *CaseRepositoryImpl) CaseByNum(case_num string) (*entity.Case, []error
 	return &css, errs
 }
 
-func (cri *CaseRepositoryImpl) CreateCase(casedoc *entity.Case) []error {
+func (cri *CaseRepositoryImpl) CreateCase(casedoc *entity.Case) (*entity.Case, []error) {
 	csd := casedoc
 	errs := cri.conn.Create(&csd).GetErrors()
 
 	if len(errs) > 0 {
-		panic(errs)
-		//return errs
+		//panic(errs)
+		return nil, errs
 	}
 
 	relation := entity.Relation{CaseNum: csd.CaseNum, PlId: "", AcId: ""}
 	cri.conn.Create(&relation)
 
-	return errs
+	return csd, nil
 }
 func (cri *CaseRepositoryImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, []error) {
 	cs := casedoc
@@ -80,6 +80,8 @@ func (cri *CaseRepositoryImpl) CloseCase(casenum string, decision *entity.Decisi
 	}
 	return nil
 }
+
+//ExtendCase ...
 func (cri *CaseRepositoryImpl) ExtendCase(casedoc *entity.Case) []error {
 	cs := casedoc
 	errs := cri.conn.Save(&cs).GetErrors()
@@ -88,16 +90,18 @@ func (cri *CaseRepositoryImpl) ExtendCase(casedoc *entity.Case) []error {
 	}
 	return errs
 }
-func (cri *CaseRepositoryImpl) DeleteCase(id int) []error {
+
+//DeleteCase ...
+func (cri *CaseRepositoryImpl) DeleteCase(id int) (*entity.Case, []error) {
 	cs, err := cri.Case(id)
 	if len(err) > 0 {
-		return err
+		return nil, err
 	}
 	errs := cri.conn.Delete(cs, id).GetErrors()
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 	}
-	return nil
+	return cs, nil
 }
 
 func (cri *CaseRepositoryImpl) JudgeCases(juid string) ([]entity.Case, error) {
