@@ -4,59 +4,48 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
+	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	usrRepo "github.com/Surafeljava/Court-Case-Management-System/SearchUse/repository"
 	usrService "github.com/Surafeljava/Court-Case-Management-System/SearchUse/service"
 	aplRepo "github.com/Surafeljava/Court-Case-Management-System/appealUse/repository"
 	aplService "github.com/Surafeljava/Court-Case-Management-System/appealUse/service"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/repository"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/service"
+	repRepo "github.com/Surafeljava/Court-Case-Management-System/reportUse/repository"
+	repService "github.com/Surafeljava/Court-Case-Management-System/reportUse/service"
+	"github.com/Surafeljava/Court-Case-Management-System/rtoken"
 
 	"github.com/Surafeljava/Court-Case-Management-System/court/handler"
 	notificationRepo "github.com/Surafeljava/Court-Case-Management-System/notificationUse/repository"
 	notificationServ "github.com/Surafeljava/Court-Case-Management-System/notificationUse/service"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
+
+//TODO: Creating database tables
+func CreateDBTables(db *gorm.DB) {
+	db.CreateTable(&entity.Court{}, &entity.Opponent{}, &entity.Case{}, &entity.Judge{}, &entity.Admin{}, &entity.Notification{}, &entity.Relation{}, &entity.Decision{}, &entity.Witness{}, &entity.Session{})
+}
 
 func main() {
 	fmt.Println("Welcome To Court Case Management System")
 
+	csrfSignKey := []byte(rtoken.GenerateRandomID(32))
+	tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
+
 	dbc, err := gorm.Open("postgres", "host=localhost port=5433 user=postgres dbname=courttest2 password=123456")
-	//dbc, err := gorm.Open("postgres", "postgres://postgres:1234@localhost/courttest2?sslmode=disable")
+
+	//Creating Database Tables
+	//CreateDBTables(dbc)
+	dbc.AutoMigrate(&entity.Court{})
+
 	defer dbc.Close()
-
-	//TODO: Creating tables on the database
-	// dbc.AutoMigrate(&entity.Opponent{})
-	// dbc.AutoMigrate(&entity.Case{})
-	// dbc.AutoMigrate(&entity.Judge{})
-	// dbc.AutoMigrate(&entity.Admin{})
-	// dbc.AutoMigrate(&entity.Notification{})
-	// dbc.AutoMigrate(&entity.Relation{})
-	// dbc.AutoMigrate(&entity.Decision{})
-	// dbc.AutoMigrate(&entity.Witness{})
-
-	// hasher := md5.New()
-	// hasher.Write([]byte("1234"))
-	// pwdnew := hex.EncodeToString(hasher.Sum(nil))
-
-	// ad := entity.Admin{AdminId: "AD1", AdminPwd: pwdnew}
-	// dbc.Create(&ad)
 
 	if err != nil {
 		panic(err)
 	}
-
-	// wit := entity.Witness{CaseNum: "CS1", WitnessDoc: "Witness sample doc", WitnessType: "type"}
-	// dbc.Create(&wit)
-
-	// des := entity.Decision{CaseNum: "CS1", DecisionDate: time.Now(), Decision: "The final decistion", DecisionDesc: "Decision description kjksahdjk"}
-	// dbc.Create(&des)
-
-	// rel := entity.Relation{CaseNum: "CS1", PlId: "OP1", AcId: "OP2"}
-	// dbc.Create(&rel)
-
-	// tmpl := template.Must(template.ParseGlob("../UI/templates/*"))
 
 	//Login repository and Service Creation
 	loginRepo := repository.NewLoginRepositoryImpl(dbc)
@@ -70,14 +59,16 @@ func main() {
 	oppRepo := repository.NewOpponentRepositoryImpl(dbc)
 	oppServ := service.NewOpponentServiceImpl(oppRepo)
 
+	//Session Repository and Service Creation
+	sessRepo := repository.NewSessionGormRepo(dbc)
+	sessServ := service.NewSessionService(sessRepo)
+
 	//Judge repository and Service Creation
 	adminJudgeRepo := repository.NewJudgeRepositoryImpl(dbc)
 	adminJudgeServ := service.NewJudgeServiceImpl(adminJudgeRepo)
 
-	loginHandler := handler.NewLoginHandler(tmpl, loginServ)
-	newcaseHandler := handler.NewCaseHandler(tmpl, caseServ)
-	opponentHandler := handler.NewOpponentHandler(tmpl, oppServ)
-	adminJudgeHandler := handler.NewAdminJudgeHandler(tmpl, adminJudgeServ)
+	sess := configSess()
+	loginHandler := handler.NewLoginHandler(tmpl, loginServ, sessServ, sess, csrfSignKey)
 
 	//Searching
 	//Case_Search
@@ -94,9 +85,24 @@ func main() {
 	notificatioRepos := notificationRepo.NewNotificationRepositoryImpl(dbc)
 	notificationService := notificationServ.NewNotificationServiceImpl(notificatioRepos)
 
+	newcaseHandler := handler.NewCaseHandler(tmpl, caseServ, notificationService)
+	opponentHandler := handler.NewOpponentHandler(tmpl, oppServ)
+	adminJudgeHandler := handler.NewAdminJudgeHandler(tmpl, adminJudgeServ)
+
 	//Notification
 	adminNotificatHandler := handler.NewNotificationHandler(tmpl, notificationService)
 	OppJudgNotificatHandler := handler.NewOppJNotificationHandler(tmpl, notificationService)
+	judgeNotificationHandler := handler.NewJudgeNotificationHandler(tmpl, notificationService)
+
+	//Report
+	reportRepo := repRepo.NewReportGormRepo(dbc)
+	reportServ := repService.NewReportServiceImpl(reportRepo)
+	reportHandle := handler.NewReportHandler(tmpl, reportServ)
+
+	//Court Create
+	courtRepo := repository.NewAdminCourtRepositoryImpl(dbc)
+	courtService := service.NewAdminCourtServiceImpl(courtRepo)
+	courtHandle := handler.NewAdminCourtHandler(tmpl, courtService)
 
 	//Appeal
 	appealRepo := aplRepo.NewAppealGormRepo(dbc)
@@ -107,18 +113,28 @@ func main() {
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	http.HandleFunc("/login", loginHandler.AuthenticateUser)
-	http.HandleFunc("/admin/cases/new", LoginRequired(UserAuthorized(newcaseHandler.NewCase)))
-	http.HandleFunc("/admin/cases/update", newcaseHandler.UpdateCase)
-	http.HandleFunc("/admin/cases/delete", newcaseHandler.DeleteCase)
-	http.HandleFunc("/admin/cases", newcaseHandler.Cases)
-	http.HandleFunc("/admin/opponent/new", opponentHandler.NewOpponent)
-	http.HandleFunc("/admin/judge/new", adminJudgeHandler.NewJudge)
+	http.HandleFunc("/logout", loginHandler.Logout)
+	http.HandleFunc("/admin/cases/new", loginHandler.AuthenticatedUser(newcaseHandler.NewCase))
+	http.HandleFunc("/admin/cases/update", loginHandler.AuthenticatedUser(newcaseHandler.UpdateCase))
+	http.HandleFunc("/admin/cases/delete", loginHandler.AuthenticatedUser(newcaseHandler.DeleteCase))
+	http.HandleFunc("/admin/cases", loginHandler.AuthenticatedUser(newcaseHandler.Cases))
+	http.HandleFunc("/admin/opponent/new", loginHandler.AuthenticatedUser(opponentHandler.NewOpponent))
+	http.HandleFunc("/admin/judge/new", loginHandler.AuthenticatedUser(adminJudgeHandler.NewJudge))
+	http.HandleFunc("/search/case", newcaseHandler.SearchCaseInfo)
 
-	http.HandleFunc("/judge/cases/close", LoginRequired(UserAuthorized(newcaseHandler.CloseCase)))
+	http.HandleFunc("/judge/cases/close", loginHandler.AuthenticatedUser(newcaseHandler.CloseCase))
+	http.HandleFunc("/user/changepwd", loginHandler.AuthenticatedUser(loginHandler.ChangePassword))
 
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )
 	// http.HandleFunc("/notification", )
+
+	//Admin Report and Statistics
+	http.HandleFunc("/admin/report", loginHandler.AuthenticatedUser(reportHandle.GetStatistics))
+
+	//Court and Admin Create
+	http.HandleFunc("/courtcreate", courtHandle.CreateCourt)
+	http.HandleFunc("/admincreate", courtHandle.AdminCreate)
 
 	//Admin_search
 	http.HandleFunc("/v1/adminSearch", adminSearch)
@@ -132,9 +148,18 @@ func main() {
 	http.HandleFunc("/v1/admin/judges/singlejudge", judgeSearchHandler.GetSingleJudge)
 
 	//notification
-	http.HandleFunc("/admin/postNotifications", adminNotificatHandler.AdminPostNotification)
-	http.HandleFunc("/judge/notifications", OppJudgNotificatHandler.NotificationsJudge)
+	http.HandleFunc("/admin/notifications/delete", adminNotificatHandler.AdminDeleteNotification)
+	http.HandleFunc("/admin/notifications", adminNotificatHandler.AdminNotifications)
+	http.HandleFunc("/admin/notifications/update", adminNotificatHandler.AdminUpdateNotification)
+	http.HandleFunc("/admin/notifications/postnotification", adminNotificatHandler.AdminPostNotification)
+
+	http.HandleFunc("/judge/notifications", judgeNotificationHandler.NotificationsJudge)
 	http.HandleFunc("/opponent/notifications", OppJudgNotificatHandler.NotificationsOpponent)
+
+	http.HandleFunc("/judge/notifications/delete", judgeNotificationHandler.DeleteJudgeNotification)
+	http.HandleFunc("/opponent/notifications/delete", OppJudgNotificatHandler.DeleteOpponentNotification)
+	http.HandleFunc("/judge/notifications/update", judgeNotificationHandler.SingleNotificationJudge)
+	http.HandleFunc("/opponent/notifications/update", OppJudgNotificatHandler.SingleNotificationOpponent)
 
 	//Appeal
 	http.HandleFunc("/admin/oppForAppealTrial", oppAppealHandler.OppTrial)
@@ -150,26 +175,18 @@ func adminSearch(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "adminSearch.layout", nil)
 }
 
-func LoginRequired(handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		//Check if there is a session
-
-		sess, err := r.Cookie("signed_user")
-
-		if err != nil {
-			http.Redirect(w, r, "/login", 302)
-			return
-		}
-
-		//fmt.Printf(sess.Value)
-		fmt.Println(sess.Value)
-		handler.ServeHTTP(w, r)
+func configSess() *entity.Session {
+	tokenExpires := time.Now().Add(time.Minute * 30).Unix()
+	sessionID := rtoken.GenerateRandomID(32)
+	signingString, err := rtoken.GenerateRandomString(32)
+	if err != nil {
+		panic(err)
 	}
-}
+	signingKey := []byte(signingString)
 
-func UserAuthorized(handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		//Check the authorization of the user accessing the link
-		handler.ServeHTTP(w, r)
+	return &entity.Session{
+		Expires:    tokenExpires,
+		SigningKey: signingKey,
+		UUID:       sessionID,
 	}
 }

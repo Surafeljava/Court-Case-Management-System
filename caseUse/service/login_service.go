@@ -44,3 +44,12 @@ func (lgi *LoginServiceImpl) CheckOpponent(id string, pwd string) (*entity.Oppon
 	}
 	return opp, nil
 }
+
+func (lgi *LoginServiceImpl) GetPassword(typ int, id string) (string, error) {
+	res, err := lgi.loginRepo.GetPassword(typ, id)
+	return res, err
+}
+func (lgi *LoginServiceImpl) ChangePassword(typ int, id string, pwd string) (string, error) {
+	res, err := lgi.loginRepo.ChangePassword(typ, id, pwd)
+	return res, err
+}

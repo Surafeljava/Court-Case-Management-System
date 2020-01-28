@@ -1,0 +1,61 @@
+{{ define "user.changepwd.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "user.changepwd.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "user.changepwd.content" }}
+
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
+
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Change Password</h2>
+    </div>
+
+    <form form class="form-newcase" action="/user/changepwd" method="POST">
+    <label class='col-form-label'> {{ .Message }} </label>
+    <div class="col-auto">
+        <label for='id' class='col-form-label'>Current User ID</label>
+        <input type='text' class='form-control' name='id' id='id' readonly autofocus placeholder='User ID' value="{{ .ID }}">
+    </div>
+    <div class="col-auto">
+        <label for='old_pwd' class='col-form-label'>Old Password</label>
+        <input type='password' class='form-control' name='old_pwd' id='old_pwd' required autofocus placeholder='Old Password'>
+    </div>
+    <div class="col-auto">
+        <label for='new_pwd' class='col-form-label'>New Password</label>
+        <input type='password' class='form-control' name='new_pwd' id='new_pwd' required autofocus placeholder='New Password'>
+    </div>
+    <div class="col-auto">
+        <label for='confirm_pwd' class='col-form-label'>Confirm Password</label>
+        <input type='password' class='form-control' name='confirm_pwd' id='confirm_pwd' required autofocus placeholder='Confirm Password'>
+    </div>
+    
+    <div class="col-auto">
+        <button type="submit" class='btn btn-primary form-control'> Change Password </button>
+        <button type="reset" class='btn btn-warning form-control'> Reset </button>
+    </div>
+    </form>
+
+</main>
+</body>
+{{ end}}

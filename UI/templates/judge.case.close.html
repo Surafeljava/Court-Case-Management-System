@@ -7,38 +7,57 @@
 {{ end }} 
 
 {{ define "judge.case.close.content" }}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> Close Case </title>
-</head>
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
 
-<body>
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Create New Case</h2>
+    </div>
 
-    <h1> Close Case </h1>
+    <form form class="form-newcase" action="/judge/cases/close" method="POST">
+        <div class="col-auto">
+            <label for='case_num' class='col-form-label'>Choose Case to Close</label>
+            <select class="form-control" id='case_num' name="case_num" required autofocus>
+                <optgroup label="Cases">
+                    {{range .}}
+                        <option value="{{ .CaseNum }}"> {{ .CaseNum }} </option>
+                    {{end}}
+                </optgroup>
+            </select>
+        </div>
 
-    <form action="/judge/case/close" method="POST">
-        <label for="case_num"> Choose Case </label>
-        <select class="case_num" name="case_num" required>
-            <optgroup label="Cases">
-                {{range .}}
-                    <option value="{{ .CaseNum }}"> {{ .CaseNum }} </option>
-                {{end}}
-            </optgroup>
-        </select>
-        <br>
-        <input type="text" name="final_decision" required placeholder="Case Final Decision" />
-        <br><br>
-        <textarea name="close_desc" required placeholder="Case Close Description" cols="30" rows="20"></textarea>
-        <br><br>
+        <div class="col-auto">
+            <label for='case_num' class='col-form-label'>Final Decision</label>
+            <input type="text" class="form-control" id='case_num' name="final_decision" required autofocus placeholder="Case Final Decision" />
+        </div>
 
-        <button type="submit"> Close Case </button>
-        <button type="reset"> Reset </button>
+        <div class="col-auto">
+            <label for='close_desc' class='col-form-label'>Case Close Description</label>
+            <textarea class="form-control" id='close_desc' name="close_desc" required placeholder="Case Close Description" rows="5"></textarea>
+        </div>
+
+        <div class="col-auto">
+             <button type="submit" class='btn btn-primary form-control'> Close Case </button>
+            <button type="reset" class='btn btn-warning form-control'> Reset </button>
+        </div>
     </form>
 
+</main>
 </body>
-
-</html>
 {{ end }}

@@ -1,0 +1,62 @@
+{{ define "admin.court.new.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.court.new.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.court.new.content" }}
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
+
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Create Court</h2>
+    </div>
+
+    <form form class="form-newcase" action="/courtcreate" method="POST">
+    <h5> Message: {{ . }} </h5>
+    <div class="col-auto">
+        <label for='court_name' class='col-form-label'>Court Name</label>
+        <input type='text' class='form-control' name='court_name' id='court_name' required autofocus placeholder='Court Name'>
+    </div>
+    <div class="col-auto">
+        <label for="court_level" class='col-form-label'> Court Levels </label>
+        <select class='form-control' id='court_level' name="court_level" required>
+            <optgroup label="Court Levels">
+                <option value="federal supreme" selected>Federal Supreme Court</option>
+                <option value="supreme">Supreme Court</option>
+                <option value="state court">State Court</option>
+            </optgroup>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label for="court_address" class='col-form-label'> Court Address </label>
+        <input class='form-control' type="text" required name='court_address' id='court_address'>
+    </div>
+    <div class="col-auto">
+        <label for="court_phone" class='col-form-label'> Court Phone </label>
+        <input class='form-control' type="phone" required name='court_phone' id='court_phone'>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class='btn btn-primary form-control'> Create Court </button>
+        <button type="reset" class='btn btn-warning form-control'> Reset </button>
+    </div>
+    </form>
+
+</main>
+{{ end }}

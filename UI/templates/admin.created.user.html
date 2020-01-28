@@ -1,0 +1,29 @@
+{{ define "admin.created.user.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.created.user.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.created.user.content" }}
+
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>New Created User Information</h2>
+    </div>
+
+    <div class="col-auto">
+        <h4> User Name:  <b> {{ .UserName }} </b> </h4>
+        <h4> User ID: <b> {{ .UserID }}  </b> </h4>
+        <label class="text-danger">{{ .AddtionalMsg }}</label>
+        <h4> User Password: <b> {{ .UserPwd }} </b> </h4>
+        <h5><a href="/login"> Login Now </a></h5>
+    </div>
+
+</main>
+</body>
+
+{{ end }}

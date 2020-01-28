@@ -26,8 +26,8 @@ func (osi *OpponentServiceImpl) Opponent(id int) (*entity.Opponent, []error) {
 	return opp, nil
 }
 
-func (osi *OpponentServiceImpl) CreateOpponent(opp *entity.Opponent) (*entity.Opponent, []error) {
-	opp, err1 := osi.oppoRepo.CreateOpponent(opp)
+func (osi *OpponentServiceImpl) CreateOpponent(case_num string, opp *entity.Opponent) (*entity.Opponent, []error) {
+	opp, err1 := osi.oppoRepo.CreateOpponent(case_num, opp)
 	if len(err1) > 0 {
 		panic(err1)
 	}

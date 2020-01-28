@@ -1,0 +1,31 @@
+{{ define "admin.notifications.update.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.notifications.update.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.notifications.update.content" }}
+<div class="container">
+    <h1> Update notification </h1>
+
+    <form action="/admin/notifications/update" method="POST">
+        
+        <input type="text" name="id" readonly placeholder="ID" value="{{ .ID }}" />
+        <br><br>
+        <input type="text" name="not_title" required placeholder="notification Title" value="{{ .NotTitle}}" />
+        <br><br>
+       
+        <textarea name="not_desc" required placeholder="Notification Description" cols="40" rows="10">{{ .NotDescription }}</textarea>
+        <br><br>
+        <input type="text" required name="not_level" value="{{ .NotLevel}}">
+        <br><br>
+        <input type="date" readonly name="not_date" value="{{ .NotDate}}" placeholder="2020-01-05">
+        <br><br>
+       
+        <button type="submit"> Update Notification </button>
+    </form>
+
+</div>
+{{ end }}

@@ -7,48 +7,67 @@
 {{ end }} 
 
 {{ define "admin.newcase.content" }}
-<html lang="en">
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> Create New Case </title>
-</head>
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Create New Case</h2>
+    </div>
 
-<body>
-
-    <h1> New Case </h1>
-
-    <form action="/admin/cases/new" method="POST">
-        <input type="text" name="case_title" required placeholder="Case Title" />
-        <br><br>
-        <textarea name="case_desc" required placeholder="Case Description" cols="30" rows="20"></textarea>
-        <br><br>
-        <label for="case_type"> Case Type </label>
-        <select class="case_type" name="case_type" required>
+    <form form class="form-newcase" action="/admin/cases/new" method="POST">
+    <div class="col-auto">
+        <label for='case_title' class='col-form-label'>Case Title</label>
+        <input type='text' class='form-control' name='case_title' id='case_title' required autofocus placeholder='Case Title'>
+    </div>
+    <div class="col-auto">
+        <label for='case_desc' class='col-form-label'>Case Description</label>
+        <textarea type='text' class='form-control' name='case_desc' id='case_desc' required autofocus placeholder='Case Description' rows="5"></textarea>
+    </div>
+    <div class="col-auto">
+        <label for="case_type" class='col-form-label'> Case Type </label>
+        <select class='form-control' id='case_type' name="case_type" required>
             <optgroup label="Case Type">
                 <option value="Criminal" selected>Criminal</option>
                 <option value="Civil">Civil</option>
             </optgroup>
         </select>
-        <br><br>
-        <input type="date" required name="court_date">
-        <br><br>
-        <label for="case_judge"> Choose Judge </label>
-        <select class="case_judge" name="case_judge" required>
+    </div>
+    <div class="col-auto">
+        <label for="case_type" class='col-form-label'> Court Date </label>
+        <input class='form-control' type="date" required name='court_date' id='court_date'>
+    </div>
+     <div class="col-auto">
+        <label for="case_judge" class='col-form-label'> Judge for the Case </label>
+        <select class='form-control' id='case_judge' name="case_judge" required>
             <optgroup label="Case Judge">
                 {{range .}}
                     <option value="{{ .JudgeId }}"> {{ .JudgeId }} </option>
                 {{end}}
             </optgroup>
         </select>
-        <br><br>
-        <button type="submit"> Create Case </button>
-        <button type="reset"> Reset </button>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class='btn btn-primary form-control'> Create Case </button>
+        <button type="reset" class='btn btn-warning form-control'> Reset </button>
+    </div>
     </form>
 
+</main>
 </body>
-
-</html>
 {{ end }}

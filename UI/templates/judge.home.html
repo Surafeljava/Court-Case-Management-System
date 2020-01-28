@@ -7,28 +7,27 @@
 {{ end }} 
 
 {{ define "judge.home.content" }}
-<html lang="en">
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Judge Home</h2>
+    </div>
+    <h3> ID: {{ .JudgeId }} </h3>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Judge Home Page</title>
-</head>
+    <div class="row">
+        <div class="col-sm-3">
+            <h5> <a href="/judge/cases/close?id={{ . }}" class="btn btn-primary"> Close Case </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/user/changepwd?id={{ . }}" class="btn btn-primary"> Change Password </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/judge/notifications?id={{ . }}" class="btn btn-primary"> View Notification </a> </h5>
+        </div>
+        
+    </div>
 
-<body>
-
-    <h1> Judge Page </h1>
-    <h3> Judge ID: {{ .JudgeId }} </h3>
-    <ul>
-        <li> <a href="/judge/case/close?id={{ .JudgeId }}"> Close Case </a> </li>
-        <li> <a href="/pwdchange?id={{ .JudgeId }}"> Change Password </a> </li>
-        <li> <a href="/judge/notifications?id={{ .JudgeId }}"> View Notification </a> </li>
-        <li> <a href="#"> View Self Report </a> </li>
-        <li> <a href="#"> Search </a> </li>
-    </ul>
-
+</main>
 </body>
-
-</html>
 {{ end }}

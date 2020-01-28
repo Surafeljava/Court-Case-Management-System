@@ -7,31 +7,31 @@
 {{ end }} 
 
 {{ define "opponent.home.content" }}
-<html lang="en">
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Opponent Home</h2>
+    </div>
+    <h3> ID: {{ . }} </h3>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Home Page</title>
-</head>
+    <div class="row">
+        <div class="col-sm-3">
+            <h5> <a href="/admin/oppAppeal?id={{ . }}" class="btn btn-primary"> Appeal on Case </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/user/changepwd?id={{ . }}" class="btn btn-primary"> Change Password </a> </h5>
+        </div>
+        <div class="col-sm-3">
+            <h5> <a href="/opponent/notifications?id={{ . }}" class="btn btn-primary"> View Notification </a> </h5>
+        </div>
+    </div>
 
-<body>
-
-    <h1> Opponent Page </h1>
-    <h3> Opponent ID: {{ .OppId }} </h3>
-    <ul>
-        <li> <a href="/admin/oppAppeal?id={{ .OppId }}"> Appeal on Case </a> </li>
-        <li> <a href="/pwdchange"> Change Password </a> </li>
-        <li> <a href="/opponent/notifications?id={{ .OppId }}"> View Notification </a> </li>
-        <li> <a href="#"> View Case Report </a> </li>
-    </ul>
-
-    <h4>APPEAL ON CASE</h4>
+    <h4>Appeal on a Case</h4>
         <form class="form-inline" method="get" action="/admin/oppAppeal">
-            <label for="id" class="col-sm-2 col-form-label">YOUR OPP ID </label>
+            <label for="id" class="col-sm-2 col-form-label">Opponent ID: </label>
             <input type="text" class="col-sm-2 form-control" name="opp_appeal" id="opp_appeal" value="1" placeholder="YOUR OPP ID">
-            <button type="submit" class="btn btn-primary">GET APPEAL FORM</button>
+            <button type="submit" class="btn btn-warning">GET APPEAL FORM</button>
         </form>
 
 </body>

@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
-	"github.com/Surafeljava/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type LoginRepositoryImpl struct {
@@ -92,4 +92,84 @@ func (lgi *LoginRepositoryImpl) CheckOpponent(id string, pwd string) (*entity.Op
 	}
 
 	return nil, nil
+}
+
+func (lgi *LoginRepositoryImpl) GetPassword(typ int, id string) (string, error) {
+
+	// uid := id
+	if typ == 0 {
+		admin := entity.Admin{}
+		errs := lgi.conn.Where("admin_id = ?", id).Find(&admin).GetErrors()
+		if len(errs) > 0 {
+			return "", errs[0]
+		}
+		return admin.AdminPwd, nil
+	} else if typ == 1 {
+		judge := entity.Judge{}
+		errs := lgi.conn.Where("judge_id = ?", id).Find(&judge).GetErrors()
+		if len(errs) > 0 {
+			return "", errs[0]
+		}
+		return judge.JudgePwd, nil
+	} else {
+		opp := entity.Opponent{}
+		errs := lgi.conn.Where("opp_id = ?", id).Find(&opp).GetErrors()
+		if len(errs) > 0 {
+			return "", errs[0]
+		}
+		return opp.OppPwd, nil
+	}
+}
+func (lgi *LoginRepositoryImpl) ChangePassword(typ int, id string, pwd string) (string, error) {
+	if typ == 0 {
+		admin := entity.Admin{}
+		errs := lgi.conn.Where("admin_id = ?", id).Find(&admin).GetErrors()
+		if len(errs) > 0 {
+			return "error changing password", errs[0]
+		}
+
+		admin.AdminPwd = HashPwd(pwd)
+		err := lgi.conn.Where("admin_id = ?", id).Save(&admin).GetErrors()
+		if len(err) > 0 {
+			return "error changing password", errs[0]
+		}
+
+		return "Password Changed!", nil
+	} else if typ == 1 {
+		judge := entity.Judge{}
+		errs := lgi.conn.Where("judge_id = ?", id).Find(&judge).GetErrors()
+		if len(errs) > 0 {
+			return "error changing password", errs[0]
+		}
+
+		judge.JudgePwd = HashPwd(pwd)
+		err := lgi.conn.Where("judge_id = ?", id).Save(&judge).GetErrors()
+		if len(err) > 0 {
+			return "error changing password", errs[0]
+		}
+
+		return "Password Changed!", nil
+	} else {
+		opp := entity.Opponent{}
+		errs := lgi.conn.Where("opp_id = ?", id).Find(&opp).GetErrors()
+		if len(errs) > 0 {
+			return "error changing password", errs[0]
+		}
+
+		opp.OppPwd = HashPwd(pwd)
+		err := lgi.conn.Where("opp_id = ?", id).Save(&opp).GetErrors()
+		if len(err) > 0 {
+			return "error changing password", errs[0]
+		}
+
+		return "Password Changed!", nil
+	}
+}
+
+func HashPwd(pwd string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(pwd))
+	pwdnew := hex.EncodeToString(hasher.Sum(nil))
+
+	return pwdnew
 }

@@ -1,0 +1,53 @@
+{{ define "admin.account.new.layout" }} 
+
+{{ template "navbar" . }} 
+{{ template "admin.account.new.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "admin.account.new.content" }}
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
+
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Create Admin Account</h2>
+    </div>
+
+    <form form class="form-newcase" action="/admincreate" method="POST">
+    <h5> Message: {{ . }} </h5>
+    <div class="col-auto">
+        <label for='admin_id' class='col-form-label'>Admin ID</label>
+        <input type='text' class='form-control' name='admin_id' id='admin_id' readonly autofocus value="AD1">
+    </div>
+    <div class="col-auto">
+        <label for="admin_pwd" class='col-form-label'> Password </label>
+        <input class='form-control' type="password" required name='admin_pwd' id='admin_pwd' minlength="4">
+    </div>
+    <div class="col-auto">
+        <label for="admin_pwd_conf" class='col-form-label'> Confirm Password </label>
+        <input class='form-control' type="password" required name='admin_pwd_conf' id='admin_pwd_conf' minlength="4">
+    </div>
+
+    <div class="col-auto">
+        <button type="submit" class='btn btn-primary form-control'> Create Admin </button>
+        <button type="reset" class='btn btn-warning form-control'> Reset </button>
+    </div>
+    </form>
+
+</main>
+{{ end }}

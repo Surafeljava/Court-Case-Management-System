@@ -46,17 +46,19 @@ func (ajh *AdminJudgeHandler) NewJudge(w http.ResponseWriter, r *http.Request) {
 		_, fh, _ := r.FormFile("judge_photo")
 
 		judge_photo := fh.Filename
-		newop := entity.Judge{JudgeId: judge_id, JudgePwd: judge_pwd, JudgeName: judge_name, JudgeGender: judge_gender, JudgeAddress: judge_address, JudgePhone: judge_phone, JudgeType: judge_type, JudgePhoto: judge_photo}
+		newjd := entity.Judge{JudgeId: judge_id, JudgePwd: judge_pwd, JudgeName: judge_name, JudgeGender: judge_gender, JudgeAddress: judge_address, JudgePhone: judge_phone, JudgeType: judge_type, JudgePhoto: judge_photo}
 
-		_, err2 := ajh.juSrv.CreateJudge(&newop)
+		jd, err2 := ajh.juSrv.CreateJudge(&newjd)
 
 		if len(err2) > 0 {
 			panic(err2)
 		}
 
+		usr := entity.Messg{UserID: jd.JudgeId, UserName: jd.JudgeName, UserPwd: "1234", AddtionalMsg: "Please Change your > PASSWORD < for security purpose"}
+		ajh.tmpl.ExecuteTemplate(w, "admin.created.user.layout", usr)
+
 	} else {
 		ajh.tmpl.ExecuteTemplate(w, "admin.newjudge.layout", nil)
 	}
 
-	http.Redirect(w, r, "/admin/judge/new", http.StatusSeeOther)
 }

@@ -25,6 +25,11 @@ func (osi *JudgeServiceImpl) Judge(id int) (*entity.Judge, []error) {
 	return jud, nil
 }
 
+func (osi *JudgeServiceImpl) CaseTypeJudges(cstype string) ([]entity.Judge, error) {
+	juds, errs := osi.judgeRepo.CaseTypeJudges(cstype)
+	return juds, errs
+}
+
 func (osi *JudgeServiceImpl) CreateJudge(judge *entity.Judge) (*entity.Judge, []error) {
 	judge, err1 := osi.judgeRepo.CreateJudge(judge)
 	if len(err1) > 0 {

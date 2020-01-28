@@ -5,7 +5,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
+	"os"
 	"time"
 
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
@@ -23,6 +25,29 @@ func NewOpponentHandler(T *template.Template, OS caseUse.OpponentService) *Oppon
 
 func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 
+	if r.Method == http.MethodGet {
+
+		casenum := r.URL.Query().Get("case_num")
+		opptype := r.URL.Query().Get("opp_type")
+
+		if opptype == "pl" {
+			opptype = "Plaintiff"
+		} else if opptype == "ac" {
+			opptype = "Accused"
+		}
+
+		data := struct {
+			CaseNum string
+			OppType string
+		}{
+			CaseNum: casenum,
+			OppType: opptype,
+		}
+
+		oh.tmpl.ExecuteTemplate(w, "admin.newopp.layout", data)
+
+	}
+
 	if r.Method == http.MethodPost {
 
 		allOpp, err1 := oh.oppSrv.Opponents()
@@ -30,11 +55,11 @@ func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 			panic(err1)
 		}
 
+		csnum := r.FormValue("case_num")
+
 		op_id := len(allOpp) + 1
 		opp_id := fmt.Sprintf("OP%d", op_id)
 
-		//judge_id := "JU1"
-		//hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 		hasher := md5.New()
 		hasher.Write([]byte("1234"))
 		pwd := hex.EncodeToString(hasher.Sum(nil))
@@ -44,26 +69,51 @@ func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 		opp_type := r.FormValue("opp_type")
 		opp_name := r.FormValue("opp_fn")
 		opp_gender := r.FormValue("opp_gender")
-		layoutISO := "2006-01-02"
-		opp_bd, _ := time.Parse(layoutISO, r.FormValue("opp_bd"))
-		//opp_bd := r.FormValue("opp_bd")
-		fmt.Println(r.FormValue("opp_bd"))
+		dateFormat := "2006-01-02"
+		opp_bd, _ := time.Parse(dateFormat, r.FormValue("opp_bd"))
 		opp_address := r.FormValue("opp_address")
 		opp_phone := r.FormValue("opp_phone")
 		_, fh, _ := r.FormFile("opp_photo")
 
+		//fileNm, _ := FileUpload(r)
+
+		file, handler, _ := r.FormFile("opp_photo")
+
+		defer file.Close()
+		f, _ := os.OpenFile("../../assets/img/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+		io.Copy(f, file)
+
 		opp_photo := fh.Filename
 		newop := entity.Opponent{OppId: opp_id, OppPwd: opp_pwd, OppType: opp_type, OppName: opp_name, OppGender: opp_gender, OppBD: opp_bd, OppAddress: opp_address, OppPhone: opp_phone, OppPhoto: opp_photo}
 
-		_, err2 := oh.oppSrv.CreateOpponent(&newop)
+		opp, err2 := oh.oppSrv.CreateOpponent(csnum, &newop)
 
 		if len(err2) > 0 {
 			panic(err2)
 		}
 
-	} else {
-		oh.tmpl.ExecuteTemplate(w, "admin.newopp.layout", nil)
-	}
+		usr := entity.Messg{UserID: opp.OppId, UserName: opp.OppName, UserPwd: "1234", AddtionalMsg: "Please Change your > PASSWORD < for security purpose"}
+		oh.tmpl.ExecuteTemplate(w, "admin.created.user.layout", usr)
 
-	http.Redirect(w, r, "/admin/opponent/new", http.StatusSeeOther)
+	} else {
+
+	}
+}
+
+func FileUpload(r *http.Request) (string, error) {
+
+	file, handler, err := r.FormFile("opp_photo")
+
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+	f, err := os.OpenFile("../assets/img/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+
+	if err != nil {
+		return "", err
+	}
+	io.Copy(f, file)
+
+	return handler.Filename, nil
 }

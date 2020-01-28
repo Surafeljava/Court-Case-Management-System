@@ -7,29 +7,68 @@
 {{ end }} 
 
 {{ define "admin.case.update.content" }}
-<div class="container">
-    <h1> Update Case </h1>
+<style>
+    .form-newcase {
+        width: 100%;
+        max-width: 500px;
+        padding: 15px;
+    }
 
-    <form action="/admin/cases/update" method="POST">
-        {{ $dt := .CaseCreation.Format "2006 Jan 02" }}
-        <input type="text" name="id" readonly placeholder="ID" value="{{ .ID }}" />
-        <br><br>
-        <input type="text" name="case_num" readonly placeholder="Case Title" value="{{ .CaseNum }}" />
-        <br><br>
-        <input type="text" name="case_title" required placeholder="Case Title" value="{{ .CaseTitle }}"/>
-        <br><br>
-        <textarea name="case_desc" required placeholder="Case Description" cols="30" rows="20">{{ .CaseDesc }}</textarea>
-        <br><br>
-        <input type="text" name="case_type" readonly placeholder="Case Title" value="{{ .CaseType }}"/>
-        <br><br>
-        <input type="date" readonly name="case_creation" value="{{ $dt }}" placeholder="2020-01-05">
-        <br><br>
-        <input type="date" required name="court_date" value="{{ $dt }}" placeholder="2020-01-05">
-        <br><br>
-        <input type="text" required name="case_judge" value="{{ .CaseJudge }}">
-        <br><br>
-        <button type="submit"> Update Case </button>
+    .form-newcase .form-control {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+        margin: 10px;
+    }
+</style>
+<body background="../assets/img/all_bg.jpg">
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h2>Update Case</h2>
+    </div>
+
+    <form form class="form-newcase" action="/admin/cases/update" method="POST">
+    <div class="col-auto">
+    <label for='case_id' class='col-form-label'>Case ID</label>
+    <input type="text" class='form-control' name="case_id" id='case_id' readonly placeholder="ID" value="{{ .ID }}" />
+    </div>
+    <div class="col-auto">
+    <label for='case_num' class='col-form-label'>Case Number</label>
+    <input type="text" class='form-control' name="case_num" id='case_num' readonly placeholder="Case Title" value="{{ .CaseNum }}" />
+    </div>
+    <div class="col-auto">
+        <label for='case_title' class='col-form-label'>Case Title</label>
+        <input type="text" class='form-control' name='case_title' id='case_title' required placeholder="Case Title" value="{{ .CaseTitle }}"/>
+    </div>
+    <div class="col-auto">
+        <label for='case_desc' class='col-form-label'>Case Description</label>
+        <textarea type='text' class='form-control' name='case_desc' id='case_desc' required autofocus placeholder="Case Description" rows="5">{{ .CaseDesc }}</textarea>
+    </div>
+    <div class="col-auto">
+        <label for='case_type' class='col-form-label'>Case Type</label>
+        <input type="text" class='form-control' name="case_type" id='case_type' readonly placeholder="Case Type" value="{{ .CaseType }}"/>
+    </div>
+    <div class="col-auto">
+        <label for='case_creation' class='col-form-label'>Case Creation Date</label>
+        <input type="text" class='form-control' name="case_creation" id='case_creation' readonly name="case_creation" value="{{ .CaseCreation }}" placeholder="2020-01-05">
+    </div>
+    <div class="col-auto">
+        <label for="court_date" class='col-form-label'> New Court Date </label>
+        <input type="date" class='form-control' required name="court_date" id='court_date' value="" placeholder="2020-01-05">
+    </div>
+     <div class="col-auto">
+        <label for="case_judge" class='col-form-label'> Judge for the Case </label>
+        <input type="text" readonly class='form-control' id='case_judge' name="case_judge" value="{{ .CaseJudge }}">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class='btn btn-primary form-control'> Update Case </button>
+        <button type="reset" class='btn btn-warning form-control'> Reset </button>
+    </div>
     </form>
 
-</div>
+</main>
+</body>
 {{ end }}

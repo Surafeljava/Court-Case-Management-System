@@ -1,6 +1,4 @@
 {{ define "navbar" }}
-<!DOCTYPE html>
-<html>
 
 <head>
     <title>Court Case Manegment System</title>
@@ -12,11 +10,19 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">COURT CASE MANAGMENT</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        
+        <div class="row">
+            <div class="col-12">
+                <a class="navbar-brand" href="/">COURT CASE MANAGMENT</a>
+            </div>
+            <div class="col-3">
+                <h5><a href="/courtcreate" class="btn btn-secondary"> Create Court </a></h5>
+            </div>
+            <div class="col-4">
+                <h5><a href="/admincreate" class="btn btn-secondary"> Create Admin </a></h5>
+            </div>
+        </div>
     </nav>
-    {{ end }}
+</body>
+{{ end }}
 

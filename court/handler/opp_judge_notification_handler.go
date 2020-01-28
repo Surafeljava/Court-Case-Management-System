@@ -22,23 +22,8 @@ func NewOppJNotificationHandler(T *template.Template, NotfServ notificationUse.N
 
 }
 
-//CheckForWhom ..it checks for whom the notification will be posted
-func CheckForWhom(level string) int {
-
-	fmt.Println(level)
-	if level == "all" {
-		// fmt.Println(">>>> AD-checked! and 0 returned")
-		return 0
-	} else if level == "judges" {
-		return 1
-	} else if level == "opponents" {
-		return 2
-	}
-	return -1
-}
-
-//DeleteNotification deletes notification by id
-func (ojh *OppJNotificationHandler) DeleteNotification(w http.ResponseWriter, r *http.Request) {
+//DeleteOpponentNotification deletes notification by id
+func (ojh *OppJNotificationHandler) DeleteOpponentNotification(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 
@@ -57,6 +42,7 @@ func (ojh *OppJNotificationHandler) DeleteNotification(w http.ResponseWriter, r 
 		}
 
 		forWhom := CheckForWhom(notification.NotLevel)
+<<<<<<< HEAD
 		if forWhom == 1 {
 
 			_, errs := ojh.notfService.DeleteNotification(uint(id))
@@ -67,6 +53,9 @@ func (ojh *OppJNotificationHandler) DeleteNotification(w http.ResponseWriter, r 
 
 			http.Redirect(w, r, "/judge/notifications", http.StatusSeeOther)
 		} else if forWhom == 2 {
+=======
+		if forWhom == 2 {
+>>>>>>> 1935c4e07748c4e5ff40e9145a8ca427119e3593
 
 			_, errs := ojh.notfService.DeleteNotification(uint(id))
 
@@ -75,35 +64,13 @@ func (ojh *OppJNotificationHandler) DeleteNotification(w http.ResponseWriter, r 
 			}
 
 			http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
-		} else if forWhom == 0 {
+		} else {
+			http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
 			//display error message
 			//if notification level is "all" cant be deleted
 		}
 
 	}
-}
-
-//NotificationsJudge retrieves all notification of judges
-func (ojh *OppJNotificationHandler) NotificationsJudge(w http.ResponseWriter, r *http.Request) {
-	notifications, errs := ojh.notfService.Notifications()
-	if len(errs) > 0 {
-		return
-	}
-
-	notificationStore := []entity.Notification{}
-
-	for i := 0; i < len(notifications); i++ {
-
-		forWhom := CheckForWhom(notifications[i].NotLevel)
-
-		if forWhom == 0 || forWhom == 1 {
-			notificationStore = append(notificationStore, notifications[i])
-
-		}
-
-	}
-	ojh.tmpl.ExecuteTemplate(w, "judge.notifications.layout", notificationStore)
-
 }
 
 //NotificationsOpponent retrieves all notification of opponents
@@ -126,5 +93,32 @@ func (ojh *OppJNotificationHandler) NotificationsOpponent(w http.ResponseWriter,
 
 	}
 	ojh.tmpl.ExecuteTemplate(w, "opponent.notifications.layout", notificationStore)
+
+}
+
+//SingleNotificationOpponent retrives single notification
+func (ojh *OppJNotificationHandler) SingleNotificationOpponent(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == http.MethodGet {
+
+		idRaw := r.URL.Query().Get("id")
+		//idr := 30
+		id, err := strconv.Atoi(idRaw)
+
+		if err != nil {
+			fmt.Println("Can't get the id!")
+			panic(err)
+		}
+
+		notiff, _ := ojh.notfService.ViewNotification(uint(id))
+
+		ojh.tmpl.ExecuteTemplate(w, "opponent.notifications.update.layout", notiff)
+
+	} else if r.Method == http.MethodPost {
+		http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
+	} else {
+
+		http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
+	}
 
 }

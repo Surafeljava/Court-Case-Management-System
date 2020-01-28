@@ -30,6 +30,12 @@ type Case struct {
 	CaseJudge     string `gorm:"type:varchar(50);not null"`
 }
 
+type CaseInfo struct {
+	CaseTitle  string    `json:"case_title" gorm:"type:varchar(255)"`
+	CaseStatus string    `json:"case_status" gorm:"type:varchar(255)"`
+	CourtDate  time.Time `json:"court_date" gorm:"type:varchar(255)"`
+}
+
 type Relation struct {
 	ID      uint
 	CaseNum string `gorm:"type:varchar(255);not null"`
@@ -97,4 +103,19 @@ type Session struct {
 	UUID       string `gorm:"type:varchar(255);not null"`
 	Expires    int64  `gorm:"type:varchar(255);not null"`
 	SigningKey []byte `gorm:"type:varchar(255);not null"`
+}
+
+type Messg struct {
+	UserID       string
+	UserPwd      string
+	UserName     string
+	AddtionalMsg string
+}
+
+type Court struct {
+	ID           uint
+	CourtName    string `gorm:"type:varchar(255);not null"`
+	CourtLevel   string `gorm:"type:varchar(255);not null"`
+	CourtAddress string `gorm:"type:varchar(255);not null"`
+	CourtPhone   string `gorm:"type:varchar(255);not null"`
 }
