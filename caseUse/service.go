@@ -37,6 +37,8 @@ type LoginService interface {
 	CheckAdmin(id string, pwd string) (*entity.Admin, []error)
 	CheckJudge(id string, pwd string) (*entity.Judge, []error)
 	CheckOpponent(id string, pwd string) (*entity.Opponent, []error)
+	GetPassword(typ int, id string) (string, error)
+	ChangePassword(typ int, id string, pwd string) (string, error)
 }
 
 //CaseSearchService ...

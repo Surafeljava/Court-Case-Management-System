@@ -2,6 +2,8 @@ package handler
 
 import (
 	"context"
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -233,10 +235,70 @@ func (uh *LoginHandler) ChangePassword(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodPost {
-		//0. Check who is trying to change the password Admin, Judge, Opponent
 		//1. Check if the old password matches
 		//2. Check if the two new passwords match
 		//3. Hash the new password
 		//4. Change the password in the user database
+
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
+		}
+
+		//Get the password change input values
+		user_id := r.FormValue("id")
+		old_pwd := r.FormValue("old_pwd")
+		new_pwd := r.FormValue("new_pwd")
+		confirm_pwd := r.FormValue("confirm_pwd")
+
+		//0. Check who is trying to change the password Admin, Judge, Opponent
+		who := CheckWho(user_id)
+
+		if new_pwd != confirm_pwd {
+			message := struct {
+				ID      string
+				Message string
+			}{
+				ID:      user_id,
+				Message: "Please Confirm your password!",
+			}
+			uh.tmpl.ExecuteTemplate(w, "user.changepwd.layout", message)
+			return
+		}
+
+		pwd, err := uh.loginSrv.GetPassword(who, user_id)
+
+		hasher := md5.New()
+		hasher.Write([]byte(old_pwd))
+		pwdnew := hex.EncodeToString(hasher.Sum(nil))
+
+		if pwdnew == pwd {
+			mess, err := uh.loginSrv.ChangePassword(who, user_id, new_pwd)
+			if err != nil {
+				message := struct {
+					ID      string
+					Message string
+				}{
+					ID:      user_id,
+					Message: mess,
+				}
+				uh.tmpl.ExecuteTemplate(w, "user.changepwd.layout", message)
+				return
+			}
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+
+		message := struct {
+			ID      string
+			Message string
+		}{
+			ID:      user_id,
+			Message: "Please Try Again",
+		}
+		uh.tmpl.ExecuteTemplate(w, "user.changepwd.layout", message)
+		return
+
 	}
 }
