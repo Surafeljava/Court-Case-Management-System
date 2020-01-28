@@ -22,20 +22,33 @@ func NewAppealHandler(appeal user.AppealService) *AppealHandler {
 
 //OppAppeal -
 func (oppAp *AppealHandler) OppAppeal(w http.ResponseWriter, r *http.Request) {
-	oppNum := r.FormValue("opp_appeal")
-	cases, opp, wit, dic, err := oppAp.appealService.Appeal(oppNum)
+  oppNum := r.FormValue("opp_appeal")
+  cases, opp, wit, dic, err := oppAp.appealService.Appeal(oppNum)
 
-	Example := cases.CaseNum + " " + "Opponent ID : " + opp.OppName + "Witness:" + wit.WitnessDoc + "Decision: " + dic.DecisionDesc
-	fmt.Println(oppNum)
-	fmt.Println(Example)
+  data := entity.AppealForm{
+    CaseNum:          cases.CaseNum,
+    CaseCreationDate: cases.CaseCreation,
+    CaseTitle:        cases.CaseTitle,
+    CaseDesc:         cases.CaseDesc,
+    OppName:          opp.OppName,
+    OppGender:        opp.OppGender,
+    OppAddress:       opp.OppAddress,
+    OppPhone:         opp.OppPhone,
+    WitDocm:          wit.WitnessDoc,
+    WitTy:            wit.WitnessType,
+    Decision:         dic.Decision,
+    DecDate:          dic.DecisionDate,
+    DacDesc:          dic.DecisionDesc,
+  }
 
-	if len(err) > 0 {
-		w.Header().Set("Content-Type", "application/json")
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-		return
-	}
-	tmplAppeal.ExecuteTemplate(w, "appeal.html", Example)
-	return
+  if len(err) > 0 {
+    w.Header().Set("Content-Type", "application/json")
+    http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+    return
+  }
+
+  tmplAppeal.ExecuteTemplate(w, "appeal.layout", data)
+  return
 }
 
 //OppTrial is only for trial
