@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  court-case-management-system:
+    image: court-case-management-system
+    build: .
+    ports:
+      - 8181:8181

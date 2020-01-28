@@ -112,10 +112,20 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 		// error_message := entity.SuccessMessage{Status: "Error", Message: "Wrong ID or Password Try again"}
 		//success_message := entity.SuccessMessage{Status: "Success", Message: "Login Success!"}
 
-		errMsg := struct {
-			Message string
+		// errMsg := struct {
+		// 	Message string
+		// }{
+		// 	Message: "Wrong ID or Password Try again",
+		// }
+
+		loginForm := struct {
+			Values  url.Values
+			VErrors form.ValidationErrors
+			CSRF    string
 		}{
-			Message: "Wrong ID or Password Try again",
+			Values:  nil,
+			VErrors: nil,
+			CSRF:    token,
 		}
 
 		if who == 0 {
@@ -128,13 +138,13 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 				newSess, errs := lh.sessionService.StoreSession(lh.userSess)
 
 				if len(errs) > 0 || newSess == nil {
-					lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
+					lh.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 					return
 				}
 
 				lh.tmpl.ExecuteTemplate(w, "admin.home.layout", adm.AdminId)
 			} else if len(err) > 0 {
-				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
+				lh.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 			}
 		} else if who == 1 {
 			jud, err := lh.loginSrv.CheckJudge(user_id, user_pwd)
@@ -145,12 +155,12 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 				session.Create(claims, lh.userSess.UUID, lh.userSess.SigningKey, w)
 				newSess, errs := lh.sessionService.StoreSession(lh.userSess)
 				if len(errs) > 0 || newSess == nil {
-					lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
+					lh.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 					return
 				}
 				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud)
 			} else if len(err) > 0 {
-				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
+				lh.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 			}
 		} else if who == 2 {
 			opp, err := lh.loginSrv.CheckOpponent(user_id, user_pwd)
@@ -161,16 +171,16 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 				session.Create(claims, lh.userSess.UUID, lh.userSess.SigningKey, w)
 				newSess, errs := lh.sessionService.StoreSession(lh.userSess)
 				if len(errs) > 0 || newSess == nil {
-					lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
+					lh.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 					return
 				}
 
 				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp)
 			} else if len(err) > 0 {
-				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
+				lh.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 			}
 		} else {
-			lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
+			lh.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 		}
 
 	} else {
