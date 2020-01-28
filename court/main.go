@@ -99,11 +99,14 @@ func main() {
 	reportServ := repService.NewReportServiceImpl(reportRepo)
 	reportHandle := handler.NewReportHandler(tmpl, reportServ)
 
+<<<<<<< HEAD
 	//Court Create
 	courtRepo := repository.NewAdminCourtRepositoryImpl(dbc)
 	courtService := service.NewAdminCourtServiceImpl(courtRepo)
 	courtHandle := handler.NewAdminCourtHandler(tmpl, courtService)
 
+=======
+>>>>>>> 3d9334e80d194a65c717f06433984ae17945a099
 	//Appeal
 	appealRepo := aplRepo.NewAppealGormRepo(dbc)
 	appealService := aplService.NewAppealService(appealRepo)
@@ -131,10 +134,13 @@ func main() {
 	//Admin Report and Statistics
 	http.HandleFunc("/admin/report", reportHandle.GetStatistics)
 
+<<<<<<< HEAD
 	//Court and Admin Create
 	http.HandleFunc("/courtcreate", courtHandle.CreateCourt)
 	http.HandleFunc("/admincreate", courtHandle.AdminCreate)
 
+=======
+>>>>>>> 3d9334e80d194a65c717f06433984ae17945a099
 	//Admin_search
 	http.HandleFunc("/v1/adminSearch", adminSearch)
 
