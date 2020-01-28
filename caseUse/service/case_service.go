@@ -47,8 +47,8 @@ func (csi *CaseServiceImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, []er
 }
 
 //CloseCase Sevice >> close existing case
-func (csi *CaseServiceImpl) CloseCase(casedoc string, decision *entity.Decision) []error {
-	errs := csi.caseRepo.CloseCase(casedoc, decision)
+func (csi *CaseServiceImpl) CloseCase(casenum string, decision *entity.Decision) []error {
+	errs := csi.caseRepo.CloseCase(casenum, decision)
 	if len(errs) > 0 {
 		return errs
 	}

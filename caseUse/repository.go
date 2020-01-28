@@ -29,6 +29,7 @@ type JudgeRepository interface {
 	CreateJudge(judge *entity.Judge) (*entity.Judge, []error)
 	UpdateCase(judge *entity.Judge) (*entity.Judge, []error)
 	DeleteCase(id int) error
+	CaseTypeJudges() ([]entity.Judge, error)
 }
 
 //LoginRepository ...

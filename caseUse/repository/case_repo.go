@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"fmt"
-
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
 	"github.com/jinzhu/gorm"
 )
@@ -54,13 +52,21 @@ func (cri *CaseRepositoryImpl) UpdateCase(casedoc *entity.Case) (*entity.Case, [
 	}
 	return cs, errs
 }
-func (cri *CaseRepositoryImpl) CloseCase(casedoc string, decision *entity.Decision) []error {
+func (cri *CaseRepositoryImpl) CloseCase(casenum string, decision *entity.Decision) []error {
 	cs := entity.Case{}
-	errs := cri.conn.Model(&cs).Where("case_num = ?", cs.CaseNum).Update("case_status", "Closed").GetErrors()
+	//errs := cri.conn.Model(&cs).Where("case_num = ?", cs.CaseNum).Update("case_status", "Closed").GetErrors()
+	errs := cri.conn.Where("case_num = ?", casenum).First(&cs)
+	cs.CaseStatus = "Closed"
+	er := cri.conn.Save(&cs).GetErrors()
+
+	if len(er) > 0 {
+		return er
+	}
+
 	errs2 := cri.conn.Save(&decision).GetErrors()
 
-	if len(errs) > 0 || len(errs2) > 0 {
-		return errs
+	if errs != nil || len(errs2) > 0 {
+		return errs2
 	}
 	return nil
 }
@@ -86,9 +92,7 @@ func (cri *CaseRepositoryImpl) DeleteCase(id int) []error {
 
 func (cri *CaseRepositoryImpl) JudgeCases(juid string) ([]entity.Case, error) {
 	cases := []entity.Case{}
-	errs := cri.conn.Model(&cases).Where("case_judge = ?", juid).Find(&cases).GetErrors()
-	fmt.Println("****************** Here ***************")
-	fmt.Println(juid)
+	errs := cri.conn.Model(&cases).Where("case_judge = ? AND case_status = ?", juid, "open").Find(&cases).GetErrors()
 	if len(errs) > 0 {
 
 		return nil, nil

@@ -70,7 +70,7 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 		the_court_date, _ := time.Parse("2006-01-02", court_date)
 		//the_case_creation, _ := time.Parse("2006-01-02", time.Now())
 
-		newcs := entity.Case{CaseNum: case_num, CaseTitle: case_title, CaseDesc: case_desc, CaseStatus: "0", CaseType: case_type, CaseCreation: time.Now(), CaseCourtDate: the_court_date, CaseJudge: case_judge}
+		newcs := entity.Case{CaseNum: case_num, CaseTitle: case_title, CaseDesc: case_desc, CaseStatus: "open", CaseType: case_type, CaseCreation: time.Now(), CaseCourtDate: the_court_date, CaseJudge: case_judge}
 
 		err2 := lh.caseSrv.CreateCase(&newcs)
 
@@ -161,10 +161,8 @@ func (lh *CaseHandler) UpdateCase(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//Update a case by extending the case court date >> by the judge
-func (lh *CaseHandler) ExtendCase(w http.ResponseWriter, r *http.Request) {
-	lh.tmpl.ExecuteTemplate(w, "admin.newcase.layout", nil)
-	//TODO Extend case court date here...
+func (lh *CaseHandler) CaseTypeJudge(w http.ResponseWriter, r *http.Request) {
+	//Get the judges suitable for that case
 }
 
 //Close a case by adding final decision and description >> by the judge

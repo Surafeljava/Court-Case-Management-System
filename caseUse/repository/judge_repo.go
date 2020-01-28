@@ -21,6 +21,17 @@ func (jri *JudgeRepositoryImpl) Judges() ([]entity.Judge, error) {
 	}
 	return juds, nil
 }
+
+func (jri *JudgeRepositoryImpl) CaseTypeJudges(cstype string) ([]entity.Judge, error) {
+	juds := []entity.Judge{}
+	// errs := jri.conn.Find(&juds).GetErrors()
+	errs := jri.conn.Where("case_type = ?", cstype).Find(&juds).GetErrors()
+	if len(errs) > 0 {
+		return nil, nil
+	}
+	return juds, nil
+}
+
 func (jri *JudgeRepositoryImpl) Judge(id int) (*entity.Judge, []error) {
 	jud := entity.Judge{}
 	errs := jri.conn.First(&jud, id).GetErrors()
