@@ -107,7 +107,7 @@ func (juh *JudgeNotificationHandler) DeleteJudgeNotification(w http.ResponseWrit
 		forWhom := CheckForWhom(notification.NotLevel)
 		if forWhom == 1 {
 
-			errs := juh.notfService.DeleteNotification(uint(id))
+			_, errs := juh.notfService.DeleteNotification(uint(id))
 
 			if len(errs) > 0 {
 				http.Redirect(w, r, "/judge/notifications", http.StatusSeeOther)
