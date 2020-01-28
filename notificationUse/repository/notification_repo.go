@@ -28,14 +28,14 @@ func (notfRepo *NotificationRepositoryImpl) Notifications() ([]entity.Notificati
 }
 
 //PostNotification posts notification in the database
-func (notfRepo *NotificationRepositoryImpl) PostNotification(notf *entity.Notification) []error {
+func (notfRepo *NotificationRepositoryImpl) PostNotification(notf *entity.Notification) (*entity.Notification, []error) {
 	notification := notf
 	errs := notfRepo.db.Create(&notification).GetErrors()
 
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 	}
-	return errs
+	return notification, nil
 }
 
 //ViewNotification retrieves a notification by title
