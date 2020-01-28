@@ -13,9 +13,15 @@ func NewAdminCourtServiceImpl(csRepo caseUse.CourtRepository) *AdminCourtService
 	return &AdminCourtServiceImpl{courtRepo: csRepo}
 }
 
+func (acs *AdminCourtServiceImpl) Court() (*entity.Court, []error) {
+	court, err := acs.courtRepo.Court()
+	return court, err
+}
+
 func (acs *AdminCourtServiceImpl) CreateCourt(court *entity.Court) (*entity.Court, []error) {
 	return nil, nil
 }
+
 func (acs *AdminCourtServiceImpl) UpdateCourt(court *entity.Court) (*entity.Court, []error) {
 	return nil, nil
 }

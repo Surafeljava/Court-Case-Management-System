@@ -8,17 +8,25 @@ import (
 )
 
 type AdminCourtHandler struct {
-	tmpl  *template.Template
-	court caseUse.CourtService
+	tmpl      *template.Template
+	courtServ caseUse.CourtService
 }
 
 func NewAdminCourtHandler(T *template.Template, JS caseUse.CourtService) *AdminCourtHandler {
-	return &AdminCourtHandler{tmpl: T, court: JS}
+	return &AdminCourtHandler{tmpl: T, courtServ: JS}
 }
 
 func (ach *AdminCourtHandler) CreateCourt(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		//Check if court information has created before....
+		court, _ := ach.courtServ.Court()
+
+		if court == nil {
+			ach.tmpl.ExecuteTemplate(w, "admin.court.new.layout", nil)
+			return
+		}
+
+		ach.tmpl.ExecuteTemplate(w, "login.layout", nil)
 	}
 
 	if r.Method == http.MethodPost {

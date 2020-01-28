@@ -55,6 +55,7 @@ type SessionRepository interface {
 }
 
 type CourtRepository interface {
+	Court() (*entity.Court, []error)
 	CreateCourt(court *entity.Court) (*entity.Court, []error)
 	UpdateCourt(court *entity.Court) (*entity.Court, []error)
 	// DeleteCourt(id int) error

@@ -55,6 +55,7 @@ type SessionService interface {
 }
 
 type CourtService interface {
+	Court() (*entity.Court, []error)
 	CreateCourt(court *entity.Court) (*entity.Court, []error)
 	UpdateCourt(court *entity.Court) (*entity.Court, []error)
 	// DeleteCourt(id int) error

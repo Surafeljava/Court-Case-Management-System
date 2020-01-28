@@ -13,6 +13,8 @@ import (
 	aplService "github.com/Surafeljava/Court-Case-Management-System/appealUse/service"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/repository"
 	"github.com/Surafeljava/Court-Case-Management-System/caseUse/service"
+	repRepo "github.com/Surafeljava/Court-Case-Management-System/reportUse/repository"
+	repService "github.com/Surafeljava/Court-Case-Management-System/reportUse/service"
 	"github.com/Surafeljava/Court-Case-Management-System/rtoken"
 
 	"github.com/Surafeljava/Court-Case-Management-System/court/handler"
@@ -92,6 +94,16 @@ func main() {
 	OppJudgNotificatHandler := handler.NewOppJNotificationHandler(tmpl, notificationService)
 	judgeNotificationHandler := handler.NewJudgeNotificationHandler(tmpl, notificationService)
 
+	//Report
+	reportRepo := repRepo.NewReportGormRepo(dbc)
+	reportServ := repService.NewReportServiceImpl(reportRepo)
+	reportHandle := handler.NewReportHandler(tmpl, reportServ)
+
+	//Court Create
+	courtRepo := repository.NewAdminCourtRepositoryImpl(dbc)
+	courtService := service.NewAdminCourtServiceImpl(courtRepo)
+	courtHandle := handler.NewAdminCourtHandler(tmpl, courtService)
+
 	//Appeal
 	appealRepo := aplRepo.NewAppealGormRepo(dbc)
 	appealService := aplService.NewAppealService(appealRepo)
@@ -115,6 +127,13 @@ func main() {
 	//TODO: notification handlers
 	// http.HandleFunc("/admin/notification/new", )
 	// http.HandleFunc("/notification", )
+
+	//Admin Report and Statistics
+	http.HandleFunc("/admin/report", reportHandle.GetStatistics)
+
+	//Court and Admin Create
+	http.HandleFunc("/courtcreate", courtHandle.CreateCourt)
+	http.HandleFunc("/admincreate", courtHandle.AdminCreate)
 
 	//Admin_search
 	http.HandleFunc("/v1/adminSearch", adminSearch)

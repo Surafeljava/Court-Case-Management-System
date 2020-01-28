@@ -13,6 +13,16 @@ func NewAdminCourtRepositoryImpl(Conn *gorm.DB) *AdminCourtRepositoryImpl {
 	return &AdminCourtRepositoryImpl{conn: Conn}
 }
 
+func (acr *AdminCourtRepositoryImpl) Court() (*entity.Court, []error) {
+	court := entity.Court{}
+
+	err := acr.conn.First(&court).GetErrors()
+	if len(err) > 0 {
+		return nil, err
+	}
+	return &court, nil
+}
+
 func (acr *AdminCourtRepositoryImpl) CreateCourt(court *entity.Court) (*entity.Court, []error) {
 	return nil, nil
 }
