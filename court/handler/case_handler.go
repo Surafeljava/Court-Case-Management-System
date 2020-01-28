@@ -78,6 +78,9 @@ func (lh *CaseHandler) NewCase(w http.ResponseWriter, r *http.Request) {
 
 		_, err2 := lh.caseSrv.CreateCase(&newcs)
 
+		//Add it to the ralation table
+		// rel := entity.Relation{CaseNum:newcs.CaseNum, PlId: "notAdded" , AcId: "notAdded"}
+
 		//Posting notification about the new case creation for the judge
 		notf := entity.Notification{NotDescription: case_num, NotTitle: "Case Assigned", NotLevel: case_judge, NotDate: time.Now()}
 		lh.admiNot.PostNotification(&notf)

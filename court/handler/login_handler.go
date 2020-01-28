@@ -148,7 +148,7 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 					lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
 					return
 				}
-				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud.JudgeId)
+				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
@@ -165,7 +165,7 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 					return
 				}
 
-				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp.OppId)
+				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
