@@ -63,18 +63,18 @@ func (notfRepo *NotificationRepositoryImpl) UpdateNotification(notf *entity.Noti
 }
 
 //DeleteNotification deletes a given notification by id
-func (notfRepo *NotificationRepositoryImpl) DeleteNotification(id uint) []error {
+func (notfRepo *NotificationRepositoryImpl) DeleteNotification(id uint) (*entity.Notification, []error) {
 
 	notification, errs := notfRepo.ViewNotification(id)
 
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 	}
 
 	errs = notfRepo.db.Delete(notification, id).GetErrors()
 	if len(errs) > 0 {
-		return errs
+		return nil, errs
 
 	}
-	return errs
+	return notification, nil
 }
