@@ -13,17 +13,17 @@
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h2>Opponent Home</h2>
     </div>
-    <h3> ID: {{ .OppId }} </h3>
+    <h3> ID: {{ . }} </h3>
 
     <div class="row">
         <div class="col-sm-3">
-            <h5> <a href="/admin/oppAppeal?id={{ .OppId }}" class="btn btn-primary"> Appeal on Case </a> </h5>
+            <h5> <a href="/admin/oppAppeal?id={{ . }}" class="btn btn-primary"> Appeal on Case </a> </h5>
         </div>
         <div class="col-sm-3">
-            <h5> <a href="/user/changepwd?id={{ .OppId }}" class="btn btn-primary"> Change Password </a> </h5>
+            <h5> <a href="/user/changepwd?id={{ . }}" class="btn btn-primary"> Change Password </a> </h5>
         </div>
         <div class="col-sm-3">
-            <h5> <a href="/opponent/notifications?id={{ .OppId }}" class="btn btn-primary"> View Notification </a> </h5>
+            <h5> <a href="/opponent/notifications?id={{ . }}" class="btn btn-primary"> View Notification </a> </h5>
         </div>
     </div>
 

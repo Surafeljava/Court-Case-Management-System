@@ -143,7 +143,7 @@ func (lh *CaseHandler) UpdateCase(w http.ResponseWriter, r *http.Request) {
 
 	} else if r.Method == http.MethodPost {
 
-		id, _ := strconv.Atoi(r.FormValue("id"))
+		id, _ := strconv.Atoi(r.FormValue("case_id"))
 		case_num := r.FormValue("case_num")
 		case_title := r.FormValue("case_title")
 		case_desc := r.FormValue("case_desc")
@@ -216,6 +216,7 @@ func (lh *CaseHandler) CloseCase(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//Api Example
 func (lh *CaseHandler) SearchCaseInfo(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		// case_num := r.PostFormValue("case_num")

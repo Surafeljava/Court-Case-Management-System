@@ -5,7 +5,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
+	"os"
 	"time"
 
 	entity "github.com/Surafeljava/Court-Case-Management-System/Entity"
@@ -73,6 +75,14 @@ func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 		opp_phone := r.FormValue("opp_phone")
 		_, fh, _ := r.FormFile("opp_photo")
 
+		//fileNm, _ := FileUpload(r)
+
+		file, handler, _ := r.FormFile("opp_photo")
+
+		defer file.Close()
+		f, _ := os.OpenFile("../../assets/img/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+		io.Copy(f, file)
+
 		opp_photo := fh.Filename
 		newop := entity.Opponent{OppId: opp_id, OppPwd: opp_pwd, OppType: opp_type, OppName: opp_name, OppGender: opp_gender, OppBD: opp_bd, OppAddress: opp_address, OppPhone: opp_phone, OppPhoto: opp_photo}
 
@@ -88,4 +98,22 @@ func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 	} else {
 
 	}
+}
+
+func FileUpload(r *http.Request) (string, error) {
+
+	file, handler, err := r.FormFile("opp_photo")
+
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+	f, err := os.OpenFile("../assets/img/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
+
+	if err != nil {
+		return "", err
+	}
+	io.Copy(f, file)
+
+	return handler.Filename, nil
 }

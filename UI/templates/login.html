@@ -23,11 +23,7 @@
         margin: 10px;
     }
 </style>
-<head>
-    <meta charset="utf-8">
-    <script type ="text/javascript" src="..assets/js/jquery-3.4.1.min.js"></script>
-    <script type ="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
-  </head>
+
 
 <body background="../assets/img/all_bg.jpg">
 <div class="container">
@@ -58,45 +54,7 @@
     </form>
 </div>
 
-    <h4 id="cs_num"> Case Number :  </h4>
-    <h4 id="cs_title"> Case Title : </h4>
-    <h4 id="cs_court_date"> Court Date : </h4>
-    <h4 id="cs_status"> Case Status : </h4>
-
-    <script type="text/javascript">
-
-      $(function(){
-
-        $("#view_case_form").submit(function(e){
-          e.preventDefault();
-        });
-
-        $("#view_case_btn").click(function(){
-          var case_num_val = $("#case_num").val();
-          console.log(case_num_val);
-          $("#case_num").val('');
-          $.ajax({
-             url: '/search/case',
-             type: 'GET',
-             data: {
-                       case_num:case_num_val
-                   },
-             success: function(data) {
-               $.each(data, function(key, value){
-                 $("#cs_num").append(case_num_val);
-                 $("#cs_title").append(value.case_title);
-                 $("#cs_court_date").append(value.court_date);
-                 $("#cs_status").append(value.case_status);
-               });
-             },
-             error: function(e) {
-             	console.log(e.message);
-             }
-           });
-        });
-      });
-
-    </script>
+    
 
 </body>
 {{ end }}

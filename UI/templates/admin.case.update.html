@@ -33,7 +33,7 @@
     <form form class="form-newcase" action="/admin/cases/update" method="POST">
     <div class="col-auto">
     <label for='case_id' class='col-form-label'>Case ID</label>
-    <input type="text" class='form-control' name="id" id='case_id' readonly placeholder="ID" value="Case ID: {{ .ID }}" />
+    <input type="text" class='form-control' name="case_id" id='case_id' readonly placeholder="ID" value="{{ .ID }}" />
     </div>
     <div class="col-auto">
     <label for='case_num' class='col-form-label'>Case Number</label>

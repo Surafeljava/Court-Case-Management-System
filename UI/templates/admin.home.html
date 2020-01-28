@@ -13,7 +13,7 @@
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h2>Admin Home</h2>
     </div>
-    <h3> ID: {{ .AdminId }} </h3>
+    <h3> ID: {{ . }} </h3>
     
     <div class="row">
         <div class="col-sm-3">
@@ -26,7 +26,7 @@
             <h5> <a href="/admin/judge/new" class="btn btn-primary"> Create New Judge </a> </h5>
         </div>
         <div class="col-sm-3">
-            <h5> <a href="/user/changepwd?id={{ .AdminId }}" class="btn btn-primary"> Change Password </a> </h5>
+            <h5> <a href="/user/changepwd?id={{ . }}" class="btn btn-primary"> Change Password </a> </h5>
         </div>
     </div>
     <br>

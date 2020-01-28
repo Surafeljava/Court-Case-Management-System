@@ -14,16 +14,16 @@
         <h2>Judge Home</h2>
     </div>
     <h3> ID: {{ .JudgeId }} </h3>
-    
+
     <div class="row">
         <div class="col-sm-3">
-            <h5> <a href="/judge/cases/close?id={{ .JudgeId }}" class="btn btn-primary"> Close Case </a> </h5>
+            <h5> <a href="/judge/cases/close?id={{ . }}" class="btn btn-primary"> Close Case </a> </h5>
         </div>
         <div class="col-sm-3">
-            <h5> <a href="/user/changepwd?id={{ .JudgeId }}" class="btn btn-primary"> Change Password </a> </h5>
+            <h5> <a href="/user/changepwd?id={{ . }}" class="btn btn-primary"> Change Password </a> </h5>
         </div>
         <div class="col-sm-3">
-            <h5> <a href="/judge/notifications?id={{ .JudgeId }}" class="btn btn-primary"> View Notification </a> </h5>
+            <h5> <a href="/judge/notifications?id={{ . }}" class="btn btn-primary"> View Notification </a> </h5>
         </div>
         
     </div>

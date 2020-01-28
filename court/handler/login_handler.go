@@ -126,12 +126,13 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 				claims := rtoken.Claims(user_id, lh.userSess.Expires)
 				session.Create(claims, lh.userSess.UUID, lh.userSess.SigningKey, w)
 				newSess, errs := lh.sessionService.StoreSession(lh.userSess)
+
 				if len(errs) > 0 || newSess == nil {
 					lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
 					return
 				}
 
-				lh.tmpl.ExecuteTemplate(w, "admin.home.layout", adm)
+				lh.tmpl.ExecuteTemplate(w, "admin.home.layout", adm.AdminId)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
@@ -147,7 +148,7 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 					lh.tmpl.ExecuteTemplate(w, "login.layout", nil)
 					return
 				}
-				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud)
+				lh.tmpl.ExecuteTemplate(w, "judge.home.layout", jud.JudgeId)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
@@ -164,7 +165,7 @@ func (lh *LoginHandler) AuthenticateUser(w http.ResponseWriter, r *http.Request)
 					return
 				}
 
-				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp)
+				lh.tmpl.ExecuteTemplate(w, "opponent.home.layout", opp.OppId)
 			} else if len(err) > 0 {
 				lh.tmpl.ExecuteTemplate(w, "login.layout", errMsg)
 			}
