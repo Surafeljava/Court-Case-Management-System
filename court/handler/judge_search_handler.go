@@ -37,16 +37,7 @@ func (uh *JudgeSearchHandler) Judges(w http.ResponseWriter, r *http.Request) {
 func (uh *JudgeSearchHandler) GetSingleJudge(w http.ResponseWriter,
 	r *http.Request) {
 
-	//id, err := strconv.Atoi(ps.ByName("id"))
-
 	judgeID := r.FormValue("search_judgeID")
-	// id, err := strconv.Atoi(idraw)
-
-	// if err != nil {
-	// 	w.Header().Set("Content-Type", "application/json")
-	// 	http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-	// 	return
-	// }
 
 	judge, errs := uh.judgeSearchService.Judge(judgeID)
 

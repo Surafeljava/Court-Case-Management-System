@@ -42,26 +42,38 @@ func (ojh *OppJNotificationHandler) DeleteOpponentNotification(w http.ResponseWr
 		}
 
 		forWhom := CheckForWhom(notification.NotLevel)
-		if forWhom == 2 {
+		if forWhom == 1 {
 
-			errs := ojh.notfService.DeleteNotification(uint(id))
+			_, errs := ojh.notfService.DeleteNotification(uint(id))
 
 			if len(errs) > 0 {
 				return
 			}
 
-			http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
-		} else {
-			http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
-			//display error message
-			//if notification level is "all" cant be deleted
-		}
+			http.Redirect(w, r, "/judge/notifications", http.StatusSeeOther)
+		} else if forWhom == 2 {
+			if forWhom == 2 {
 
+				_, errs := ojh.notfService.DeleteNotification(uint(id))
+
+				if len(errs) > 0 {
+					return
+				}
+
+				http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
+			} else {
+				http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
+				//display error message
+				//if notification level is "all" cant be deleted
+			}
+
+		}
 	}
 }
 
 //NotificationsOpponent retrieves all notification of opponents
 func (ojh *OppJNotificationHandler) NotificationsOpponent(w http.ResponseWriter, r *http.Request) {
+
 	notifications, errs := ojh.notfService.Notifications()
 	if len(errs) > 0 {
 		return
@@ -107,5 +119,4 @@ func (ojh *OppJNotificationHandler) SingleNotificationOpponent(w http.ResponseWr
 
 		http.Redirect(w, r, "/opponent/notifications", http.StatusSeeOther)
 	}
-
 }

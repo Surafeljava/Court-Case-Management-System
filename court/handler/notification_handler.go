@@ -94,7 +94,7 @@ func (nh *NotificationHandler) AdminPostNotification(w http.ResponseWriter, r *h
 		notDescription := r.FormValue("not_desc")
 
 		notification := entity.Notification{NotDescription: notDescription, NotTitle: notTitle, NotLevel: notLevel, NotDate: time.Now()}
-		errs := nh.notfService.PostNotification(&notification)
+		_, errs := nh.notfService.PostNotification(&notification)
 
 		if len(errs) > 0 {
 			panic(errs)
@@ -120,7 +120,7 @@ func (nh *NotificationHandler) AdminDeleteNotification(w http.ResponseWriter, r 
 			panic(err)
 		}
 
-		errs := nh.notfService.DeleteNotification(uint(id))
+		_, errs := nh.notfService.DeleteNotification(uint(id))
 
 		if len(errs) > 0 {
 			http.Redirect(w, r, "/admin/notifications", http.StatusSeeOther)
@@ -130,4 +130,3 @@ func (nh *NotificationHandler) AdminDeleteNotification(w http.ResponseWriter, r 
 
 	}
 }
-
