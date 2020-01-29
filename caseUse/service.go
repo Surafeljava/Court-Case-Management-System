@@ -9,11 +9,11 @@ type CaseService interface {
 	CaseJudges(case_type string) ([]entity.Judge, error)
 	Case(id int) (*entity.Case, []error)
 	CaseByNum(case_num string) (*entity.Case, []error)
-	CreateCase(casedoc *entity.Case) []error
+	CreateCase(casedoc *entity.Case) (*entity.Case, []error)
 	UpdateCase(casedoc *entity.Case) (*entity.Case, []error)
 	CloseCase(casedoc string, decision *entity.Decision) []error
 	ExtendCase(casedoc *entity.Case) []error
-	DeleteCase(id int) []error
+	DeleteCase(id int) (*entity.Case, []error)
 }
 
 //OpponentService ...
