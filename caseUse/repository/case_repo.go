@@ -48,7 +48,7 @@ func (cri *CaseRepositoryImpl) CreateCase(casedoc *entity.Case) []error {
 		//return errs
 	}
 
-	relation := entity.Relation{CaseNum: csd.CaseNum, PlId: "", AcId: ""}
+	relation := entity.Relation{CaseNum: csd.CaseNum, PlId: "notAdded", AcId: "notAdded"}
 	cri.conn.Create(&relation)
 
 	return errs

@@ -47,14 +47,38 @@ func (ori *OpponentRepositoryImpl) CreateOpponent(case_num string, opp *entity.O
 		return nil, err
 	}
 
-	if opp.OppType == "plaintiff" {
+	if opp.OppType == "Plaintiff" {
 		rel.PlId = opp.OppId
 		ori.conn.Save(&rel)
-	} else if opp.OppType == "accused" {
+	} else if opp.OppType == "Accused" {
 		rel.AcId = opp.OppId
 		ori.conn.Save(&rel)
 	}
 
 	return csd, errs
 	//return nil, nil
+}
+
+func (ori *OpponentRepositoryImpl) CheckOpponentRelation(case_num string, opType string) bool {
+
+	rel := entity.Relation{}
+	err := ori.conn.Where("case_num = ?", case_num).First(&rel).GetErrors()
+	if opType == "pl" {
+		if rel.PlId == "notAdded" {
+			return true
+		} else {
+			return false
+		}
+	} else if opType == "ac" {
+		if rel.AcId == "notAdded" {
+			return true
+		} else {
+			return false
+		}
+	}
+
+	if len(err) > 0 {
+		return false
+	}
+	return false
 }

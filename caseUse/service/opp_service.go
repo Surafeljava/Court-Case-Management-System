@@ -33,3 +33,7 @@ func (osi *OpponentServiceImpl) CreateOpponent(case_num string, opp *entity.Oppo
 	}
 	return opp, err1
 }
+
+func (osi *OpponentServiceImpl) CheckOpponentRelation(case_num string, opType string) bool {
+	return osi.oppoRepo.CheckOpponentRelation(case_num, opType)
+}

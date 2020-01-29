@@ -20,6 +20,7 @@ type CaseRepository interface {
 type OpponentRepository interface {
 	Opponents() ([]entity.Opponent, error)
 	Opponent(id int) (*entity.Opponent, []error)
+	CheckOpponentRelation(case_num string, opType string) bool
 	CreateOpponent(case_num string, opp *entity.Opponent) (*entity.Opponent, []error)
 }
 

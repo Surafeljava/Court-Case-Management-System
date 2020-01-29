@@ -30,6 +30,11 @@ func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 		casenum := r.URL.Query().Get("case_num")
 		opptype := r.URL.Query().Get("opp_type")
 
+		if !(oh.oppSrv.CheckOpponentRelation(casenum, opptype)) {
+			http.Redirect(w, r, "/admin/cases", http.StatusSeeOther)
+			return
+		}
+
 		if opptype == "pl" {
 			opptype = "Plaintiff"
 		} else if opptype == "ac" {
@@ -76,12 +81,32 @@ func (oh *OpponentHandler) NewOpponent(w http.ResponseWriter, r *http.Request) {
 		_, fh, _ := r.FormFile("opp_photo")
 
 		//fileNm, _ := FileUpload(r)
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		file, handler, _ := r.FormFile("opp_photo")
+		file, header, err := r.FormFile("opp_photo")
+
+		if err != nil {
+			fmt.Fprintln(w, err)
+			return
+		}
 
 		defer file.Close()
-		f, _ := os.OpenFile("../../assets/img/"+handler.Filename, os.O_WRONLY|os.O_CREATE, 0666)
-		io.Copy(f, file)
+
+		out, err := os.Create("../UI/assets/user_imgs/" + header.Filename)
+		if err != nil {
+			fmt.Fprintf(w, "Unable to create the file for writing. Check your write access privilege")
+			return
+		}
+
+		defer out.Close()
+		_, err = io.Copy(out, file)
+		if err != nil {
+			fmt.Fprintln(w, err)
+		}
+
+		fmt.Println("File Upload Successfully")
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		opp_photo := fh.Filename
 		newop := entity.Opponent{OppId: opp_id, OppPwd: opp_pwd, OppType: opp_type, OppName: opp_name, OppGender: opp_gender, OppBD: opp_bd, OppAddress: opp_address, OppPhone: opp_phone, OppPhoto: opp_photo}
