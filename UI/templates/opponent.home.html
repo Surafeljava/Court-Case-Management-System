@@ -1,6 +1,6 @@
 {{ define "opponent.home.layout" }} 
 
-{{ template "navbar" . }} 
+{{ template "allheader.navbar" . }} 
 {{ template "opponent.home.content" . }} 
 {{ template "footer" . }} 
 
@@ -38,7 +38,7 @@
     <h4>Appeal on a Case</h4>
         <form class="form-inline" method="get" action="/admin/oppAppeal">
             <label for="opp_appeal" class="col-sm-2 col-form-label">Opponent ID: </label>
-            <input type="text" class="col-sm-2 form-control" name="opp_appeal" id="opp_appeal" placeholder="Your ID here"><br>
+            <input type="text" class="col-sm-2 form-control" name="opp_appeal" id="opp_appeal" value="{{ .OppId }}" readonly placeholder="Your ID here"><br>
             <button type="submit" class="btn btn-warning">GET APPEAL FORM</button>
         </form>
 

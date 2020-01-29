@@ -1,14 +1,110 @@
+{{ define "appeal.layout" }} 
+{{ template "allheader.navbar" . }} 
+{{ template "appeal.content" . }} 
+{{ template "footer" . }} 
+
+{{ end }} 
+
+{{ define "appeal.content" }}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Appeal Document</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Admin Page </title>
 </head>
 <body>
 
-    <h1> Appeal Page </h1>
-    <p>{{.}}</p>
-    
+    <h1> Appeal Document </h1>
+    <div class="container">
+        <h2>About The Case</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Case Number : </th>
+                <th>Case Title : </th>
+                <th>Case Describtion :</th>
+                <th>Case Creation Date :</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> {{ .CaseNum }} </td>
+                    <td> {{ .CaseTitle }} </td>
+                    <td> {{ .CaseDesc }} </td>
+                    <td> {{ .CaseCreationDate }} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> 
+    <br>
+    <br>
+    <div class="container">
+       <h2>About The Opponent</h2>
+        <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Opponent Name : </th>
+                    <th>Gender : </th>
+                    <th>Address :</th>
+                    <th>Phone number :</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> {{ .OppName }} </td>
+                        <td> {{ .OppGender }} </td>
+                        <td> {{ .OppAddress }} </td>
+                        <td> {{ .OppPhone }} </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <h2>About The Witness</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Witness Document Name: </th>
+                <th>Witness Type : </th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> {{ .WitDocm }} </td>
+                    <td> {{ .WitTy }} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <h2>Decision Given</h2>
+        <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Decision: </th>
+                    <th>Decision Date : </th>
+                    <th>Decision Describtion :</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> {{ .Decision }} </td>
+                        <td> {{ .DecDate }} </td>
+                        <td> {{ .DacDesc }} </td>
+                    </tr>
+                </tbody>
+        </table>
+        <br>
+        <br>
+    </div> 
 </body>
 </html>
+
+{{ end }} 
+

@@ -119,3 +119,19 @@ type Court struct {
 	CourtAddress string `gorm:"type:varchar(255);not null"`
 	CourtPhone   string `gorm:"type:varchar(255);not null"`
 }
+
+type AppealForm struct {
+	CaseNum          string
+	CaseCreationDate time.Time
+	CaseTitle        string
+	CaseDesc         string
+	OppName          string
+	OppGender        string
+	OppAddress       string
+	OppPhone         string
+	WitDocm          string
+	WitTy            string
+	Decision         string
+	DecDate          time.Time
+	DacDesc          string
+}
